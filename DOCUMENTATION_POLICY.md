@@ -1,6 +1,6 @@
 # Documentation Policy
 
-**Version:** 1.1 · **Generated:** 2026-09-21 · **Revised:** 2026-09-21 (voice and attribution pass) · **Source commit:** `57debbc` · **Last audited phase:** 6
+**Version:** 1.2 · **Generated:** 2026-09-21 · **Revised:** 2026-09-21 (voice, attribution and origins pass) · **Source commit:** `57debbc` · **Last audited phase:** 6
 
 ## 1. Canonical source
 
@@ -59,6 +59,23 @@ original choice of niri is an example). Style never outranks accuracy.
 Not every page is first person. History, rationale, decisions, observations and incidents are; API descriptions,
 command references, configuration schemas, file inventories and architecture definitions stay in conventional
 technical prose, because a reference page is not a memoir.
+
+### How Claude is used, and why it is documented this way
+
+The working arrangement matters to the accuracy of this record, so it is stated rather than implied. I supply the
+architecture, requirements, design direction and constraints; Claude does the implementation-heavy work and the
+kind of investigation that benefits from an agent repeatedly inspecting, building, running and verifying things —
+debugging, regression and stress testing, build validation, repository exploration, tracing lifetimes and
+ownership, benchmarking, cross-file refactoring and documentation maintenance.
+
+What I deliberately do **not** do is let it think for me. If I do not understand something, I ask until I do; if
+an architectural decision does not make sense, I challenge it; if a benchmark looks suspicious, I make it prove
+the number. Two entries in this documentation exist because of exactly that — the
+[incremental-build contamination](04_Incidents/postmortems/2026-09-21-incremental-build-abi-skew.md), where a
+suspicious regression turned out to be a broken build, and the
+[invalid sharpness metric](04_Incidents/postmortems/2026-09-21-wallpaper-quality-regression.md), where a number
+that had been believed was wrong. A record that presented this as a smooth collaboration would be less useful
+than one that shows where the process caught itself.
 
 ## 7. Audit trail
 

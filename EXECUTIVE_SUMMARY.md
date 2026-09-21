@@ -6,14 +6,20 @@ If you have ten minutes and you are about to inherit this project, read this pag
 ## What Zynith is, and why I built it
 
 **Zynith Shell** is my desktop environment for Fedora 44, built on the niri Wayland compositor and a locally
-patched Noctalia 5.1.0 shell. I built it live on my daily-driver laptop between **2026‑09‑19** and
-**2026‑09‑21**, in numbered phases, with **Claude Code as my engineering assistant**; it is documented here at
-commit **`57debbc`**.
+patched Noctalia 5.1.0 shell. The design work began roughly four to five months earlier; the **live
+implementation** documented in these phases ran on my daily-driver laptop between **2026‑09‑19** and
+**2026‑09‑21**, with **Claude Code as my engineering assistant**. It is documented here at commit **`57debbc`**.
 
-I started it because my desktop worked but looked like nothing in particular, and because the usual remedy —
-downloading someone else's rice — produces a machine you cannot debug. I wanted a dark, glassy, wallpaper-derived
-desktop that I could explain line by line, that kept Fedora's stability underneath it, and that did not spend
-noticeable CPU sitting still.
+I started it because I wanted a machine I actually control — one where I know what is running, know why, and can
+change it. That began as frustration with Windows deciding what my hardware spent itself on, went through Fedora
+and Hyprland, and turned into an engineering project at the point where I stopped asking how my desktop should
+*look* and started asking how it should *behave*. I did not download someone else's rice, not out of principle
+but because the setups I liked were built for other distributions and other package ecosystems; by the time I had
+ported one, I would have rebuilt most of it. The full account is in
+[`00_Project/origins.md`](00_Project/origins.md).
+
+What I wanted concretely: a dark, glassy, wallpaper-derived desktop that I can explain line by line, that keeps
+Fedora's stability underneath it, and that does not spend a noticeable fraction of the machine sitting still.
 
 ## The architecture, in one paragraph
 

@@ -10,7 +10,7 @@ def meta():
 # Order of the compiled master report.
 REPORT = [
     ("Executive Summary",            ["EXECUTIVE_SUMMARY.md"]),
-    ("Project",                      ["00_Project/overview.md", "00_Project/philosophy.md",
+    ("Project",                      ["00_Project/origins.md", "00_Project/overview.md", "00_Project/philosophy.md",
                                       "00_Project/technology-stack.md", "00_Project/repository-map.md"]),
     ("Architecture",                 ["ARCHITECTURE.md", "02_Architecture/system/layers.md",
                                       "02_Architecture/configuration/precedence.md",

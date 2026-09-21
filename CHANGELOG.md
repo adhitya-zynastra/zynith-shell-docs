@@ -68,6 +68,13 @@ Baseline snapshot at `~/.config/rice-backups/20260919-182322-pre-rice/`; no func
 
 ## Documentation
 
+- **1.2** (2026‑09‑21) — Added `00_Project/origins.md`, the account of why the project exists: leaving Windows
+  over questions of control, settling on Fedora, Hyprland as the entry point, why I built rather than downloaded,
+  and the point at which a rice became a shell. Three corrections follow from it: my reasons for choosing niri
+  are **recorded** rather than unrecoverable (the previous version stated the opposite), Hyprland's retention has
+  a second and non-engineering reason, and the numbered phases are now explicitly the *live implementation*
+  window rather than the start of the project, which began roughly four to five months earlier with no surviving
+  artifacts. Policy §6 gains the working arrangement with Claude and why it is stated.
 - **1.1** (2026‑09‑21) — Voice and attribution pass over the existing set: converted the project history,
   rationale, decision records and incident reports to first person as the owner's engineering record, made the
   human/AI division of labour explicit where the evidence establishes it, restructured the four postmortems into

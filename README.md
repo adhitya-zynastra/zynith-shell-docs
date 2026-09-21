@@ -1,16 +1,21 @@
 # Zynith Shell — My Engineering Record
 
-**Documentation version 1.1** · source commit `57debbc` · last audited phase **6** · machine-readable metadata in
+**Documentation version 1.2** · source commit `57debbc` · last audited phase **6** · machine-readable metadata in
 [`VERSION.json`](VERSION.json)
 
 Zynith Shell is my attempt to build a Fedora Wayland desktop that is cinematic and configurable without giving up
 the stability of the distribution underneath it, or spending CPU I would rather give to my actual work.
 
-This repository is the engineering record of that project: what I built, why I chose each approach, what broke,
+The short version of why it exists: I wanted a machine where I know what is running, know why it is running, and
+can change it if I do not like the answer. The longer version — Windows, Fedora, Hyprland, and the point where a
+rice turned into a shell — is in [`00_Project/origins.md`](00_Project/origins.md).
+
+This repository is the engineering record of the project: what I built, why I chose each approach, what broke,
 and what I could not establish. I did the design and the decisions; **Claude Code acted as my engineering
 assistant** — it inspected the system, wrote the patches I specified, ran the benchmarks, chased the backtraces,
-and drafted these documents from the evidence. Where a measurement or an investigation is attributed in these
-pages, it is attributed to whoever actually performed it.
+and drafted these documents from the evidence. I am a CS student and I learned a great deal of this while
+building it, which is why the failures are kept in these pages alongside the results. Where a measurement or an
+investigation is attributed here, it is attributed to whoever actually performed it.
 
 ## What it is, concretely
 
@@ -19,18 +24,23 @@ theme: it is a small, reviewed patch series over the packaged Noctalia shell, pl
 owns the design language, plus two Luau plugins. The Fedora package stays installed and untouched; my patched
 build lives in `~/.local/opt/noctalia` and niri launches it with a fallback to `/usr/bin/noctalia`.
 
-**Why niri and Noctalia.** Both were already on the machine and already my session before the project started
-(**VERIFIED** — see [Phase −1](01_Phases/Phase_-1/README.md)); the decision I actually made was to build *on*
-them rather than replace them. My reasons for originally adopting niri are not recorded anywhere I can cite, so
-I am not going to reconstruct them here. What I can say is what made the stack worth keeping: Noctalia 5.1 is a
-native C++ shell rather than a scripted one, so the whole desktop chrome — bar, panels, notifications, OSD, lock
-screen and wallpaper — is one process with one animation clock, instead of a pile of widgets each running its own
-timer. That single property is what made the resource targets in this project reachable at all.
+**Why niri.** I built around Hyprland for a long time, and found niri while researching compositors more
+seriously. It already did several things I had been designing for myself — the scrolling window model first, then
+its overall architecture and its handling of workspaces and window movement — which changed the question from
+*how do I build this* into *why am I rebuilding what the compositor already does well*. Choosing it is what kept
+this project from turning into writing my own compositor.
 
-**Why Hyprland is still installed.** This is my daily-driver laptop. I was never willing to be one bad build away
-from having no desktop, so Hyprland 0.56.2 and its configuration stay untouched as a working fallback session.
-That decision cost me something later — it is the direct cause of the notification outage in Phase 6 — and I would
-still make it again.
+**Why Noctalia.** It is a native C++ shell rather than a scripted one, so the whole desktop chrome — bar, panels,
+notifications, OSD, lock screen and wallpaper — is one process with one animation clock, instead of a pile of
+widgets each running its own timer. That single property is what made the resource targets here reachable at all.
+niri handles the compositor layer, Noctalia provides the shell foundation, and Zynith is the architecture, design
+language and resource policy on top.
+
+**Why Hyprland is still installed.** Two reasons, and only one of them is engineering. This is my daily-driver
+laptop and I was never willing to be one bad build away from having no desktop, so Hyprland 0.56.2 and its
+configuration stay untouched as a working fallback session. The other reason is that Hyprland is what got me into
+this in the first place, and switching compositors did not change that. The decision cost me something later — it
+is the direct cause of the notification outage in Phase 6 — and I would still make it again.
 
 ## How I decide things
 
@@ -53,6 +63,7 @@ improvement and was reverted rather than written up as a win.
 
 | If you want to… | Read |
 |---|---|
+| Understand why this project exists | [`00_Project/origins.md`](00_Project/origins.md) |
 | Understand what this project is | [`00_Project/overview.md`](00_Project/overview.md) |
 | See the whole system from hardware upward | [`02_Architecture/system/layers.md`](02_Architecture/system/layers.md) |
 | Find a file | [`00_Project/repository-map.md`](00_Project/repository-map.md) |
@@ -67,6 +78,8 @@ improvement and was reverted rather than written up as a win.
 ## Project history at a glance
 
 Timeline is **RECOVERED** from git author dates and the timestamped backups in `~/.config/rice-backups/`.
+The table covers the **live implementation** only; the design work that preceded it began roughly four to five
+months earlier and left no surviving artifacts ([`00_Project/origins.md`](00_Project/origins.md)).
 
 | Phase | Window (local time) | Theme | Key commits |
 |---|---|---|---|

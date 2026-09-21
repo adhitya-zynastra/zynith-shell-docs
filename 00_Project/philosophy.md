@@ -4,6 +4,18 @@ My motto for this project is *FAST. OPTIMIZED ASF. PERFORMANCE GODLY. STABLE ASH
 it means one thing: push performance hard, but never at the cost of a desktop that breaks. These are the working
 principles it turned into.
 
+## 0. The reason any of this exists: control
+
+Underneath the priority order is a simpler commitment, and it is the reason I left Windows rather than tuning it:
+I want to know what is running on my machine, know **why** it is running, and be able to remove or change it. See
+[`origins.md`](origins.md).
+
+Every principle below is a consequence of that. Event-driven construction is not asceticism — it is a refusal to
+have processes waking up for reasons I cannot name. "Never become a second owner" is the same instinct applied to
+configuration files. Reversibility exists so that a decision I make today is not a decision I am stuck with.
+And the project is documented to this depth because a system I cannot explain is not one I control, whether the
+opaque part is a vendor's telemetry service or my own code six months from now.
+
 ## 1. Priority order, applied literally
 
 **Correctness → stability → security → responsiveness → resource efficiency → maintainability → configurability

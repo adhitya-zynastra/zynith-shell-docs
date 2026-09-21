@@ -4,6 +4,12 @@
 the first backup Zynith took). **Evidence:** that backup directory, `rpm` metadata, and the surviving
 `~/.config/niri/config.kdl.save`.
 
+> **This is not the start of the project.** Zynith existed as design work for roughly four to five months before
+> this point — requirements, architecture, interaction planning, and reading about resource and lifetime
+> ownership. **No artifact of that period survives on disk**, so the numbered phases begin where the evidence
+> does: at the first backup. The account of that earlier work is in
+> [`00_Project/origins.md`](../../00_Project/origins.md), and its exact dates are **UNKNOWN**.
+
 ## Hardware (VERIFIED, unchanged since)
 
 | Item | Value |
@@ -49,14 +55,20 @@ anywhere in the performance tables.
 
 ## What motivated the project
 
-**RECOVERED** from my initial brief to Claude (session record, 2026‑09‑19). The desktop worked; it just looked
-like nothing in particular. I wanted a dark glass/blur aesthetic with a wallpaper-derived palette, my Hyprland
-keybindings ported to niri, a redesigned launcher and bar, and per-application transparency — and I wanted it
-built *live* on the real machine, with validation and backups at each step, rather than by pasting in someone
-else's rice and inheriting problems I could not explain.
+The long answer is [`origins.md`](../../00_Project/origins.md): I wanted a machine whose behaviour I could
+account for, and by this point I had already spent months deciding what that should mean architecturally.
+
+The short answer, **RECOVERED** from my initial brief to Claude (session record, 2026‑09‑19): the desktop worked
+and looked like nothing in particular. I wanted a dark glass/blur aesthetic with a wallpaper-derived palette, my
+Hyprland keybindings ported to niri, a redesigned launcher and bar, and per-application transparency — built
+*live* on the real machine, with validation and backups at each step, rather than by pasting in someone else's
+rice and inheriting problems I could not explain.
 
 That last point is the reason this documentation exists at all. A copied rice is not something you can maintain;
-I wanted to be able to say why every line is there.
+I wanted to be able to say why every line is there. It is also not a criticism of using someone else's dotfiles —
+I would have done exactly that if I had found a setup that matched what I wanted and worked on Fedora. The ones I
+liked were built for other distributions and package ecosystems, and porting them would have meant rebuilding
+most of them anyway.
 
 Explicit constraints I set in that brief and held to throughout: keep Hyprland intact as a fallback, back up
 before changing anything, validate configuration before applying, never blindly copy a published rice.

@@ -1,0 +1,15 @@
+measurement,value,unit,date,commit,build,notes
+rss before browser,159.8,MB,2026-09-21,57debbc,clean,quiet workspace
+rss after session preparation,163.2,MB,2026-09-21,57debbc,clean,132 previews prefetched at 384px
+rss during 300 rapid traversal steps,167.2,MB,2026-09-21,57debbc,clean,540 ms CPU for the 300 steps
+rss after applying a wallpaper,169.0,MB,2026-09-21,57debbc,clean,
+rss after close,165.7,MB,2026-09-21,57debbc,clean,session entries released
+rss after 5 further sessions,167.6,MB,2026-09-21,57debbc,clean,no accumulation trend
+decodes per session,146,count,2026-09-21,57debbc,clean,132 previews + promotions
+cache hits per session,96,count,2026-09-21,57debbc,clean,
+evictions per session,0,count,2026-09-21,57debbc,clean,budget never exceeded
+peak idle texture bytes,53.0,MB,2026-09-21,57debbc,clean,GPU texture bytes not process RSS
+traversal decodes 20 items,18,count,2026-09-21,eaff2b2,clean,decode count set by landing point
+traversal decodes 50 items,18,count,2026-09-21,eaff2b2,clean,
+traversal decodes 100 items,18,count,2026-09-21,eaff2b2,clean,
+back-and-forth 300 steps decodes,18,count,2026-09-21,eaff2b2,clean,plus 77 cache hits

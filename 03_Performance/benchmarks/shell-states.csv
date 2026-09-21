@@ -1,0 +1,14 @@
+state,noctalia_cpu_pct_of_core,niri_cpu_pct_of_core,ctxt_per_s,noctalia_rss_mb,noctalia_pss_mb,gpu_mhz_avg,date,commit,build,duration_s
+idle (bar only),1.40,0.40,111,160.5,97.1,0,2026-09-21,eaff2b2,clean,5
+control center open,1.00,0.33,112,165.2,101.7,0,2026-09-21,eaff2b2,clean,3
+control center page transition,2.28,1.30,150,163.8,100.4,0,2026-09-21,eaff2b2,clean,3
+rapid control center switching,4.00,2.46,213,164.1,100.7,0,2026-09-21,eaff2b2,clean,3
+launcher open,3.96,1.65,155,173.7,110.1,0,2026-09-21,eaff2b2,clean,3
+rapid launcher open/close,7.73,5.48,369,170.4,106.7,0,2026-09-21,eaff2b2,clean,3
+notification visible,1.31,0.33,134,166.3,102.7,0,2026-09-21,eaff2b2,clean,3
+OSD visible,6.55,6.55,236,166.6,102.9,0,2026-09-21,eaff2b2,clean,3
+wallpaper browser idle,2.33,0.67,120,172.9,109.2,61,2026-09-21,eaff2b2,clean,3
+carousel moving,2.00,1.00,128,170.6,106.8,0,2026-09-21,eaff2b2,clean,3
+rapid traversal (66 items/s),2.25,0.64,132,170.6,106.9,28,2026-09-21,eaff2b2,clean,3
+after browser closes,1.66,0.33,113,167.8,104.1,0,2026-09-21,eaff2b2,clean,3
+all transient UI closed,1.40,0.40,110,167.8,104.1,0,2026-09-21,eaff2b2,clean,5

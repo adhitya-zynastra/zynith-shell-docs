@@ -1,0 +1,9 @@
+optimization,metric,before,after,unit,date,commit,build,significance
+decode gate during carousel motion,shell CPU while moving,54.40,3.96,pct_of_core,2026-09-20,46296d0,same-session,large
+thumbnail idle set (hysteresis),decodes for 20 forward + 20 back,36,23,count,2026-09-20,46296d0,instrumented,counts unaffected by build
+panel retarget instead of rebuild,CPU per control-center navigation,96.7,58.3,ms,2026-09-21,e9e27b0,clean,moderate
+panel retarget instead of rebuild,context switches per navigation,643,398,count,2026-09-21,e9e27b0,clean,moderate
+plugin registry rescan removal,manifest loads per wallpaper apply,6,0,count,2026-09-21,eaff2b2,clean,small CPU (~5 ms) but removes allocations and log noise
+modal backdrop snapshot vs live,CPU per browser open+close,210,202,ms,2026-09-21,e9e27b0,clean,within noise - correctness fix not perf
+OSD hold via TimerManager instead of animateTimer,extra wakeups while OSD visible,50-80,0,per_s,2026-09-20,40c1936,not recorded,recovered from session record
+bar cluster recomposition,idle CPU,1.07-1.12,1.10-1.12,pct_of_core,2026-09-20,config-only,clean,no regression

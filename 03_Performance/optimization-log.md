@@ -46,6 +46,19 @@ Lazy loading caused visible gaps at speed; a single high tier was unaffordable. 
 **traversing 20, 50 or 100 wallpapers each costs 18 decodes**, 132 previews cost ~3 MB RSS, and the focused card
 renders at 768 px into a 753.6 px frame.
 
+## O‑09 · Identical post-hooks run once per apply (Phase 6, `3f355c5`)
+The builtin `gtk3` and `gtk4` templates carry the *same* `post_hook` — both invoke
+`assets/templates/gtk/apply.sh`, which rewrites both `gtk.css` files in one run (which is also why they are
+pinned `hook_async = false`). Running it per template meant executing the identical script twice per palette
+change, each run spawning a subprocess tree. `processConfigTemplates` now keeps a per-pass set of *rendered* hook
+commands and skips a repeat.
+**Process forks per palette change 2695 → ~2180 (−19%)**, three runs at 2226 / 2119 / 2199. Counts are
+build-independent, so the comparison holds.
+*CPU alongside was deliberately not quoted: before came from the 05:08 clean build on a 15-hour-old shell, after
+from an incremental build on a 60-second-old shell. Per ADR‑0013 that is not a valid CPU comparison.*
+This is the redundant half only; the dominant cost is the 11-of-21 enabled templates targeting absent software,
+which is user configuration. See `04_Incidents/postmortems/2026-09-21-template-fork-storm.md`.
+
 ## Rejected after measurement
 
 | Idea | Measurement | Verdict |

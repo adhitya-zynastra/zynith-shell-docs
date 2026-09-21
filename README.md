@@ -1,6 +1,6 @@
 # Zynith Shell — My Engineering Record
 
-**Documentation version 1.4** · source commit `57debbc` · last audited phase **6** · machine-readable metadata in
+**Documentation version 1.5** · source commit `3f355c5` · last audited phase **6** · machine-readable metadata in
 [`VERSION.json`](VERSION.json)
 
 Zynith Shell is my attempt to build a Fedora Wayland desktop that is cinematic and configurable without giving up
@@ -99,7 +99,7 @@ Full detail per phase in [`01_Phases/`](01_Phases/). Cross-phase amendments in
 
 ## Current verified state
 
-- **Commit:** `57debbc` · **working tree:** clean · **build:** clean (`meson compile --clean` then full build)
+- **Commit:** `3f355c5` · **working tree:** clean · **build:** clean (`meson compile --clean` then full build)
 - **Tests:** 118 / 119 — the single failure (`upower_charge_limit_integration`) is pre-existing and unrelated;
   see [`04_Incidents/known-failures.md`](04_Incidents/known-failures.md)
 - **Config validation:** `niri validate` ✓, `noctalia config validate` ✓

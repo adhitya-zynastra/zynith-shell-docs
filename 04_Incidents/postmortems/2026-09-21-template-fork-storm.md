@@ -85,11 +85,15 @@ list. The missing `noctalia.css` is real, but it is a symptom of the same thing,
 change is to disable the 11 templates for software that is not installed, from the settings GUI (Appearance →
 Templates), which should remove roughly half the per-apply process storm. It is reversible from the same screen.
 
-One **safe architectural optimization** was identified and is recorded as future work rather than implemented in
-this pass: `gtk3` and `gtk4` execute the identical `post_hook` command string, so the engine runs the same script
-twice per apply. Deduplicating identical post-hook invocations within a single apply pass is behaviour-preserving
-(the script already rewrites both `gtk.css` files in one run — that is *why* the two are synchronous) and would
-halve the GTK portion without introducing the race that making them async would.
+One **safe architectural optimization** was identified and has been **implemented** in `3f355c5`: `gtk3` and
+`gtk4` execute the identical `post_hook` command string, so the engine was running the same script twice per
+apply. `processConfigTemplates` now keeps a per-pass set of *rendered* hook commands and skips a repeat — keyed on
+the rendered text rather than the raw template, because two entries can share a hook that expands differently and
+those are genuinely different commands. This is behaviour-preserving (the script already rewrites both `gtk.css`
+files in one run — that is *why* the two are synchronous) and avoids the race that making them async would create.
+
+**Measured effect: 2,695 → ~2,180 forks per palette change, −19%** (three runs: 2226 / 2119 / 2199), same method
+before and after. Tests stayed at 118/119 with `template_apply_notify` passing.
 
 Two things were explicitly **not** done: the user's template configuration was not modified or deleted, and
 `hook_async` was not flipped to `true` — the comment in `builtin.toml` states the two invocations are serialised

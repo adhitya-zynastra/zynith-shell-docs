@@ -9,3 +9,7 @@ gsettings list-schemas,wall time,4,ms,2026-09-21,57debbc,n/a,date +%s%N around o
 enabled builtin templates,count,21,templates,2026-09-21,57debbc,n/a,settings.toml theme.templates.builtin_ids,11 of them target software not installed on this machine
 templates for absent software,count,11,templates,2026-09-21,57debbc,n/a,command -v per template target,emacs foot ghostty helix labwc mango qt scroll sway umbriel wezterm
 async msg call (invalid as a cost measure),wall time,24,ms,2026-09-21,57debbc,clean,date +%s%N around noctalia msg templates-apply,INVALID as apply cost - the call returns before the work starts
+genuine palette change AFTER post-hook dedup,process forks,2226,per apply,2026-09-21,3f355c5,incremental,/proc/stat processes delta,run 1 of 3
+genuine palette change AFTER post-hook dedup,process forks,2119,per apply,2026-09-21,3f355c5,incremental,/proc/stat processes delta,run 2 of 3
+genuine palette change AFTER post-hook dedup,process forks,2199,per apply,2026-09-21,3f355c5,incremental,/proc/stat processes delta,run 3 of 3 - fork counts are build-independent so this comparison holds
+genuine palette change AFTER post-hook dedup,shell CPU,NOT COMPARABLE,ms per apply,2026-09-21,3f355c5,incremental,utime+stime,"before was clean build on a 15 h old shell, after incremental on a 60 s old shell - ADR-0013 requires a clean rebuild for a CPU claim"

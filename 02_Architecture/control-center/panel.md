@@ -36,3 +36,36 @@ switching 4.00 %.
 
 True **morphing** between sections — the content region transforming rather than cross-fading — is designed but
 not implemented (`06_Reference/future-work.md`).
+
+## Section transitions — what already exists (Phase 6 audit)
+
+Phase 6's remaining scope listed "Control Center uses appropriate internal morph transitions" as outstanding, so
+I had Claude audit what `57debbc` actually does before building anything. The behavioural requirement turns out to
+be **already met**, by the Phase 6e panel-retarget work rather than by anything named "morph".
+
+Switching Wi-Fi → Bluetooth → Audio today (`control_center_panel.cpp`, `layoutTabContainers`):
+
+| Requirement | Status at `57debbc` |
+|---|---|
+| Outer surface stays stable | **Met** — `Panel::retargetOpen()` takes a new context in place; the panel is not destroyed and rebuilt |
+| Entrance animation not replayed | **Met** — this is precisely what `retargetOpen()` fixed (`e9e27b0`) |
+| Only the content region transitions | **Met** — `layoutTabContainers` offsets and fades the tab containers; the shell, backdrop and navigation do not move |
+| Travel is short enough to read as navigation, not re-opening | **Met** — `min(bodyHeight × 0.10, kTabTransitionTravel × contentScale)`, with the code commenting that a full-height slide "reads as the panel re-opening, which is exactly what section navigation must not look like" |
+| Direction-aware | **Met** — direction comes from the visible-tab ordinal delta |
+| Interruption continues from the real position | **Met** — the outgoing container animates from `m_tabTransitionOutgoingStart`, its actual current offset, rather than snapping back |
+
+Measured when that work landed: **96.7 → 58.3 ms CPU and 643 → 398 context switches per navigation**.
+
+### What is therefore still missing
+
+Not the Control Center's behaviour — the **reusable primitive**. The logic above is bespoke: hand-rolled offset,
+opacity and z-index interpolation inside one panel's layout method. Nothing else in the shell can use it, so the
+launcher, the settings sheet and any future surface would each grow their own copy.
+
+The genuine remaining work is to **extract this into a shared, interruptible, retargetable morph primitive on the
+existing `AnimationManager`** — with the Control Center becoming its first consumer rather than its
+implementation. That is a refactor with a behaviour-preservation obligation (the six properties in the table are
+the acceptance criteria), not a new feature.
+
+Stated this way because the distinction matters for anyone reading the Phase 6 scope later: building a morph
+primitive and then claiming it fixed Control Center entrance replay would be taking credit for `e9e27b0`.

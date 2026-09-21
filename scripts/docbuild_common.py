@@ -16,6 +16,7 @@ REPORT = [
                                       "02_Architecture/configuration/precedence.md",
                                       "02_Architecture/configuration/configurability.md",
                                       "02_Architecture/animation/lifetime-and-motion.md",
+                                      "02_Architecture/animation/motion-settings.md",
                                       "02_Architecture/wallpaper/browser-architecture.md",
                                       "02_Architecture/notifications/pipeline.md",
                                       "02_Architecture/shell/event-model.md",
@@ -88,6 +89,9 @@ FIGURES = [
 ]
 
 SHOTS = [
+    ("settings-motion-before.png",
+     "Settings \u2192 Appearance before the motion migration \u2014 the Motion group holds two entries, and the "
+     "Overridden filter and Reset Page control that ADR-0014 depends on already exist"),
     ("desktop-current.png",
      "The desktop as it stands at 57debbc \u2014 wallpaper-derived palette, glass surfaces, one shared radius"),
     ("bar.png",

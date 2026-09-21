@@ -113,3 +113,22 @@ Every entry here was an actual failure on this machine.
 - **Check, in order:** (1) is the build clean? (T‑04) (2) is the workspace quiet — niri composites the user's own
   animating windows, which is not shell cost (3) is a debug log level enabled? `NOCTALIA_LOG_LEVEL=debug` logs
   per-frame and inflates everything.
+
+## T‑11 · `noctalia config validate` warns that Zynith's own settings are "unknown"
+
+- **Symptom:** validation passes but reports lines like
+  `rice.toml:236: control_center.hover_open: unknown setting` for keys Zynith itself added.
+- **Cause:** `noctalia` on `PATH` is `/usr/bin/noctalia` — the **stock Fedora package**, which has no knowledge of
+  the keys the Zynith patch series adds. It is doing exactly the right thing; it is the wrong binary to ask.
+- **Fix:** validate with the Zynith build.
+
+  ```sh
+  ~/.local/opt/noctalia/bin/noctalia config validate     # ✓ Config is valid — no warnings
+  noctalia config validate                               # stock binary — 6 spurious warnings
+  ```
+
+- **Worth knowing:** this is a useful confirmation rather than a defect. It proves the packaged fallback really is
+  untouched stock (`noctalia v5.1.0` against the local build's `v5.1.0 (57debbc93932-dirty)`), and that every
+  Zynith setting is an addition rather than a modification of an upstream key.
+- **Also:** a `-dirty` suffix on the local build's version means it was built from a tree with uncommitted
+  changes. Expected mid-development; not expected on a binary you are about to take measurements from.

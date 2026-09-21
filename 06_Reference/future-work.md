@@ -21,7 +21,8 @@ Nothing on this page is implemented. Implemented work lives in `01_Phases/`.
 | **Lock screen configurability** | Widget visibility/position/alignment/typography, clock and date formats, password-field style |
 | **Configurable-shell architecture** | "Everything should be an option": Zynith's design becomes the *default preset*, not the only possibility. Needs a meaningful layout model (named regions + alignment/spacing/order), not raw x/y coordinates |
 | **One primary settings surface** | Fold the Motion panel's functionality into the main settings experience, preserving presets, speed, advanced controls, validation and atomic writes. `Super+Alt+A` may deep-link to that section instead of opening a separate system |
-| **GTK template / hook cost** | ~156 ms per palette change is spent writing GTK CSS that fails (`~/.config/gtk-3.0/noctalia.css` is missing) and spawning an emacs hook that exits 127 every time. Skip unchanged writes, avoid spawning hooks whose tools are absent |
+| **Template post-hook deduplication** | `gtk3` and `gtk4` run the *identical* `post_hook`, so the engine executes the same `gtk/apply.sh` twice per apply. Deduplicating identical post-hook invocations within one apply pass is behaviour-preserving and halves the GTK portion. Do **not** flip `hook_async` — the two are serialised deliberately because they rewrite the same files. Measured context: [postmortem](../04_Incidents/postmortems/2026-09-21-template-fork-storm.md) |
+| **Disable templates for absent software** | *User configuration, not code.* 11 of my 21 enabled builtin templates target software that is not installed, and each renders a file and spawns a hook script on every palette change. Turning them off in Appearance → Templates should remove roughly half of the ~2,695 forks per apply |
 | **Global motion refinement** | I still find the desktop slightly too fast after the 130/300/520 retune |
 
 ## Proposed — not agreed

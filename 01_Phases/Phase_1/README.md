@@ -4,6 +4,10 @@
 **Nature:** configuration only. No C++ was compiled in this phase — the patch repository's first Zynith commit
 comes later, in Phase 2.
 
+This is the phase I originally thought was the whole project: make the desktop look right. It is also the phase
+that established the rule the rest of Zynith follows — configuration first, code only where configuration cannot
+reach — because everything here turned out to be achievable without compiling anything.
+
 ## Goals
 
 Dark glass desktop with a wallpaper-derived palette; Hyprland keybindings ported to niri; per-application
@@ -44,7 +48,8 @@ Flush to the top edge, inset "tab" silhouette with concave corners (`margin_edge
 
 ### Keybindings
 
-`rice/binds.kdl` — 198 lines today, ported from the owner's Hyprland configuration.
+`rice/binds.kdl` — 198 lines today, ported from my Hyprland configuration. I did not want to relearn muscle
+memory just because the compositor changed.
 
 ## Bugs in this phase
 

@@ -3,6 +3,11 @@
 **Window:** 2026‑09‑20 02:40 (`phase4-osd` backup) · **Commit:** `40c1936`
 ("osd: zynith layout, value glide, event-loop hold"), refined by `803664d`.
 
+By this point my desktop looked coherent when it was sitting still and incoherent the moment it reacted to
+anything. The OSDs were the most visible instance — every volume keypress put a stock card on a Zynith desktop —
+so I took them next. This is also the phase where a purely cosmetic goal produced the project's first genuine
+efficiency finding, which is a pattern that repeats right through to Phase 6.
+
 ## Goal
 
 Volume and brightness OSDs that match the Zynith language: compact glass card, wallpaper-derived colour, smooth
@@ -20,8 +25,9 @@ entrance, value transition and disappearance — without adding a second animati
 ## The performance finding that justified the phase
 
 The on-screen hold (1.4 s) was implemented as an `animateTimer` — an animation whose only job was to wait. That
-keeps the frame clock running for the entire hold. Replacing it with a `TimerManager` one-shot removed
-**~50–80 wakeups per second** while a static OSD was visible. **RECOVERED** from the session record and the patch
+keeps the frame clock running for the entire hold, which is exactly the kind of cost I had said the project would
+not carry: a completely static card was keeping the shell rendering. Replacing it with a `TimerManager` one-shot
+removed **~50–80 wakeups per second** while a static OSD was visible. **RECOVERED** from the session record and the patch
 README; the current code uses `Timer`.
 
 ## Retrospective amendments

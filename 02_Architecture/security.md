@@ -38,7 +38,31 @@ This documents **only what exists**. It is not a design for a future security sy
 | Coredumps may contain sensitive memory | systemd-coredump is enabled; the project generated several during debugging |
 | No integrity checking of the local build | A compromised `~/.local/opt/noctalia` would be launched by niri |
 
-## PROPOSED / NOT IMPLEMENTED
+## PROPOSED / NOT IMPLEMENTED — the Zynith security and privacy layer
 
-A Zynith privacy/security subsystem has been mentioned as a future direction. **No design, no code, no
-configuration exists.** It must not be described as part of the system until it does.
+**Nothing in this section exists.** No design document, no code, no configuration, no commit. It is recorded here
+so the intent is not lost, and it must not be described as part of Zynith until some of it is real.
+
+What I want eventually is an *optional* network and privacy layer for the desktop — off by default, and visibly
+off when it is off. The shape I have in mind:
+
+| Intended capability | Note |
+|---|---|
+| Protected DNS and malicious-domain blocking | Resolver-level, not a browser extension |
+| Per-application network permissions | Which applications may reach the network at all |
+| Secure public-Wi-Fi mode | A single toggle that tightens the posture when I am on a network I do not trust |
+| Privacy dashboard | What is connecting where, visible rather than inferred |
+| Kill switch and leak protection | Fail closed, not open |
+
+The architectural constraints matter more to me than the feature list, because they are what would keep it from
+becoming a liability:
+
+- **Linux-native enforcement.** nftables, the resolver and NetworkManager where appropriate — not a shell process
+  pretending to be a firewall.
+- **Enforcement outside the UI process.** The shell must never be the thing standing between me and the network.
+  If the shell crashes — and [it has](../04_Incidents/postmortems/2026-09-20-signal-uaf.md) — enforcement must
+  survive it.
+- **Least privilege**, event-driven rather than polling, and **auditable**: I should be able to read what it did
+  and why.
+
+This belongs to a future Security and Privacy phase. It is **not** part of Phase 6 and it is not started.

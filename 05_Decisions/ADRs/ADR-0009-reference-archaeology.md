@@ -7,8 +7,14 @@ Caelestia (`~/.config/quickshell/caelestia`) and ZynAku (`~/Documents/Projects/R
 the machine and solve similar interaction problems in QML/Quickshell.
 
 ## Decision
-Read them as reference archaeology for *interaction and motion principles*; implement the equivalent behaviour
-inside Zynith's existing C++ architecture. Import no code, no architecture, and no dependencies.
+I had Claude read them as reference archaeology for *interaction and motion principles*, then implement the
+equivalent behaviour inside Zynith's existing C++ architecture. Import no code, no architecture, and no
+dependencies.
+
+## Why
+I did not want a rice assembled from other people's answers — that was the thing I set out to avoid in the first
+place. Reading how someone else solved a motion problem is research; pasting their QML into a C++ shell is how
+you end up maintaining a codebase you cannot reason about.
 
 ## What was actually taken
 - Caelestia's `WallpaperList.qml`: the idea of a **path with attributes sampled along it**, an **odd visible count

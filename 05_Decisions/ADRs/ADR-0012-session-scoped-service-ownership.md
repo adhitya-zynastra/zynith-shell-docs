@@ -4,8 +4,8 @@
 
 ## Context
 SwayNotificationCenter's user unit starts in any graphical session and claims
-`org.freedesktop.Notifications`, which silently disabled all Zynith notifications in the niri session. The owner
-still needs swaync in the Hyprland fallback.
+`org.freedesktop.Notifications`, which silently disabled all Zynith notifications in the niri session. I still
+need swaync in the Hyprland fallback, so I could not simply remove it.
 
 ## Decision
 Use a systemd drop-in with `ConditionEnvironment=!XDG_CURRENT_DESKTOP=niri` rather than disabling the unit.

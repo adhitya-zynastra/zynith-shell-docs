@@ -3,6 +3,11 @@
 **Window:** 2026‑09‑19 20:07 (`phase2-anim` backup) → 2026‑09‑20 02:06 (`phase3b` backup).
 **Deliverable:** a Luau plugin panel at `~/.local/share/noctalia/plugins/motion/`, not a C++ change.
 
+Phase 2 left me with timings I had approved by eye and no way to change them without recompiling. This phase was
+about turning motion from something baked into the binary into something I could actually tune — which is the
+first appearance of a theme that dominates the project's unfinished work: *defaults are opinions, not
+restrictions*.
+
 ## Purpose
 
 Give motion a single source of truth and a UI, without adding a background service.
@@ -25,8 +30,8 @@ See `05_Decisions/ADRs/ADR-0005-motion-plugin-as-panel.md`.
 ```
 
 Presets: Instant / Fast / Default / Smooth / Cinematic, plus a global speed and advanced percentage-based controls.
-**Smooth is the validated Phase 2 baseline and was not altered** — a constraint the owner set explicitly so the
-approved lock/unlock choreography kept its timings.
+**Smooth is the validated Phase 2 baseline and was not altered** — a constraint I set explicitly, because I had
+already approved the lock/unlock choreography and did not want a settings panel silently re-timing it.
 
 ## Precedence protection
 
@@ -47,9 +52,9 @@ rewriting it to parse sections fixed it. **RECOVERED** from the session record; 
 
 ## Limitations
 
-- The panel is a second settings surface. The project owner has since stated that this was the wrong long-term
-  shape and that it should fold into one primary customization surface — recorded as planned work in
-  `06_Reference/future-work.md`, not done.
+- The panel is a second settings surface. I have since concluded that this was the wrong long-term shape: motion
+  belongs in the one customization surface users already know, not in a plugin panel of its own. Recorded as
+  planned work in `06_Reference/future-work.md`, not done.
 
 ## Retrospective amendments
 

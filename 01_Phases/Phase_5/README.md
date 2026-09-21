@@ -3,6 +3,10 @@
 **Window:** 2026‑09‑20 03:02 (`phase5` backup) → 14:09 · **Commit:** `803664d`
 ("osd/notifications/sound: zynith pass").
 
+Notifications were the last unstyled surface, and sound was the one sense the desktop had nothing to say to at
+all. I wanted both without acquiring a daemon — the constraint that shaped every decision below, and the reason
+the sound system is ~124 KB of synthesised WAVs playing on a loop the shell already owns.
+
 ## Goals
 
 Restyle notifications in the Zynith language without a second notification store, and add an event-driven sound

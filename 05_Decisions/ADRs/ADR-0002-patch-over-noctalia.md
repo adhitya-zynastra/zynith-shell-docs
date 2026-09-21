@@ -4,11 +4,12 @@
 "noctalia 5.1.0 pristine (Fedora SRPM)", install prefix `~/.local/opt/noctalia`, spawn fallback in `config.kdl`.
 
 ## Context
-Zynith needed behaviour the packaged shell does not expose (lock transitions, modal power menu, carousel, panel
-retargeting). Writing a shell from scratch was never in scope.
+I needed behaviour the packaged shell does not expose (lock transitions, modal power menu, carousel, panel
+retargeting). Writing a shell from scratch was never in scope, and forking outright would have made me the owner
+of every upstream fix I subsequently failed to merge.
 
 ## Decision
-Keep the Fedora `noctalia` package installed and untouched. Maintain a small git repository whose first commit is
+I chose to patch rather than fork. Keep the Fedora `noctalia` package installed and untouched. Maintain a small git repository whose first commit is
 the pristine 5.1.0 source, apply Zynith changes as reviewable commits on top, build to a user-local prefix, and
 have niri spawn the local build **with a fallback to `/usr/bin/noctalia`**.
 

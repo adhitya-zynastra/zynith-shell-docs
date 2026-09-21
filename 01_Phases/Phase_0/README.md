@@ -3,9 +3,13 @@
 **Window:** 2026‑09‑19, roughly 18:00 → 18:23 (ends at the `pre-rice` backup). **Deliverable:** an architecture
 plan and a set of backups — deliberately **zero** functional change.
 
+I put a phase in front of the work that had no deliverable because this is the machine I use. The cost of an hour
+spent reading the system was obviously lower than the cost of an afternoon spent recovering it, and almost
+everything Phase 0 turned up went on to constrain a later decision.
+
 ## Purpose
 
-The owner's instruction was explicit: *"First DO NOT change anything. Inspect … Then report a short architecture
+My instruction to Claude was explicit: *"First DO NOT change anything. Inspect … Then report a short architecture
 plan. After that, begin implementing it LIVE."* Phase 0 exists because the target was a working daily-driver
 machine, not a scratch VM.
 

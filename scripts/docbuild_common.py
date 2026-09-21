@@ -46,20 +46,88 @@ REPORT = [
     ("Appendix",                     ["GLOSSARY.md", "DOCUMENTATION_POLICY.md", "CHANGELOG.md"]),
 ]
 
+FOREWORD = (
+    "This is my engineering record of Zynith Shell \u2014 what I built, why I chose each approach, what broke, "
+    "and what I could not establish. I made the design decisions, set the constraints and priorities, tested by "
+    "hand and rejected what did not work; Claude Code acted as my engineering assistant, inspecting the system, "
+    "writing the patches I specified, running the benchmarks, chasing the backtraces and drafting these pages "
+    "from the evidence. Work is attributed to whoever performed it. Where a historical fact could not be "
+    "established from surviving evidence, it is marked UNKNOWN rather than reconstructed, and a set of "
+    "measurements taken from a contaminated build is preserved as invalid rather than deleted."
+)
+
 FIGURES = [
-    ("07_Assets/diagrams/system-layers.svg",            "System layers, hardware upward"),
-    ("07_Assets/diagrams/animation-pipeline.svg",       "Animation pipeline: one engine, one tick"),
-    ("07_Assets/diagrams/wallpaper-pipeline.svg",       "Wallpaper session pipeline"),
-    ("07_Assets/diagrams/notification-pipeline.svg",    "Notification pipeline and the ownership constraint"),
-    ("07_Assets/diagrams/configuration-precedence.svg", "Configuration precedence"),
-    ("03_Performance/charts/cpu-by-state.png",          "CPU by shell state (clean build)"),
-    ("03_Performance/charts/wallpaper-session-rss.png", "Memory across a wallpaper browsing session"),
-    ("03_Performance/charts/decodes-vs-traversal.png",  "Decode count against traversal length"),
-    ("03_Performance/charts/optimizations.png",         "Measured optimizations, before and after"),
-    ("03_Performance/charts/desktop-stack-pss.png",     "Desktop stack memory (PSS)"),
+    ("07_Assets/diagrams/system-layers.svg",
+     "How Zynith is layered, hardware upward \u2014 and where the boundary sits between what I changed "
+     "and what stays untouched"),
+    ("07_Assets/diagrams/animation-pipeline.svg",
+     "One animation engine and one tick: why interrupting a transition retargets it instead of restarting it"),
+    ("07_Assets/diagrams/wallpaper-pipeline.svg",
+     "Wallpaper resource lifecycle across a browsing session \u2014 what is acquired on open, promoted around "
+     "the focus, and released on close"),
+    ("07_Assets/diagrams/notification-pipeline.svg",
+     "The notification path, and the single D-Bus name whose ownership silently decides whether any of it runs"),
+    ("07_Assets/diagrams/configuration-precedence.svg",
+     "Configuration precedence \u2014 the merge order that makes settings.toml the last writer, and the reason "
+     "Zynith never writes it"),
+    ("03_Performance/charts/cpu-by-state.png",
+     "Idle cost versus interaction cost, clean build only \u2014 the launcher is the most expensive state and "
+     "is the open performance question"),
+    ("03_Performance/charts/wallpaper-session-rss.png",
+     "Memory across one browsing session: preparing 132 previews costs about 3 MB RSS, and close returns it"),
+    ("03_Performance/charts/decodes-vs-traversal.png",
+     "Why the decode gate matters: traversal cost stays flat at 18 decodes whether you sweep 20 items or 100"),
+    ("03_Performance/charts/optimizations.png",
+     "Every measured optimization, before and after \u2014 including the one that measured no improvement and "
+     "was reverted"),
+    ("03_Performance/charts/desktop-stack-pss.png",
+     "Where desktop memory actually goes: the whole stack is 332 MB PSS, and the shell is not the largest part"),
+]
+
+SHOTS = [
+    ("desktop-current.png",
+     "The desktop as it stands at 57debbc \u2014 wallpaper-derived palette, glass surfaces, one shared radius"),
+    ("bar.png",
+     "The bar after the Phase 6 recomposition: three glass clusters instead of per-widget pills, achieved with "
+     "zero lines of C++"),
+    ("control-center.png",
+     "Control Center with top navigation \u2014 switching sections retargets the open panel rather than "
+     "rebuilding it"),
+    ("launcher.png",
+     "The current launcher, kept as-is. The redesign is planned, and this design must remain selectable"),
+    ("wallpaper-browser.png",
+     "The wallpaper browser after the spatial correction: a compact control card, and a separate full-width "
+     "orbit carousel below it"),
+    ("power-menu.png",
+     "The modal power menu \u2014 uniformly blurred, with no rectangular card around the orbs"),
+    ("notification.png",
+     "A notification toast in the Zynith language, with app identity leading as an accent caption"),
+    ("osd.png",
+     "The volume OSD, whose on-screen hold is a one-shot timer rather than an animation \u2014 worth ~50\u201380 "
+     "wakeups per second"),
 ]
 
 TOKEN = re.compile(r"(\*\*.+?\*\*|`[^`]+`|\*[^*]+\*)")
+
+def _continuation(lines, i, body):
+    """Absorb a wrapped list item's indented continuation lines.
+
+    Markdown allows a list item to wrap across source lines; treating each line as its own
+    item split inline spans (a **bold** opened on one line and closed on the next rendered
+    its asterisks literally) and broke the bullet.
+    """
+    while i < len(lines):
+        nxt = lines[i]
+        if not nxt.strip():
+            break
+        if not nxt.startswith(("  ", "\t")):
+            break
+        if nxt.strip().startswith(("- ", "* ", "|", "```", "#", ">")):
+            break
+        if re.match(r"^\s*\d+\.\s+", nxt):
+            break
+        body += " " + nxt.strip(); i += 1
+    return i, body
 
 def blocks(path):
     """Yield ('h',level,text) ('p',text) ('code',text) ('table',rows) ('li',text) ('rule',)."""
@@ -86,10 +154,14 @@ def blocks(path):
             lvl = len(ln) - len(ln.lstrip("#"))
             out.append(("h", lvl, ln.lstrip("# ").strip())); i += 1; continue
         if ln.strip().startswith(("- ", "* ")):
-            out.append(("li", ln.strip()[2:])); i += 1; continue
+            body = ln.strip()[2:]; i += 1
+            i, body = _continuation(lines, i, body)
+            out.append(("li", body)); continue
         m_ol = re.match(r"^\s*(\d+)\.\s+(.*)$", ln)
         if m_ol:
-            out.append(("oli", m_ol.group(1), m_ol.group(2))); i += 1; continue
+            body = m_ol.group(2); i += 1
+            i, body = _continuation(lines, i, body)
+            out.append(("oli", m_ol.group(1), body)); continue
         if ln.strip().startswith(">"):
             out.append(("quote", ln.strip().lstrip("> ").strip())); i += 1; continue
         if ln.strip() == "---":

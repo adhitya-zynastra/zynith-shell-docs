@@ -1,6 +1,6 @@
 # Documentation Policy
 
-**Version:** 1.0 · **Generated:** 2026-09-21 · **Source commit:** `57debbc` · **Last audited phase:** 6
+**Version:** 1.1 · **Generated:** 2026-09-21 · **Revised:** 2026-09-21 (voice and attribution pass) · **Source commit:** `57debbc` · **Last audited phase:** 6
 
 ## 1. Canonical source
 
@@ -40,7 +40,27 @@ When a later phase materially changes something an earlier phase introduced, the
 **Retrospective amendments** section linking forward, and `01_Phases/cross-phase-matrix.md` records the pair.
 Phase documents are never silently rewritten to match the present.
 
-## 6. Audit trail
+## 6. Voice and attribution
+
+This documentation is written in **my own voice as the project owner**, in the first person, because it is my
+engineering record rather than a report about somebody else's project. Two rules keep that from becoming
+inaccurate.
+
+**Attribute work to whoever performed it.** I made the decisions, set the constraints and priorities, tested by
+hand, and rejected designs; **Claude Code** — acting as my engineering assistant — did the inspection, wrote the
+patches I specified, ran the benchmarks and chased the backtraces. So "I decided", "I rejected", "I observed" and
+"I had Claude measure" are all accurate, and "I measured" is not written where Claude took the measurement.
+
+**Do not invent motivation.** First person is for reasoning the evidence supports — from the session record,
+commit messages, configuration comments or surviving artifacts. Where the evidence establishes *what* I did but
+not *why*, the document states the technical fact and stops; where the reason is genuinely lost, it says so (the
+original choice of niri is an example). Style never outranks accuracy.
+
+Not every page is first person. History, rationale, decisions, observations and incidents are; API descriptions,
+command references, configuration schemas, file inventories and architecture definitions stay in conventional
+technical prose, because a reference page is not a memoir.
+
+## 7. Audit trail
 
 `scripts/audit-docs.py` re-checks commit hashes, file paths and the documentation version block against the live
 repository. Run it before regenerating the report.

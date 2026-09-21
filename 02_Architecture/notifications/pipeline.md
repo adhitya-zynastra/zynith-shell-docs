@@ -20,7 +20,7 @@
 
 D-Bus grants `org.freedesktop.Notifications` to exactly one process. On this machine
 **SwayNotificationCenter** was installed as a *systemd user unit* (`swaync.service`, `Type=dbus`,
-`BusName=org.freedesktop.Notifications`, `WantedBy=graphical-session.target`) from the owner's Hyprland setup. It
+`BusName=org.freedesktop.Notifications`, `WantedBy=graphical-session.target`) from my Hyprland setup. It
 started in every graphical session, including niri, claimed the name first, and Noctalia therefore never received a
 single notification — no toast and no sound.
 

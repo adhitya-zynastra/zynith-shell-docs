@@ -10,7 +10,7 @@ full-screen backdrop.
 ## Decision
 Add one primitive — `ScreenVeil` (`src/shell/veil/screen_veil.{h,cpp}`): a short-lived, full-screen,
 click-through layer surface that draws an optional blurred texture under a palette tint and fades on the shell's
-own `AnimationManager`. No timers, no polling; the owner destroys it when the fade completes.
+own `AnimationManager`. No timers, no polling; the owning code destroys it when the fade completes.
 
 Three modes now exist: **wallpaper** (lock/unlock bridge), **image** (screencopy snapshot, power menu), and
 **tint-only** (Phase 6, for surfaces that must not freeze what is behind them).

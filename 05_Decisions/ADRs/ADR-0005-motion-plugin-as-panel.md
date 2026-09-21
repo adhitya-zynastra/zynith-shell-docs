@@ -3,7 +3,7 @@
 **Status:** Accepted (but superseded in intent — see Consequences) · **Date:** 2026‑09‑20 (Phase 3)
 
 ## Context
-Zynith needed a UI for motion presets, global speed and advanced controls, with one source of truth that also
+I wanted a UI for motion presets, global speed and advanced controls, with one source of truth that also
 generates niri's `animations.kdl`.
 
 ## Decision
@@ -16,7 +16,7 @@ open, so the "no resident polling" rule is preserved by construction.
 
 ## Consequences
 - No background cost; all work happens on open or commit.
-- **It created a second settings surface.** The owner has since stated that customization should live in one
+- **It created a second settings surface.** I have since concluded that customization should live in one
   primary surface, so this decision is scheduled to be revisited — tracked in `06_Reference/future-work.md`.
   The *functionality* (presets, speed, validation, atomic write) is to be preserved when it moves.
 

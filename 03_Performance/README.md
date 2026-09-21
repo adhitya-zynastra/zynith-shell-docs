@@ -1,5 +1,15 @@
 # Performance Engineering
 
+Resource discipline is not a side quest in Zynith; it is most of what distinguishes it from a themed desktop.
+I care about CPU, GPU, RAM, cache, swap and zram, thread count, wakeups, IPC, filesystem I/O and GPU textures,
+and I set the engineering constraints that follow from that: event-driven by construction, bounded lifetimes, no
+unnecessary daemons, no polling, no second animation engine, no per-frame shell scripts, no redundant IPC. Where
+Zynith spends something, I want to be able to say what it bought.
+
+The other half of the discipline is evidential. I had Claude measure everything that is claimed here, and the
+rule below is what keeps the numbers worth reading — including in the cases where measuring proved me wrong and
+an "optimization" was reverted.
+
 ## Provenance rule
 
 A number may appear in an authoritative table only with a complete provenance block:

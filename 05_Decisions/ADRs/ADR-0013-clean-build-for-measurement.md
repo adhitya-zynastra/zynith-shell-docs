@@ -4,8 +4,8 @@
 
 ## Context
 An incremental build after a layout change to `src/ui/signal.h` produced mixed struct layouts across translation
-units: a startup crash in an unrelated constructor, and hours of inflated CPU numbers that were briefly believed
-to be a real regression.
+units: a startup crash in an unrelated constructor, and hours of inflated CPU numbers that I briefly believed
+were a real regression in my own lifetime fix.
 
 ## Decision
 Any change to the layout of a widely-included header (adding/reordering members, changing a container type)

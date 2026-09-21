@@ -32,10 +32,10 @@ SwayNotificationCenter 0.12.6.
 - `kitty.conf` (35 lines), `alacritty.toml` (4 lines).
 - `niri/noctalia.kdl` — 32 lines, the generated palette export (already present: Noctalia was already theming niri).
 
-The user also ran a **Hyprland + JaKooLit** configuration (`~/.config/hypr`), which is why
-SwayNotificationCenter and a `swaync.service` user unit existed on the machine. That unit later caused the
-Phase 6 notification outage — the pre-existing environment is directly responsible for one of the project's
-significant incidents.
+I was also running a **Hyprland + JaKooLit** configuration (`~/.config/hypr`), which is why
+SwayNotificationCenter and a `swaync.service` user unit were on the machine at all. That unit later caused the
+Phase 6 notification outage: one of this project's significant incidents was lying in wait in the environment
+before the project started.
 
 ## Resource baseline before Zynith
 
@@ -49,13 +49,17 @@ anywhere in the performance tables.
 
 ## What motivated the project
 
-**RECOVERED** from the project owner's initial brief (session record, 2026‑09‑19): the desktop was functional but
-visually stock — the owner wanted a dark glass/blur aesthetic with a wallpaper-derived palette, their Hyprland
-keybindings ported to niri, a redesigned launcher and bar, per-application transparency, and to do it *live* on the
-real machine with validation and backups at each step rather than by copying someone else's rice.
+**RECOVERED** from my initial brief to Claude (session record, 2026‑09‑19). The desktop worked; it just looked
+like nothing in particular. I wanted a dark glass/blur aesthetic with a wallpaper-derived palette, my Hyprland
+keybindings ported to niri, a redesigned launcher and bar, and per-application transparency — and I wanted it
+built *live* on the real machine, with validation and backups at each step, rather than by pasting in someone
+else's rice and inheriting problems I could not explain.
 
-Explicit constraints from that brief, honoured throughout: keep Hyprland intact as a fallback, back up before
-changing anything, validate configuration before applying, never blindly copy a published rice.
+That last point is the reason this documentation exists at all. A copied rice is not something you can maintain;
+I wanted to be able to say why every line is there.
+
+Explicit constraints I set in that brief and held to throughout: keep Hyprland intact as a fallback, back up
+before changing anything, validate configuration before applying, never blindly copy a published rice.
 
 ## Screenshot
 

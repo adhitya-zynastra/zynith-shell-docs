@@ -3,6 +3,20 @@
 **Window:** 2026‑09‑20 16:03 → 2026‑09‑21 05:20. **The largest phase**, spanning seven commits and two
 significant incidents.
 
+Phase 6 was supposed to be polish. It is the phase where I found out what I had actually built.
+
+The plan was a bar redesign and a nicer wallpaper picker. What it turned into was a resource-lifecycle problem
+(how do you hold a whole wallpaper collection without holding a whole wallpaper collection), a lifetime-safety
+problem in a primitive the entire shell depends on, a D-Bus ownership conflict inherited from an environment that
+predates the project, and a measurement-integrity problem that invalidated hours of numbers. The browser is
+comfortably the largest thing here by line count — 1 560 insertions across `99ac272`, `46296d0` and `57debbc`,
+against 613 for the lifetime work — and the lifetime work is what the phase was actually about, which is roughly
+the opposite of what I expected going in.
+
+The through-line is that every one of those problems was reached by pushing on something cosmetic until it
+stopped being cosmetic. Keeping the wallpaper browser open across an apply is a UX nicety; it is also what made a
+latent use-after-free reproducible.
+
 | Sub-phase | Commit | Date | Theme |
 |---|---|---|---|
 | 6a | `82fb4b0` | 09‑20 16:23 | Clock hover→Control Center, CC top navigation, panel silhouette |
@@ -32,7 +46,8 @@ way).
 ## 6c–6d — The carousel, and a spatial correction
 
 `99ac272` introduced `CarouselView` over the existing `VirtualGridAdapter`. `46296d0` then **corrected the
-composition** after the owner rejected it: the control menu had grown to contain the cards. The fix separates a
+composition** after I rejected the first result: the compact control menu had grown wide to contain the cards,
+which is not what I asked for. The fix separates a
 compact 1000 px control card from a full-width, undecorated carousel band on one surface.
 Architecture: `02_Architecture/wallpaper/browser-architecture.md`.
 

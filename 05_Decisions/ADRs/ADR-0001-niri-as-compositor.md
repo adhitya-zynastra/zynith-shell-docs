@@ -4,8 +4,9 @@
 the active session, `~/.config/hypr` untouched.
 
 ## Context
-The machine already ran a Hyprland + JaKooLit configuration. The owner wanted a new desktop built on niri, but
-could not afford to lose a working session on a daily-driver machine.
+My machine already ran a Hyprland + JaKooLit configuration that worked. I wanted to build the new desktop on
+niri, but this is the laptop I work on every day, so I could not afford a window in which I had no usable
+session at all.
 
 ## Decision
 Build on niri 26.04. Leave Hyprland 0.56.2 installed and its configuration byte-for-byte untouched as a fallback
@@ -13,7 +14,7 @@ session.
 
 ## Alternatives
 - *Replace Hyprland entirely* — rejected: no recovery path if niri or the shell broke.
-- *Develop in a VM* — rejected: the project is explicitly about the owner's real hardware, display scaling and GPU.
+- *Develop in a VM* — rejected: the whole point is how this behaves on my real hardware, display scaling and GPU.
 
 ## Consequences
 - Two notification daemons exist on the machine, which later caused a real outage (see ADR‑0012 and the postmortem).

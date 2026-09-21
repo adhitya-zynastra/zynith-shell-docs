@@ -1,6 +1,9 @@
 # Optimization Log
 
-Chronological. Each entry states what was changed, why, what it cost, and — where the answer was "nothing" — says so.
+Chronological. Each entry states what was changed, why, what it cost, and — where the answer was "nothing" —
+says so. I have kept the failures in the same list as the successes deliberately: O‑05 measured within noise and
+is recorded as a correctness fix rather than a performance one, and the bar's 1 Hz update was reverted after
+measurement rather than written up as a win. A log that only contains wins is a marketing document.
 Source data: `benchmarks/optimizations.csv`.
 
 ## O‑01 · OSD hold moved off the frame clock (Phase 4, `40c1936`)

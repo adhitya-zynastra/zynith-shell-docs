@@ -3,8 +3,10 @@
 **Status:** Accepted · **Date:** 2026‑09‑21 (Phase 6, `eaff2b2` + `57debbc`)
 
 ## Context
-The browser must let a user sweep a large collection at 20+ items/second *and* judge a wallpaper's real quality,
-without a permanent cache or unbounded memory growth. Three designs were tried in sequence.
+I wanted two things that pull against each other: to sweep a large collection at 20+ items/second, and to judge a
+wallpaper's real quality from what the browser shows me — without a permanent cache or unbounded memory growth.
+I went through three designs before those three constraints held at once, and the failures are recorded in
+`02_Architecture/wallpaper/browser-architecture.md` rather than smoothed over here.
 
 ## Decision
 1. **Session scope.** A `ThumbnailService` session opens with the browser and closes with it. Entries acquired

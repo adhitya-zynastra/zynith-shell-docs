@@ -3,8 +3,8 @@
 **Status:** Accepted · **Date:** 2026‑09‑20 (Phase 5)
 
 ## Context
-Zynith needed cues for volume, mute/unmute, notifications, lock and unlock, and screenshots. The motto forbids
-per-event subprocess spawning.
+I wanted cues for volume, mute/unmute, notifications, lock and unlock, and screenshots — and I was not prepared
+to spawn a process every time someone touches a volume key, which is the usual way this gets implemented.
 
 ## Decision
 Volume, mute and notification cues play **in-process** through Noctalia's `SoundPlayer` on the existing PipeWire

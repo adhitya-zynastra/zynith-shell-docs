@@ -19,6 +19,6 @@
 
 | Area | Why |
 |---|---|
-| Lock / unlock under automation | Risk of locking the owner out of a daily-driver machine. Validated visually and by timing arithmetic instead |
+| Lock / unlock under automation | Risk of locking me out of my daily-driver machine. Validated visually and by timing arithmetic instead |
 | Per-process GPU memory | `intel_gpu_top` requires privileges not available in this environment; only `gt_act_freq_mhz` was readable |
 | Frame timing / jank | No instrumentation exists |

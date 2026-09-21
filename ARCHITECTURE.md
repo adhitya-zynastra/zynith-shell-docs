@@ -10,7 +10,7 @@ A one-page map. Every claim here is expanded, with evidence, in `02_Architecture
 |---|---|---|
 | **Configuration** | `rice.toml`, `rice/*.kdl`, `lockscreen.toml` | an editor and a reload |
 | **Plugins** | `identity`, `motion` (Luau) | an editor; no rebuild |
-| **Patch** | 17 commits over Noctalia 5.1.0 | a rebuild and an install |
+| **Patch** | 15 commits over Noctalia 5.1.0 (16 including the pristine base) | a rebuild and an install |
 
 The ordering is a rule, not an accident: **anything expressible as configuration is configuration.** The Phase 6
 bar redesign contains no C++ at all; the carousel does, because no configuration surface could express it.

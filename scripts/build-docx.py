@@ -97,7 +97,7 @@ def main():
     t = doc.add_paragraph(); t.alignment = WD_ALIGN_PARAGRAPH.CENTER
     r = t.add_run("ZYNITH SHELL"); r.font.size = Pt(38); r.bold = True; r.font.color.rgb = ACCENT
     s = doc.add_paragraph(); s.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = s.add_run("Technical Report and Engineering Documentation"); r.font.size = Pt(14); r.font.color.rgb = INK
+    r = s.add_run("An Engineering Record"); r.font.size = Pt(14); r.font.color.rgb = INK
     s2 = doc.add_paragraph(); s2.alignment = WD_ALIGN_PARAGRAPH.CENTER
     r = s2.add_run("Fedora 44 · niri 26.04 · patched Noctalia 5.1.0"); r.font.size = Pt(11); r.font.color.rgb = MUTE
     for _ in range(2): doc.add_paragraph()
@@ -107,7 +107,8 @@ def main():
             ("Last audited phase", str(meta["last_audited_phase"])),
             ("Machine", meta["machine"]["cpu"] + " · " + meta["machine"]["gpu"]),
             ("Display", meta["machine"]["display"]),
-            ("Author", "M.S.Adhitya")]
+            ("Author", "M.S.Adhitya"),
+            ("Engineering assistant", "Claude Code (Anthropic)")]
     tb = doc.add_table(rows=0, cols=2); tb.style = "Light List Accent 1"
     for k, v in info:
         c = tb.add_row().cells
@@ -115,6 +116,9 @@ def main():
         for cell in c:
             for par in cell.paragraphs:
                 for run in par.runs: run.font.size = Pt(9.5)
+    doc.add_paragraph()
+    fw = doc.add_paragraph()
+    r = fw.add_run(C.FOREWORD); r.font.size = Pt(9); r.font.color.rgb = MUTE
     doc.add_page_break()
 
     # ---- table of contents ----
@@ -172,14 +176,7 @@ def main():
 
     # ---- screenshots appendix ----
     doc.add_heading("Appendix — Interface", 1)
-    shots = [("desktop-current.png", "Desktop with the Zynith bar and desktop widgets"),
-             ("bar.png", "Bar: launcher, workspaces, media · time cluster · status cluster"),
-             ("control-center.png", "Control Center with top navigation"),
-             ("launcher.png", "Launcher"),
-             ("wallpaper-browser.png", "Wallpaper browser: compact control card and full-width orbit carousel"),
-             ("power-menu.png", "Modal power menu"),
-             ("notification.png", "Notification toast"),
-             ("osd.png", "Volume OSD")]
+    shots = C.SHOTS
     for fn, cap in shots:
         full = os.path.join(C.ROOT, "07_Assets", "screenshots", fn)
         if not os.path.exists(full): continue

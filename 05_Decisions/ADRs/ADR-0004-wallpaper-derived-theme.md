@@ -3,8 +3,9 @@
 **Status:** Accepted · **Date:** 2026‑09‑19 (Phase 1) · **Evidence:** VERIFIED — `rice.toml [theme] source = "wallpaper"`, `wallpaper_scheme = "m3-tonal-spot"`, `mode = "dark"`.
 
 ## Context
-Zynith needed one colour identity across the bar, panels, OSD, notifications, lock screen **and** niri's own
-window decorations, without hand-maintaining a palette.
+I wanted one colour identity across the bar, panels, OSD, notifications, lock screen **and** niri's own window
+decorations — and I did not want to hand-maintain a palette every time I changed wallpaper, because I knew I
+would stop doing it within a week.
 
 ## Decision
 Generate the palette from the current wallpaper using Noctalia's Material‑3 generator, scheme `m3-tonal-spot`,

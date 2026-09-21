@@ -66,6 +66,17 @@ opening the launcher; invalid colour roles; a mis-targeted `sed` edit.
 ## Phase 0 — 2026‑09‑19 · inspection only
 Baseline snapshot at `~/.config/rice-backups/20260919-182322-pre-rice/`; no functional change.
 
+## Documentation
+
+- **1.1** (2026‑09‑21) — Voice and attribution pass over the existing set: converted the project history,
+  rationale, decision records and incident reports to first person as the owner's engineering record, made the
+  human/AI division of labour explicit where the evidence establishes it, restructured the four postmortems into
+  an observed → suspected → investigated → evidence → root cause → fix → verification → lesson chronology, added
+  the design-history narrative behind the wallpaper resource model, recorded the proposed security layer as
+  future architecture, and rewrote the figure captions to state why each figure matters. No technical claim was
+  changed; no implementation file was touched. Policy §6 now governs voice and attribution.
+- **1.0** (2026‑09‑21) — Initial documentation set at source commit `57debbc`.
+
 ## Breaking changes
 None to date. Every change is reversible by removing a config block, a drop-in file, or by running the packaged
 `/usr/bin/noctalia`.

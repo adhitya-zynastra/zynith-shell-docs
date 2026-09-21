@@ -5,11 +5,11 @@
 
 ## What Zynith is
 
-Zynith Shell is a desktop environment assembled from three layers the project owner controls to different degrees:
+Zynith Shell is a desktop environment assembled from three layers I control to different degrees:
 
 1. **Upstream, untouched** — Fedora 44, the kernel, Wayland, niri 26.04, PipeWire, the Noctalia RPM.
 2. **A reviewed patch series** over Noctalia 5.1.0's source, built locally to `~/.local/opt/noctalia`
-   (17 commits at the time of writing, base commit `a176ada` = "noctalia 5.1.0 pristine (Fedora SRPM
+   (15 Zynith commits at the time of writing over the pristine base; 16 in total. Base commit `a176ada` = "noctalia 5.1.0 pristine (Fedora SRPM
    noctalia-5.1.0-1.fc44)"). **VERIFIED** by `git log`.
 3. **A configuration layer** that owns the design language: `~/.config/noctalia/rice.toml`,
    `~/.config/niri/rice/*.kdl`, plus two Luau plugins under `~/.local/share/noctalia/plugins/`.
@@ -40,7 +40,7 @@ Dark, cinematic, glassy, wallpaper-derived, restrained. Concretely:
 
 ## Operating constraints the project has always honoured
 
-These were set by the project owner and are reflected throughout the implementation:
+I set these at the outset and they are reflected throughout the implementation:
 
 | Constraint | Where enforced |
 |---|---|

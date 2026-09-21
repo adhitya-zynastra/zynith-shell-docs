@@ -11,7 +11,28 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import (BaseDocTemplate, PageTemplate, Frame, Paragraph, Spacer, Table, TableStyle,
                                 Image, PageBreak, KeepTogether)
 from reportlab.platypus.tableofcontents import TableOfContents
-from reportlab.lib.enums import TA_CENTER
+from reportlab.lib.enums import TA_CENTER, TA_LEFT
+
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+
+# The base-14 fonts are WinAnsi-encoded, so characters the documentation genuinely uses --
+# the non-breaking hyphen in dates, arrows in priority chains, the minus in "Phase -1",
+# validation ticks, theta -- render as solid black boxes. DejaVu Sans covers all of them.
+# Registered under the base-14 names so every existing style picks it up unchanged; if the
+# font is not installed the report still builds with Helvetica and ascii_prose() below.
+_DJV = "/usr/share/fonts/dejavu-sans-fonts"
+UNICODE_SANS = False
+try:
+    pdfmetrics.registerFont(TTFont("Helvetica", _DJV + "/DejaVuSans.ttf"))
+    pdfmetrics.registerFont(TTFont("Helvetica-Bold", _DJV + "/DejaVuSans-Bold.ttf"))
+    pdfmetrics.registerFont(TTFont("Helvetica-Oblique", _DJV + "/DejaVuSans-Oblique.ttf"))
+    pdfmetrics.registerFont(TTFont("Helvetica-BoldOblique", _DJV + "/DejaVuSans-BoldOblique.ttf"))
+    pdfmetrics.registerFontFamily("Helvetica", normal="Helvetica", bold="Helvetica-Bold",
+                                  italic="Helvetica-Oblique", boldItalic="Helvetica-BoldOblique")
+    UNICODE_SANS = True
+except Exception as e:
+    print("  note: DejaVu Sans unavailable (%s); prose glyphs will be transliterated" % e)
 
 INK = colors.HexColor("#1b1b1f"); MUTE = colors.HexColor("#5b6070")
 ACCENT = colors.HexColor("#304fd6"); GRID = colors.HexColor("#c8ccd6")
@@ -43,12 +64,15 @@ def esc(t):
         spans.append(m.group(1))
         return "\x00%d\x00" % (len(spans) - 1)
     t = re.sub(r"`([^`]+)`", stash, t)
+    t = ascii_prose(t)
     t = t.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
     t = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", t)
     t = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", t)
     t = re.sub(r"(?<!\*)\*([^*\n]+)\*(?!\*)", r"<i>\1</i>", t)
     def unstash(m):
-        code = spans[int(m.group(1))]
+        # Inline code stays Courier, which is base-14 and has none of these glyphs,
+        # so transliterate unconditionally here.
+        code = force_ascii(spans[int(m.group(1))])
         code = code.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
         return '<font face="Courier" size="8">%s</font>' % code
     return re.sub(r"\x00(\d+)\x00", unstash, t)
@@ -62,6 +86,22 @@ BOX = {"\u2500": "-", "\u2502": "|", "\u250c": "+", "\u2510": "+", "\u2514": "+"
 
 def ascii_art(t):
     for k, v in BOX.items():
+        t = t.replace(k, v)
+    return t
+
+# Only used when DejaVu Sans is unavailable: keep prose readable rather than boxed.
+PROSE = {"\u2011": "-", "\u2212": "-", "\u2192": " -> ", "\u2190": " <- ", "\u2193": "v",
+         "\u2248": "~", "\u2260": "!=", "\u2264": "<=", "\u2265": ">=", "\u2713": "OK",
+         "\u03b8": "theta", "\u2605": "*", "\u25c0": "<", "\u25b6": ">", "\u25b2": "^",
+         "\u25bc": "v", "\u25ba": ">"}
+
+def ascii_prose(t):
+    if UNICODE_SANS:
+        return t
+    return force_ascii(t)
+
+def force_ascii(t):
+    for k, v in PROSE.items():
         t = t.replace(k, v)
     return t
 
@@ -127,7 +167,7 @@ def main():
               Paragraph('<font size="34" color="#304fd6"><b>ZYNITH SHELL</b></font>',
                         S("cover", alignment=TA_CENTER, fontSize=34, leading=40)),
               Spacer(1, 4*mm),
-              Paragraph("Technical Report and Engineering Documentation",
+              Paragraph("An Engineering Record",
                         S("sub", alignment=TA_CENTER, fontSize=13, leading=17)),
               Paragraph("Fedora 44 · niri 26.04 · patched Noctalia 5.1.0",
                         S("sub2", alignment=TA_CENTER, fontSize=10, textColor=MUTE)),
@@ -139,8 +179,12 @@ def main():
             ["Machine", meta["machine"]["cpu"]],
             ["GPU / display", meta["machine"]["gpu"] + " · " + meta["machine"]["display"]],
             ["OS / kernel", meta["machine"]["os"] + " · " + meta["machine"]["kernel"]],
-            ["Author", "M.S.Adhitya"]]
-    story += [table([["Field", "Value"]] + info, W*0.8), PageBreak()]
+            ["Author", "M.S.Adhitya"],
+            ["Engineering assistant", "Claude Code (Anthropic)"]]
+    story += [table([["Field", "Value"]] + info, W*0.8),
+              Spacer(1, 10*mm),
+              Paragraph(C.FOREWORD, S("fw", alignment=TA_LEFT, fontSize=9, leading=13.5, textColor=MUTE)),
+              PageBreak()]
 
     # toc
     toc = TableOfContents()
@@ -197,14 +241,7 @@ def main():
         story.append(PageBreak())
 
     story.append(Paragraph("Appendix — Interface", H1))
-    for fn, cap in [("desktop-current.png", "Desktop with the Zynith bar and desktop widgets"),
-                    ("bar.png", "Bar: launcher, workspaces, media · time cluster · status cluster"),
-                    ("control-center.png", "Control Center with top navigation"),
-                    ("launcher.png", "Launcher"),
-                    ("wallpaper-browser.png", "Wallpaper browser: compact control card, full-width orbit carousel"),
-                    ("power-menu.png", "Modal power menu"),
-                    ("notification.png", "Notification toast"),
-                    ("osd.png", "Volume OSD")]:
+    for fn, cap in C.SHOTS:
         figure(os.path.join("07_Assets", "screenshots", fn), cap)
 
     doc.multiBuild(story)

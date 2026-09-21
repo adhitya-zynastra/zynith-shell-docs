@@ -3,16 +3,29 @@
 | | |
 |---|---|
 | **Severity** | Medium — functional correctness of the browser (users judge wallpapers by what it shows) |
-| **Reported** | 2026‑09‑21 by the project owner |
+| **Reported** | 2026‑09‑21, by me, while browsing wallpapers |
 | **Fixed in** | `57debbc` |
 
-## Symptom
+## What I observed
 
-Some wallpapers appeared visibly soft **while focused** — the state in which the user evaluates them. The owner's
-framing was the important part: a browser that shows a degraded representation can cause a good wallpaper to be
-rejected for the browser's fault.
+Some wallpapers looked visibly soft **while focused** — which is precisely the state in which I decide whether I
+want one. My framing when I reported it matters more than the symptom: a browser that shows a degraded
+representation will make me reject a good wallpaper for the browser's fault. A blurry browser is *functionally
+incorrect* even when its memory usage is excellent, and I did not want it treated as a cosmetic complaint.
 
-## Diagnosis (arithmetic first, then instrumentation)
+## What I initially suspected
+
+Nothing specific, and I said so — but I did say what I did not want: I did not want the thumbnail size increased
+until someone understood the pipeline. The resource model had been carefully bounded two commits earlier, and
+raising a constant to make the symptom go away would have quietly undone that work without anyone knowing which
+part of it was actually wrong.
+
+## What Claude investigated
+
+Arithmetic first, then instrumentation: what size the focused card actually draws at, what size texture it was
+actually holding, and where in the promotion path the two diverged.
+
+## What the evidence showed
 
 The focused card's image frame is **753.6 px** wide (`cellW 761.6` minus padding). The eager-loading work had made
 every card use a **384 px** preview, with only the *selected* card promoting to 768 px — and only after motion had
@@ -36,7 +49,7 @@ Temporary instrumentation confirmed the pipeline end-to-end before it was remove
 zdbg tile focused promoted=true heldPx=768 browsePx=384 usedPromoted=true frameW=753.6 texW=768
 ```
 
-## Contributing design flaw
+## Root cause and contributing design flaw
 
 Promotion *replaced* the texture: the tile released the 384 px entry and acquired 768 px. During a flick each newly
 focused card therefore had **no** texture and fell back to a loading placeholder — a wall of hourglasses at 66
@@ -58,6 +71,19 @@ items/second.
 - mid-flick at 66 items/s: every card populated, no placeholders
 - session counters: 146 decodes, 96 cache hits, 0 evictions, peak idle 53 MB
 - memory: 159.8 MB before → 163.2 MB after preparing 132 previews → 165.7 MB after close
+
+## Engineering lesson
+
+Two things came out of this that outlived the bug itself.
+
+**"Bounded resources" is a means, not an end.** The eager-loading design was measured, disciplined and
+memory-efficient, and it was still wrong, because it optimised the number I was tracking instead of the thing the
+browser is for. The fix kept the resource discipline — the session still releases everything on close, and peak
+idle stayed at 53 MB — while moving the quality decision to where the user actually looks.
+
+**A metric you have not validated can be more damaging than no metric.** The invalid comparison below briefly
+convinced us the fix had failed, and had it been trusted it would have sent the work off to change things that
+were already correct.
 
 ## Note on an invalid metric
 

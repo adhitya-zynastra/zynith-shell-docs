@@ -29,7 +29,7 @@ animations are disabled). See `02_Architecture/security.md`.
 
 ## Testing policy
 
-Automated lock/unlock cycling is **deliberately not performed** — the risk of locking the owner out of a
+Automated lock/unlock cycling is **deliberately not performed** — the risk of locking me out of a
 daily-driver machine outweighs the coverage. Validation is visual plus the timing arithmetic that made the unlock
 timer derive from the animation schedule.
 

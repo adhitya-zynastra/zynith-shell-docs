@@ -3,11 +3,11 @@
 **Status:** Accepted (inherited from Noctalia, deliberately preserved) · **Date:** 2026‑09‑19
 
 ## Context
-Bar, panels, notifications, OSD, lock screen and wallpaper could each be a separate process, as in many
-modular desktop setups.
+Bar, panels, notifications, OSD, lock screen and wallpaper could each be a separate process, as in many modular
+desktop setups. Noctalia does not work that way, and I had to decide whether to keep that or work around it.
 
 ## Decision
-Keep Noctalia's single-process model: every surface is a layer-shell surface created by one process sharing one
+I kept the single-process model deliberately rather than by default: every surface is a layer-shell surface created by one process sharing one
 GPU context, one `AnimationManager`, one `ThumbnailService`, one texture manager and one Wayland connection.
 
 ## Consequences

@@ -6,13 +6,18 @@ This is where Zynith stopped being configuration and became a **patch series**. 
 ("noctalia 5.1.0 pristine (Fedora SRPM)") was created first so every later diff is reviewable against the
 distribution source.
 
+I crossed from configuration into C++ here reluctantly. The trigger was specific: the session lock snapped
+instead of transitioning, and there is no configuration key for "fade". Setting up the pristine base commit before
+writing a single line was the precaution that made every later diff reviewable — and, much later, made it possible
+to reconstruct this history at all.
+
 ## Goals
 
 1. A lock screen that is beautiful but *restrained*, with an identity that is generic (no hard-coded name/avatar).
 2. Visual lock/unlock **transitions** — the session lock previously snapped.
 3. A centred, modal power menu.
 
-Non-goals, stated by the owner: do not touch PAM, do not change the `ext-session-lock` protocol usage, keep the
+Non-goals I set before any code was written: do not touch PAM, do not change the `ext-session-lock` protocol usage, keep the
 Fedora package untouched, keep the patch minimal and documented.
 
 ## Architecture
@@ -32,11 +37,15 @@ the last fade ends**.
 
 ### The unlock timing bug and its fix (`7d030fb`, `44e678e`)
 
-The owner challenged a hard-coded `kExitDurationMs = 380` against the arithmetic of the individual fades. The
-investigation established that Noctalia divides every base duration by `[shell.animation].speed`, so at speed 0.8
-a 304 ms base *is* 380 ms on screen. The fix made the unlock timer **derive** from the schedule
-`playExit()` reports rather than duplicating a constant, so the session unlocks exactly when the last fade ends —
-and 0 ms when animations are disabled.
+A hard-coded `kExitDurationMs = 380` did not match the arithmetic of the individual fades, so I asked Claude to
+justify the number rather than adjust it. The investigation established that Noctalia divides every base duration
+by `[shell.animation].speed`: at speed 0.8, a 304 ms base *is* 380 ms on screen, so the constant was correct — but
+only for one speed setting, which made it a latent bug rather than a wrong number.
+
+The fix was therefore not to change the constant but to delete it. The unlock timer now **derives** from the
+schedule `playExit()` reports, so the session unlocks exactly when the last fade ends at any speed, and at 0 ms
+when animations are disabled. This is the first instance of a pattern that recurs through the project: when a
+magic number happens to be right, the number is not the thing to fix.
 
 ### The unlock veil (`6058aa6`) — and why it exists
 
@@ -54,8 +63,8 @@ fades out, revealing the live desktop. A 2 s one-shot timer guarantees removal.
 
 `shell.session.modal` (a Zynith-added config key) switches the session panel to circular glyph buttons with labels
 below, over a dimmed blurred snapshot of the desktop. `4289b62` then removed the rectangular card, shadow **and the
-compositor blur region** so the entire screen stays uniformly blurred — the owner had specifically rejected the
-"rectangular wallpaper region" around the orbs. Destructive actions (Shut Down) use the wallpaper-derived `error`
+compositor blur region** so the entire screen stays uniformly blurred — I had specifically rejected the
+"rectangular wallpaper region" that appeared around the orbs. Destructive actions (Shut Down) use the wallpaper-derived `error`
 role rather than a hard-coded red.
 
 ## Timing model (still in force)
@@ -82,5 +91,5 @@ the diffs confirm it.
 ## Limitations
 
 - Lock-screen power controls do not exist (planned; `06_Reference/future-work.md`).
-- Automated lock/unlock testing is deliberately avoided on the owner's machine to avoid lockout risk, so the
+- Automated lock/unlock testing is deliberately avoided on my machine to avoid lockout risk, so the
   transitions are validated visually and by timing arithmetic, not by an automated test.

@@ -3,6 +3,28 @@
 Current as of `57debbc`. The browser is the most heavily engineered subsystem in Zynith because it is the one that
 combines a large on-disk collection, GPU textures, rapid input, and a palette transition that re-tints the shell.
 
+## How the resource model got here
+
+The current design is the third one, and the two I discarded explain it better than the final version does on its
+own.
+
+I started from a **bounded viewport working set**, because the rule I had set for the whole project was that
+nothing holds resources it is not using. That model is correct on paper and it measured well. It was also wrong:
+once I started sweeping the collection at the speed I actually wanted to browse at, previews could not be prepared
+fast enough, and the browser showed me loading placeholders instead of wallpapers. The memory number was
+excellent and the feature did not work.
+
+So I changed the policy: the browser now **eagerly prepares the whole collection at the 384 px preview tier for
+the lifetime of the browsing session**, and releases all of it on close. That fixed the traversal gaps and
+introduced the next problem — every card, including the one I was looking at, was now being drawn from a preview
+that is smaller than the frame it fills. That is the
+[quality regression](../../04_Incidents/postmortems/2026-09-21-wallpaper-quality-regression.md), and the fix for
+it is the promoted display tier described below.
+
+What survived all three designs is the boundary, not the policy: resources are scoped to the browsing session and
+nothing leaks past close. What changed is that I stopped treating peak memory as the thing being optimised and
+started treating it as a budget the feature has to fit inside.
+
 ## Surfaces
 
 Carousel mode (`[wallpaper] carousel = true` in `rice.toml`) splits the browser into two regions on **one**

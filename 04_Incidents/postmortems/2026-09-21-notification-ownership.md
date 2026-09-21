@@ -3,17 +3,25 @@
 | | |
 |---|---|
 | **Severity** | High — no notifications and no notification sounds, for an unknown period |
-| **Reported** | 2026‑09‑21 by the project owner |
+| **Reported** | 2026‑09‑21, by me, during ordinary use |
 | **Status** | Resolved |
 
-## Symptom
+## What I observed
 
-Incoming notifications did not appear and their sound cues did not play. The shell was otherwise healthy, and
-Phase 5's notification code was unchanged and previously verified working.
+Notifications simply stopped arriving, and their sound cues stopped with them. Nothing else about the shell was
+unwell — the bar, panels and OSDs all worked — and I could not tie the failure to anything I had changed.
 
-## Diagnosis
+## What I initially suspected
 
-One command settled it:
+A Zynith regression in the Phase 5 notification work, since that is the code I had touched most recently in that
+area. That suspicion was wrong in an instructive way: the Phase 5 toast code was unchanged from the state in
+which I had verified it working, which should have been the first clue that the problem was not in the shell at
+all.
+
+## What Claude investigated
+
+I asked Claude to find out why notifications were dead before changing any notification code. It checked the
+ownership of the D-Bus name first, and one command settled it:
 
 ```
 $ busctl --user list | grep -i notif
@@ -33,12 +41,20 @@ ConditionEnvironment=WAYLAND_DISPLAY
 [Install] WantedBy=graphical-session.target
 ```
 
-It was enabled for the owner's **Hyprland** setup and started in *any* graphical session, including niri.
+I had enabled it for my **Hyprland** setup, and it starts in *any* graphical session, including niri.
+
+## What the evidence showed
+
+D-Bus grants a well-known name to exactly one process. swaync had claimed it, so every notification in the
+session was being delivered to a daemon I was not looking at, and Noctalia never saw one. Nothing was broken in
+the sense I had assumed; the notifications were being delivered correctly to the wrong program.
 
 ## Root cause
 
 An environment-level ownership conflict, not a shell bug: two notification servers installed, one of them enabled
-session-agnostically.
+session-agnostically. This is a direct consequence of my decision to keep Hyprland installed as a fallback
+([ADR‑0001](../../05_Decisions/ADRs/ADR-0001-niri-as-compositor.md)) — the fallback brought its own notification
+daemon with it.
 
 ## Fix
 
@@ -64,9 +80,13 @@ Noctalia claims the name on its next start.
 - sound confirmed independently of audible output: recording the sink monitor during a notification captured a
   peak of 1228 and ~178 ms of non-silence
 
-## Lessons
+## Engineering lesson
 
 - A "shell bug" that contradicts a previously verified subsystem should prompt an **ownership check** of the
-  relevant D-Bus name before any code is read.
-- Dual-session setups (niri + Hyprland) need session-conditional units, not enable/disable toggles, or fixing one
-  session breaks the other.
+  relevant D-Bus name before any code is read. I had a working subsystem and a dead symptom; that combination
+  means something outside the code changed hands.
+- Dual-session setups (niri + Hyprland) need **session-conditional units**, not enable/disable toggles. Disabling
+  swaync outright would have fixed niri by breaking my fallback session, which defeats the reason the fallback
+  exists.
+- More generally: keeping a fallback session is not free. I still think it is worth the cost, but the cost is
+  real and it arrived as a silent outage rather than as an error message.

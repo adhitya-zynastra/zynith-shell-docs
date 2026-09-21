@@ -5,7 +5,7 @@ Status vocabulary: **Planned** (agreed, not started) · **Proposed** (idea, not 
 
 Nothing on this page is implemented. Implemented work lives in `01_Phases/`.
 
-## Planned — requested by the owner, not yet built
+## Planned — things I want, not yet built
 
 | Item | Notes |
 |---|---|
@@ -14,7 +14,7 @@ Nothing on this page is implemented. Implemented work lives in `01_Phases/`.
 | **Settings morphing** | Preset → preset detail, basic → advanced, as spatial transitions |
 | **Launcher redesign** | New polished default: minimal, keyboard-first, cinematic. Reference points are Caelestia and Ryoku/Ryoko (the exact Ryoku reference is **UNKNOWN** and must be identified, not guessed) |
 | **Launcher style variants** | The *current* launcher must remain selectable. Architecture should be `launcher.style = zynith \| classic \| custom`, not an irreversible redesign |
-| **Launcher configurability** | Geometry, appearance, behaviour, layout — see the owner's brief for the full list |
+| **Launcher configurability** | Geometry, appearance, behaviour, layout — see my Phase 6 brief for the full list |
 | **Launcher creation cost** | Rapid open/close is the most expensive measured state (7.73 % noctalia + 5.48 % niri). Investigate scene reuse vs. rebuilding, incremental app discovery, icon cache lifetime |
 | **Lock screen refinement** | Treat it as one composition rather than widgets placed around a wallpaper: hierarchy, negative space, alignment, focal point |
 | **Lock screen power controls** | Sleep/Reboot/Shutdown/Logout. **Security is non-negotiable**: must not bypass authentication, expose protected data, unlock the session, or interfere with PAM or `ext-session-lock`. Destructive actions need confirmation |
@@ -22,20 +22,20 @@ Nothing on this page is implemented. Implemented work lives in `01_Phases/`.
 | **Configurable-shell architecture** | "Everything should be an option": Zynith's design becomes the *default preset*, not the only possibility. Needs a meaningful layout model (named regions + alignment/spacing/order), not raw x/y coordinates |
 | **One primary settings surface** | Fold the Motion panel's functionality into the main settings experience, preserving presets, speed, advanced controls, validation and atomic writes. `Super+Alt+A` may deep-link to that section instead of opening a separate system |
 | **GTK template / hook cost** | ~156 ms per palette change is spent writing GTK CSS that fails (`~/.config/gtk-3.0/noctalia.css` is missing) and spawning an emacs hook that exits 127 every time. Skip unchanged writes, avoid spawning hooks whose tools are absent |
-| **Global motion refinement** | The owner still reports the desktop feeling slightly too fast after the 130/300/520 retune |
+| **Global motion refinement** | I still find the desktop slightly too fast after the 130/300/520 retune |
 
 ## Proposed — not agreed
 
 | Item | Notes |
 |---|---|
-| Zynith privacy/security subsystem | **PROPOSED / NOT IMPLEMENTED.** No design exists. See `02_Architecture/security.md` |
+| Zynith security and privacy layer | **PROPOSED / NOT IMPLEMENTED.** Intent recorded, no design and no code. Would be a future phase of its own, with enforcement outside the shell process. See `02_Architecture/security.md` |
 | Panel scene caching | Would cut launcher creation cost at a memory price; needs measurement before commitment |
 
 ## Deferred
 
 | Item | Why |
 |---|---|
-| Automated lock/unlock testing | Risk of locking the owner out of their own machine; validated visually instead |
+| Automated lock/unlock testing | Risk of locking me out of my own machine; validated visually instead |
 | Making the test count 119/119 | The failing test is unrelated third-party behaviour; changing unrelated infrastructure to improve a count is explicitly against policy |
 
 ## Rejected

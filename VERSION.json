@@ -1,12 +1,18 @@
 {
-  "documentation_version": "1.0",
+  "documentation_version": "1.1",
   "generated": "2026-09-21",
   "source_repository": "/home/adhitya/.local/src/noctalia-lockfade/source",
   "source_commit": "57debbc",
   "last_audited_phase": 6,
   "last_audited_commit": "57debbc",
   "canonical_format": "markdown",
-  "generated_formats": ["docx", "pdf", "png", "svg", "csv"],
+  "generated_formats": [
+    "docx",
+    "pdf",
+    "png",
+    "svg",
+    "csv"
+  ],
   "machine": {
     "cpu": "Intel Core Ultra 5 125H (14C/18T)",
     "gpu": "Intel Arc Graphics (Meteor Lake-P)",
@@ -16,5 +22,10 @@
     "kernel": "7.2.5-200.fc44.x86_64",
     "compositor": "niri 26.04",
     "shell": "noctalia 5.1.0 (patched, local build)"
+  },
+  "last_revised": "2026-09-21",
+  "authorship": {
+    "owner": "project owner (first-person voice throughout)",
+    "assistant": "Claude Code \u2014 implementation, investigation, measurement and drafting, under the owner's direction"
   }
 }

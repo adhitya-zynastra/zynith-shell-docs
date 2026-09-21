@@ -8,9 +8,14 @@ Noctalia's settings GUI owns `~/.local/state/noctalia/settings.toml` and rewrite
 everything in `~/.config/noctalia/*.toml`.
 
 ## Decision
-Zynith's design lives in `rice.toml` (and `lockscreen.toml`, `motion.toml`). Zynith never becomes a second writer
-of `settings.toml`; where the GUI has written a conflicting key, that is reported to the user to change in the GUI
-rather than silently overwritten.
+I made this a hard rule rather than a guideline: Zynith's design lives in `rice.toml` (and `lockscreen.toml`,
+`motion.toml`), and Zynith **never** becomes a second writer of `settings.toml`. Where the GUI has written a
+conflicting key, that is reported to me to change in the GUI rather than silently overwritten.
+
+## Why
+Two writers and one file is a corruption bug waiting for a race, and the one that loses is always the one the
+user can see. I would rather be told to go and change something in the GUI myself than have my desktop quietly
+fight a settings panel.
 
 ## Alternatives
 - *Write settings.toml directly* — rejected: two writers, last-writer-wins, and the user's GUI changes would be

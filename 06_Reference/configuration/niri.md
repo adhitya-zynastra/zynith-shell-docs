@@ -12,7 +12,7 @@ include "rice/animations.kdl"
 include "noctalia.kdl"        // generated palette — MUST be last
 ```
 
-1. The **spawn fallback** is why a broken local build cannot leave the user without a shell.
+1. The **spawn fallback** is why a broken local build cannot leave me without a shell.
 2. **Include order is precedence.** Later nodes win, so the generated palette include stays last.
 
 The stock 635-line configuration is preserved verbatim at `config.kdl.save`.
@@ -29,7 +29,7 @@ layer-rule { match namespace="^noctalia-notification$"; background-effect { blur
 
 ## `rice/binds.kdl` (198 lines)
 
-Keybindings ported from the owner's Hyprland configuration. Hardware keys use `cooldown-ms=50` (adjust) and
+Keybindings ported from my Hyprland configuration. Hardware keys use `cooldown-ms=50` (adjust) and
 `repeat=false` (toggles) to cap how fast a held key can spawn `noctalia msg`.
 
 ## `rice/animations.kdl` (71 lines) — generated

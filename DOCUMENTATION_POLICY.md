@@ -1,6 +1,6 @@
 # Documentation Policy
 
-**Version:** 1.2 · **Generated:** 2026-09-21 · **Revised:** 2026-09-21 (voice, attribution and origins pass) · **Source commit:** `57debbc` · **Last audited phase:** 6
+**Version:** 1.3 · **Generated:** 2026-09-21 · **Revised:** 2026-09-21 (documentation-in-the-loop rule) · **Source commit:** `57debbc` · **Last audited phase:** 6
 
 ## 1. Canonical source
 
@@ -77,7 +77,14 @@ suspicious regression turned out to be a broken build, and the
 that had been believed was wrong. A record that presented this as a smooth collaboration would be less useful
 than one that shows where the process caught itself.
 
-## 7. Audit trail
+## 7. When documentation is written
+
+**With the work, not after it.** Since 2026‑09‑21 this is a standing project rule rather than a preference:
+every meaningful change to Zynith updates the documentation in the same session, routed to the document that
+owns the subject. The loop, the recording checklist, the routing table and the evidence-capture guidance are in
+[`DEVELOPMENT_WORKFLOW.md`](DEVELOPMENT_WORKFLOW.md).
+
+## 8. Audit trail
 
 `scripts/audit-docs.py` re-checks commit hashes, file paths and the documentation version block against the live
 repository. Run it before regenerating the report.

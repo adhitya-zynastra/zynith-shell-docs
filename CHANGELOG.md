@@ -68,6 +68,11 @@ Baseline snapshot at `~/.config/rice-backups/20260919-182322-pre-rice/`; no func
 
 ## Documentation
 
+- **1.3** (2026‑09‑21) — Documentation becomes part of the development loop rather than a later phase. Adds
+  `DEVELOPMENT_WORKFLOW.md` (the standing rule: what to record, where each kind of change is routed, what
+  evidence to capture, and the question that ends a task), plus `CLAUDE.md` in this repository and at
+  `~/.local/src/noctalia-lockfade/` so the rule is picked up when working on either side. Policy gains §7.
+  Nothing in the existing set was rewritten.
 - **1.2** (2026‑09‑21) — Added `00_Project/origins.md`, the account of why the project exists: leaving Windows
   over questions of control, settling on Fedora, Hyprland as the entry point, why I built rather than downloaded,
   and the point at which a rice became a shell. Three corrections follow from it: my reasons for choosing niri

@@ -43,7 +43,8 @@ REPORT = [
                                       "06_Reference/configuration/niri.md",
                                       "06_Reference/troubleshooting/index.md",
                                       "06_Reference/future-work.md"]),
-    ("Appendix",                     ["GLOSSARY.md", "DOCUMENTATION_POLICY.md", "CHANGELOG.md"]),
+    ("Appendix",                     ["GLOSSARY.md", "DOCUMENTATION_POLICY.md", "DEVELOPMENT_WORKFLOW.md",
+                                      "CHANGELOG.md"]),
 ]
 
 FOREWORD = (

@@ -1,6 +1,6 @@
 # Zynith Shell — My Engineering Record
 
-**Documentation version 1.2** · source commit `57debbc` · last audited phase **6** · machine-readable metadata in
+**Documentation version 1.3** · source commit `57debbc` · last audited phase **6** · machine-readable metadata in
 [`VERSION.json`](VERSION.json)
 
 Zynith Shell is my attempt to build a Fedora Wayland desktop that is cinematic and configurable without giving up
@@ -74,6 +74,7 @@ improvement and was reverted rather than written up as a win.
 | See what broke and why | [`04_Incidents/`](04_Incidents/) |
 | Check performance claims | [`03_Performance/README.md`](03_Performance/README.md) |
 | Continue development | [`06_Reference/future-work.md`](06_Reference/future-work.md) |
+| Know how work gets documented from here on | [`DEVELOPMENT_WORKFLOW.md`](DEVELOPMENT_WORKFLOW.md) |
 
 ## Project history at a glance
 
@@ -108,6 +109,14 @@ Full detail per phase in [`01_Phases/`](01_Phases/). Cross-phase amendments in
 Evidence tags **VERIFIED / RECOVERED / INFERRED / UNKNOWN** are defined in
 [`DOCUMENTATION_POLICY.md`](DOCUMENTATION_POLICY.md). Anything not establishable from surviving evidence is marked
 UNKNOWN rather than guessed.
+
+## Documentation is part of the project
+
+From 2026‑09‑21 onward, documentation is updated in the same session as the work it describes rather than
+reconstructed later. The standing rule — the loop, what to record, where each kind of change is routed, and what
+evidence to capture — is [`DEVELOPMENT_WORKFLOW.md`](DEVELOPMENT_WORKFLOW.md). This set was written *after*
+Phases −1 through 6, which is why it contains UNKNOWN entries that nothing can now fill; that is the argument for
+the rule.
 
 ## Rebuilding this documentation
 

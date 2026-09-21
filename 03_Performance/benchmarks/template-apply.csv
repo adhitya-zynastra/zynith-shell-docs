@@ -13,3 +13,7 @@ genuine palette change AFTER post-hook dedup,process forks,2226,per apply,2026-0
 genuine palette change AFTER post-hook dedup,process forks,2119,per apply,2026-09-21,3f355c5,incremental,/proc/stat processes delta,run 2 of 3
 genuine palette change AFTER post-hook dedup,process forks,2199,per apply,2026-09-21,3f355c5,incremental,/proc/stat processes delta,run 3 of 3 - fork counts are build-independent so this comparison holds
 genuine palette change AFTER post-hook dedup,shell CPU,NOT COMPARABLE,ms per apply,2026-09-21,3f355c5,incremental,utime+stime,"before was clean build on a 15 h old shell, after incremental on a 60 s old shell - ADR-0013 requires a clean rebuild for a CPU claim"
+palette change AFTER dedup (CLEAN BUILD),process forks,2200,per apply,2026-09-21,ccfe125,clean,/proc/stat processes delta,run 1 of 3 - authoritative
+palette change AFTER dedup (CLEAN BUILD),process forks,2170,per apply,2026-09-21,ccfe125,clean,/proc/stat processes delta,run 2 of 3 - authoritative
+palette change AFTER dedup (CLEAN BUILD),process forks,2217,per apply,2026-09-21,ccfe125,clean,/proc/stat processes delta,run 3 of 3 - authoritative; -18% vs the 2695 baseline
+palette change AFTER dedup (CLEAN BUILD),shell CPU,UNCONTROLLED,ms per apply,2026-09-21,ccfe125,clean,utime+stime,"240-320 ms vs a 165 ms baseline; desktop audio/visualiser state was not controlled between the two, so the comparison is not valid - see shell-idle-conditions.md"

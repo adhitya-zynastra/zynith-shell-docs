@@ -8,7 +8,7 @@ If you have ten minutes and you are about to inherit this project, read this pag
 **Zynith Shell** is my desktop environment for Fedora 44, built on the niri Wayland compositor and a locally
 patched Noctalia 5.1.0 shell. The design work began roughly four to five months earlier; the **live
 implementation** documented in these phases ran on my daily-driver laptop between **2026‑09‑19** and
-**2026‑09‑21**, with **Claude Code as my engineering assistant**. It is documented here at commit **`3f355c5`**.
+**2026‑09‑21**, with **Claude Code as my engineering assistant**. It is documented here at commit **`ccfe125`**.
 
 I started it because I wanted a machine I actually control — one where I know what is running, know why, and can
 change it. That began as frustration with Windows deciding what my hardware spent itself on, went through Fedora
@@ -64,7 +64,7 @@ the entire time.
 
 | | |
 |---|---|
-| Commit | `3f355c5`, working tree clean; last clean build was `57debbc` |
+| Commit | `ccfe125`, working tree clean, clean build (986 targets) |
 | Tests | 118 / 119 — the single failure is third-party and pre-dates the project |
 | Validation | `niri validate` ✓ · `noctalia config validate` ✓ |
 | Stability | No crashes since the lifetime fixes, across ~40 apply cycles, 14 browse sessions and 40+ panel transitions |

@@ -54,8 +54,10 @@ change, each run spawning a subprocess tree. `processConfigTemplates` now keeps 
 commands and skips a repeat.
 **Process forks per palette change 2695 → ~2180 (−19%)**, three runs at 2226 / 2119 / 2199. Counts are
 build-independent, so the comparison holds.
-*CPU alongside was deliberately not quoted: before came from the 05:08 clean build on a 15-hour-old shell, after
-from an incremental build on a 60-second-old shell. Per ADR‑0013 that is not a valid CPU comparison.*
+**Re-measured on a clean build (`ccfe125`, 986 targets): 2200 / 2170 / 2217 forks per apply — the −18 % holds.**
+*CPU is still not quoted. The before (165 ms) and after (240–320 ms) were taken under different desktop
+conditions — audio was playing during the second set, so the bar's CAVA visualiser was animating — and I did not
+control for it. Recorded as UNCONTROLLED; see `baselines/idle-conditions.md`.*
 This is the redundant half only; the dominant cost is the 11-of-21 enabled templates targeting absent software,
 which is user configuration. See `04_Incidents/postmortems/2026-09-21-template-fork-storm.md`.
 

@@ -1,10 +1,10 @@
 {
-  "documentation_version": "1.5",
+  "documentation_version": "1.6",
   "generated": "2026-09-21",
   "source_repository": "/home/adhitya/.local/src/noctalia-lockfade/source",
-  "source_commit": "3f355c5",
+  "source_commit": "ccfe125",
   "last_audited_phase": 6,
-  "last_audited_commit": "3f355c5",
+  "last_audited_commit": "ccfe125",
   "canonical_format": "markdown",
   "generated_formats": [
     "docx",

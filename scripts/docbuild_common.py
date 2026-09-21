@@ -31,6 +31,7 @@ REPORT = [
                                       "01_Phases/Phase_6/README.md", "01_Phases/cross-phase-matrix.md"]),
     ("Performance Engineering",      ["03_Performance/README.md", "03_Performance/baselines/shell-states.md",
                                       "03_Performance/baselines/memory-floor.md",
+                                      "03_Performance/baselines/idle-conditions.md",
                                       "03_Performance/optimization-log.md",
                                       "03_Performance/benchmarks/contaminated-measurements.md"]),
     ("Reliability and Incidents",    ["04_Incidents/postmortems/2026-09-20-signal-uaf.md",

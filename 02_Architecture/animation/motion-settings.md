@@ -85,6 +85,26 @@ change altered its layout. Per [ADR‑0013](../../05_Decisions/ADRs/ADR-0013-cle
 requires `meson compile --clean` before the binary is run or measured — which is exactly the mistake that
 produced hours of invalid data once already.
 
+## Verification (clean build `ccfe125`)
+
+`config_types.h` is widely included and this changed `AnimationConfig`'s layout, so it was clean-rebuilt — 986
+targets, zero failures — before the binary was run or measured, per ADR‑0013.
+
+| Check | Result |
+|---|---|
+| Keys live in the effective config | ✓ all five present in `config export full` |
+| Precedence undisturbed | ✓ `speed = 0.64` still supplied by `motion.toml`, not shadowed |
+| Settings UI registered them | ✓ Appearance section control count **21 → 26** |
+| Tests | 118 / 119 — only the known unrelated `upower_charge_limit_integration` |
+| `niri validate` | ✓ |
+| `noctalia config validate` (Zynith build) | ✓ zero warnings — see T‑11 for why the PATH binary warns |
+| Behaviour change for an untouched setup | none — defaults match the plugin's |
+
+A before screenshot of Appearance is in `07_Assets/screenshots/settings-motion-before.png`. A matching "after" was
+**not** captured: `settings-open <context>` does not expand a collapsed group, and forcing it would have needed
+synthetic input for a cosmetic asset. The control-count delta is the objective evidence instead, and saying so is
+better than shipping an "after" that looks identical because the group is collapsed.
+
 ## What is not done yet
 
 **The Motion plugin still generates `~/.config/niri/rice/animations.kdl`.** The config model and the UI have

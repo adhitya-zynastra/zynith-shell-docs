@@ -45,6 +45,7 @@ widely-included header are invalid; see `benchmarks/contaminated-measurements.md
 |---|---|
 | `baselines/shell-states.md` + `benchmarks/shell-states.csv` | CPU, context switches and RSS for 14 shell states |
 | `baselines/memory-floor.md` | PSS breakdown of the desktop stack and the realistic floor |
+| `baselines/idle-conditions.md` | **Read before quoting an idle figure** — what the ~1.4 % baseline assumes |
 | `benchmarks/wallpaper-session.csv` | Memory and decode behaviour across browse sessions |
 | `benchmarks/optimizations.csv` | Before/after for each optimization, with the measurement that justified it |
 | `benchmarks/template-apply.csv` | Cost of a palette change: process forks, shell CPU, enabled-template inventory |

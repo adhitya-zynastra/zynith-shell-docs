@@ -36,6 +36,7 @@ REPORT = [
                                       "04_Incidents/postmortems/2026-09-21-incremental-build-abi-skew.md",
                                       "04_Incidents/postmortems/2026-09-21-notification-ownership.md",
                                       "04_Incidents/postmortems/2026-09-21-wallpaper-quality-regression.md",
+                                      "04_Incidents/postmortems/2026-09-21-template-fork-storm.md",
                                       "04_Incidents/known-failures.md"]),
     ("Decision Records",             sorted("05_Decisions/ADRs/" + f
                                             for f in os.listdir(os.path.join(ROOT, "05_Decisions", "ADRs")))),

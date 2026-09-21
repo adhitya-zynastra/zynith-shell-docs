@@ -47,6 +47,7 @@ widely-included header are invalid; see `benchmarks/contaminated-measurements.md
 | `baselines/memory-floor.md` | PSS breakdown of the desktop stack and the realistic floor |
 | `benchmarks/wallpaper-session.csv` | Memory and decode behaviour across browse sessions |
 | `benchmarks/optimizations.csv` | Before/after for each optimization, with the measurement that justified it |
+| `benchmarks/template-apply.csv` | Cost of a palette change: process forks, shell CPU, enabled-template inventory |
 | `benchmarks/contaminated-measurements.md` | Numbers that must never be used |
 | `optimization-log.md` | Narrative: what was optimized, why, and what it cost |
 | `charts/` | Generated PNGs (`scripts/generate-charts.py`) |

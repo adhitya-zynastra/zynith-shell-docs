@@ -1,0 +1,11 @@
+scenario,metric,value,unit,date,commit,build,method,notes
+idle control,process forks,4,per second,2026-09-21,57debbc,clean,/proc/stat processes delta over 4 s,baseline with no apply in flight
+genuine palette change (theme-mode-toggle),process forks,2695,per apply,2026-09-21,57debbc,clean,/proc/stat processes delta over 2 applies + 4 s settle,dark->light->dark; mode restored
+genuine palette change (theme-mode-toggle),shell CPU,165,ms per apply,2026-09-21,57debbc,clean,utime+stime from /proc/<pid>/stat,corroborates the previously documented ~156 ms
+forced templates-apply,process forks,2826,per apply,2026-09-21,57debbc,clean,/proc/stat processes delta + 3 s settle,bypasses the sameInputs dedup guard; worst case
+shell direct children during apply,peak count,5,processes,2026-09-21,57debbc,clean,pgrep -P <pid> sampled at 20 Hz,proves the forks are hook grandchildren
+shell thread count,threads,40,count,2026-09-21,57debbc,clean,ls /proc/<pid>/task,unchanged before and after; forks are not shell threads
+gsettings list-schemas,wall time,4,ms,2026-09-21,57debbc,n/a,date +%s%N around one invocation,called by gtk/apply.sh; 208 schemas; not the dominant cost
+enabled builtin templates,count,21,templates,2026-09-21,57debbc,n/a,settings.toml theme.templates.builtin_ids,11 of them target software not installed on this machine
+templates for absent software,count,11,templates,2026-09-21,57debbc,n/a,command -v per template target,emacs foot ghostty helix labwc mango qt scroll sway umbriel wezterm
+async msg call (invalid as a cost measure),wall time,24,ms,2026-09-21,57debbc,clean,date +%s%N around noctalia msg templates-apply,INVALID as apply cost - the call returns before the work starts

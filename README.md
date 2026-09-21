@@ -1,6 +1,6 @@
 # Zynith Shell — My Engineering Record
 
-**Documentation version 1.3** · source commit `57debbc` · last audited phase **6** · machine-readable metadata in
+**Documentation version 1.4** · source commit `57debbc` · last audited phase **6** · machine-readable metadata in
 [`VERSION.json`](VERSION.json)
 
 Zynith Shell is my attempt to build a Fedora Wayland desktop that is cinematic and configurable without giving up

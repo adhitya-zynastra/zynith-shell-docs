@@ -68,6 +68,11 @@ Baseline snapshot at `~/.config/rice-backups/20260919-182322-pre-rice/`; no func
 
 ## Documentation
 
+- **1.4** (2026‑09‑21) — Records the commit-attribution rule: documentation commits are authored as the
+  repository owner from the repository's own `.git/config`, with no assistant trailers and no command-line
+  identity override, and already-pushed commits are never rewritten. Git metadata carries the owner's project
+  identity; Claude's role stays documented in the prose, where it is useful. `DEVELOPMENT_WORKFLOW.md`,
+  `DOCUMENTATION_POLICY.md` §6 and `CLAUDE.md` updated; no other content changed.
 - **1.3** (2026‑09‑21) — Documentation becomes part of the development loop rather than a later phase. Adds
   `DEVELOPMENT_WORKFLOW.md` (the standing rule: what to record, where each kind of change is routed, what
   evidence to capture, and the question that ends a task), plus `CLAUDE.md` in this repository and at

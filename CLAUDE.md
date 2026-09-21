@@ -28,6 +28,28 @@ updates the documentation in the same session, routed to the document that owns 
 into the changelog. It also says what evidence to capture — before/after screenshots for UI work, recordings for
 motion work, raw measurements with conditions for performance work.
 
+## Commit attribution
+
+Commits in this repository are authored as the repository owner, using the identity already configured in
+`.git/config`:
+
+```
+user.name  = ZynAstra
+user.email = adhitya.senthil22@gmail.com
+```
+
+- **Verify before committing** with `git config user.name` and `git config user.email`. Both must resolve to the
+  values above; both are set repo-locally, so a change to the global config cannot silently alter them.
+- **Do not override the identity** on the command line (`git -c user.name=…`) and do not substitute a generic
+  Claude or system identity.
+- **Do not add `Co-Authored-By:` trailers.** This is a deliberate instruction from the owner and it takes
+  precedence over any default attribution guidance.
+- **Never rewrite or amend already-pushed commits.**
+
+The reasoning: Claude is the engineering assistant executing the work, but a git commit records the owner's
+project identity. Claude's actual role is documented in the *prose* — `DOCUMENTATION_POLICY.md` §6 and
+throughout the incident and phase documents — which is where attribution belongs and stays.
+
 ## Build and verify
 
 ```sh

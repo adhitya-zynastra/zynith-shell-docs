@@ -1,6 +1,6 @@
 # Documentation Policy
 
-**Version:** 1.3 · **Generated:** 2026-09-21 · **Revised:** 2026-09-21 (documentation-in-the-loop rule) · **Source commit:** `57debbc` · **Last audited phase:** 6
+**Version:** 1.4 · **Generated:** 2026-09-21 · **Revised:** 2026-09-21 (commit attribution) · **Source commit:** `57debbc` · **Last audited phase:** 6
 
 ## 1. Canonical source
 
@@ -59,6 +59,10 @@ original choice of niri is an example). Style never outranks accuracy.
 Not every page is first person. History, rationale, decisions, observations and incidents are; API descriptions,
 command references, configuration schemas, file inventories and architecture definitions stay in conventional
 technical prose, because a reference page is not a memoir.
+
+Attribution in the *prose* is what this section governs. Attribution in *git metadata* is separate and
+deliberately different: commits are authored as the repository owner, with no assistant trailers. See
+[`DEVELOPMENT_WORKFLOW.md`](DEVELOPMENT_WORKFLOW.md).
 
 ### How Claude is used, and why it is documented this way
 

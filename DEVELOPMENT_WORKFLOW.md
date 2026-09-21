@@ -99,6 +99,16 @@ build state, commit, workload, duration, tool, the before and after values, an i
 limitations. **A measurement from a build that was not cleanly rebuilt after a header layout change is not
 evidence** (ADR‑0013), and a suspicious number is investigated rather than published.
 
+## Commit attribution
+
+Documentation commits are authored as **ZynAstra <adhitya.senthil22@gmail.com>** from the repository's own
+`.git/config`. Verify with `git config user.name` / `git config user.email` before committing; never override the
+identity on the command line, never add `Co-Authored-By:` trailers, and never rewrite or amend a commit that has
+already been pushed.
+
+This is about commit metadata only. Claude's role as engineering assistant is recorded where it is actually
+useful — in the documentation prose, per `DOCUMENTATION_POLICY.md` §6 — and that does not change.
+
 ## The question that ends a task
 
 Before declaring any meaningful Zynith work complete:

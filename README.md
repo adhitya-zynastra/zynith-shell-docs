@@ -70,6 +70,7 @@ improvement and was reverted rather than written up as a win.
 | Understand configuration precedence (**read before editing anything**) | [`02_Architecture/configuration/precedence.md`](02_Architecture/configuration/precedence.md) |
 | Build, test, validate, recover | [`06_Reference/maintenance.md`](06_Reference/maintenance.md) |
 | Diagnose a symptom | [`06_Reference/troubleshooting/index.md`](06_Reference/troubleshooting/index.md) |
+| Know how configuration is designed | [`02_Architecture/configuration/configurability.md`](02_Architecture/configuration/configurability.md) |
 | Know why something is the way it is | [`05_Decisions/ADRs/`](05_Decisions/ADRs/) |
 | See what broke and why | [`04_Incidents/`](04_Incidents/) |
 | Check performance claims | [`03_Performance/README.md`](03_Performance/README.md) |

@@ -14,6 +14,7 @@ REPORT = [
                                       "00_Project/technology-stack.md", "00_Project/repository-map.md"]),
     ("Architecture",                 ["ARCHITECTURE.md", "02_Architecture/system/layers.md",
                                       "02_Architecture/configuration/precedence.md",
+                                      "02_Architecture/configuration/configurability.md",
                                       "02_Architecture/animation/lifetime-and-motion.md",
                                       "02_Architecture/wallpaper/browser-architecture.md",
                                       "02_Architecture/notifications/pipeline.md",

@@ -10,12 +10,10 @@ The short version of why it exists: I wanted a machine where I know what is runn
 can change it if I do not like the answer. The longer version — Windows, Fedora, Hyprland, and the point where a
 rice turned into a shell — is in [`00_Project/origins.md`](00_Project/origins.md).
 
-This repository is the engineering record of the project: what I built, why I chose each approach, what broke,
-and what I could not establish. I did the design and the decisions; **Claude Code acted as my engineering
-assistant** — it inspected the system, wrote the patches I specified, ran the benchmarks, chased the backtraces,
-and drafted these documents from the evidence. I am a CS student and I learned a great deal of this while
-building it, which is why the failures are kept in these pages alongside the results. Where a measurement or an
-investigation is attributed here, it is attributed to whoever actually performed it.
+This repository is the engineering record of the project: what I built, why I chose each approach, what broke, and what I could and could not establish. I designed the system, made the architectural and implementation decisions, wrote and reviewed the code and configuration, ran the experiments and benchmarks, investigated failures, and validated the resulting system. Claude Code has been used extensively as an engineering assistant throughout development for source inspection, implementation assistance, debugging, testing, benchmarking, and documentation. I am a CS student and learned a great deal through building Zynith itself, which is why failures, rejected approaches, and limitations are preserved alongside the results. 
+
+***NOTE :***
+*The engineering work documented here is my work; measurements, investigations, and implementation decisions are attributed to me unless explicitly stated otherwise.*
 
 ## What it is, concretely
 
@@ -44,7 +42,7 @@ is the direct cause of the notification outage in Phase 6 — and I would still 
 
 ## How I decide things
 
-> *FAST. OPTIMIZED ASF. PERFORMANCE GODLY. STABLE ASH.*
+> *FAST. OPTIMIZED AS F**K PERFORMANCE GODLY. STABLE AS HECK.*
 
 That is the motto, and it is not a joke about benchmarks — it is a statement that optimization is only worth
 having if the machine still boots into a working desktop afterwards. When the two collided, stability won; the

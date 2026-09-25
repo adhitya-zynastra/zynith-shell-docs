@@ -48,5 +48,5 @@ I set these at the outset and they are reflected throughout the implementation:
 | Do not modify Hyprland's configuration | nothing in the repo touches `~/.config/hypr` |
 | Do not break the packaged Noctalia | local prefix + spawn fallback |
 | No polling, no daemons, no per-frame subprocesses | `02_Architecture/shell/event-model.md` |
-| Validate before applying generated config | Motion plugin writes via `niri validate` then atomic replace |
+| Validate before applying generated config | the shell's niri fragment writer: `niri validate` on a temp copy, atomic replace, full-config rollback |
 | Stability outranks aesthetics | `04_Incidents/` — the UAF fix reverted a perf-motivated design |

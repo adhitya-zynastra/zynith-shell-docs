@@ -114,3 +114,17 @@ moved:
   opens the plugin deliberately.
 
 Tests moved from 118 / 119 to **119 / 120** because the suite gained `morph_transition_test`.
+
+## Later amendment — motion, configuration and glass system tracks (2026‑09‑25)
+
+Three foundation systems, built as system tracks inside Phase 6 rather than as a new phase:
+`aaa69b0` (glass), `f5cad71` (motion), `8c2b4eb` (Zynith Corner).
+
+- **Motion ownership finished.** The shell now generates `animations.kdl`; the Motion plugin and `motion.toml` are
+  retired; `Super+Alt+A` opens Zynith Corner. The migrated desktop reproduces the plugin's last output byte for
+  byte. → [`motion-settings.md`](../../02_Architecture/animation/motion-settings.md), ADR‑0015 amendment
+- **Zynith Corner** — a section in the existing settings window, not a new panel.
+  → [`zynith-corner.md`](../../02_Architecture/configuration/zynith-corner.md)
+- **Glass** — a shared surface model over the semantic palette, consumed by floating panels first.
+  → [`glass.md`](../../02_Architecture/surface/glass.md), ADR‑0016
+- Validation: [`tracks-motion-glass.md`](../../03_Performance/benchmarks/tracks-motion-glass.md). Tests 122 / 123.

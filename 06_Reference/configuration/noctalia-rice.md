@@ -20,8 +20,13 @@
 | `[wallpaper]` | `carousel`, `transition`, `transition_duration` | `carousel` is read at panel construction — restart to switch |
 | `[backdrop]`, `[hot_corners.*]` | overview backdrop, corner actions | |
 
-**Never add `[shell.animation]` here.** It belongs to `motion.toml`; because these files merge alphabetically,
-`rice.toml` would silently win. The file carries a comment saying so, and the Motion plugin actively scans for it.
+| `[shell.animation]` | `enabled`, `speed`, `preset`, `niri_open/close/movement/overview` | The Zynith motion preset. Speed is **global**: shell = 0.8 × preset × speed, niri slowdown = 1/speed. Generates `niri/rice/animations.kdl` |
+| `[shell.glass]` | `opacity` (custom mode only), `blur`, `blur_strength`, `tint`, `tint_role`, `tint_strength`, `border_role`, `border_opacity` | The shared surface model. `blur_strength` generates `niri/rice/glass.kdl` and affects windows too |
+
+Both tables are also editable in **Zynith Corner** (`Super+Alt+A`); a change made there lands in `settings.toml` as
+a user override, and Reset removes it so the value here shows through again. Until 2026‑09‑25 `[shell.animation]`
+was forbidden in this file because the Motion plugin owned it through `motion.toml`; that arrangement is retired
+(ADR‑0015).
 
 After editing: `noctalia msg config-reload` (or `Super+Alt+R`). Check the result with
 `noctalia config export full`, which shows values *after* precedence.

@@ -1,6 +1,6 @@
 # Documentation Policy
 
-**Version:** 1.7 · **Generated:** 2026-09-21 · **Revised:** 2026-09-21 (Phase 6 completion run) · **Source commit:** `57debbc` · **Last audited phase:** 6
+**Version:** 1.8 · **Generated:** 2026-09-21 · **Revised:** 2026-09-21 (Phase 6 completion run) · **Source commit:** `57debbc` · **Last audited phase:** 6
 
 ## 1. Canonical source
 

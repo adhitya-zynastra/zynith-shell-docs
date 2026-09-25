@@ -1,7 +1,7 @@
 # Motion Settings — One Surface, One Owner
 
-**Status:** model and UI done (Phase 6, `ccfe125`); ownership **decided** in Phase 6A
-([ADR‑0015](../../05_Decisions/ADRs/ADR-0015-niri-animation-ownership.md)); generator migration **not done**.
+**Status:** **complete** (2026‑09‑25). One owner (`[shell.animation]`), one UI (Zynith Corner → Motion), one
+generator (the shell). The Phase 6A sections below are kept as the record of how it got here.
 
 ## What I wanted
 
@@ -161,3 +161,42 @@ by every ranged field — see the correction in
 Rapidly changing preset, speed and trims means driving the GUI (the only sanctioned writer of `settings.toml`)
 with synthetic input, for keys that do nothing at runtime until 6B. Judged not worth it in this phase; it becomes
 meaningful alongside the generator, where rapid changes would each trigger a regenerate-and-validate.
+
+## Final state (2026‑09‑25)
+
+The latent conflict described at the top of this page is gone, because there is no longer a second writer.
+
+| Piece | Before | Now |
+|---|---|---|
+| Source of truth | plugin's `motion.json` **and** `[shell.animation]` | `[shell.animation]` only |
+| Where it is set | plugin panel (`Super+Alt+A`) **and** Appearance → Motion | Zynith Corner → Motion (`Super+Alt+A` opens it) |
+| `[shell.animation]` writer | plugin → `motion.toml` | the Zynith preset in `rice.toml`; the user's changes in `settings.toml` |
+| `animations.kdl` generator | plugin, only when its panel committed | the shell, on every config change that alters it |
+| Speed semantics | direct shell multiplier | **global**: shell = 0.8 × preset × speed, niri slowdown = 1/speed |
+
+The speed change is the one real design change, and it is argued in the ADR‑0015 amendment: the direct model
+cannot carry the existing desktop over without slowing niri by half again.
+
+### How generation behaves
+
+`NiriFragmentWriter` (`src/compositors/niri/niri_fragment_writer.{h,cpp}`):
+
+- **Coalesced** — every config reload calls `submit()`, which only records the latest text; a single 300 ms debounce
+  timer writes it. A slider dragged across many values is one write.
+- **No needless writes** — identical to what is installed means nothing happens, including at startup.
+- **Validated** — the candidate goes to a per-generation temp file and is checked with
+  `niri validate -c <temp>`, run as an argument vector on a worker thread (no shell string, nothing to inject).
+- **Atomic** — installed with `writeTextFileAtomic` (temp + rename), so niri's watcher never sees a torn file.
+- **Whole-config check with rollback** — a fragment valid alone can still break the full config; after installing,
+  the full config is validated and the previous fragment restored on failure.
+- **Lifetime-safe** — results return through `DeferredCall` and reach the writer only via a `weak_ptr`; results for
+  a superseded generation are dropped.
+- **Only under niri** — the writers are not created on another compositor.
+
+Animations off writes `animations { off }`.
+
+### Why the port is trustworthy
+
+`renderAnimations()` is a line-for-line port of the plugin's `derive()` and `renderNiri()`, including its rounding
+and number formatting. The test holds the plugin's last real output for this machine and requires the port to
+reproduce the animation body **byte for byte**.

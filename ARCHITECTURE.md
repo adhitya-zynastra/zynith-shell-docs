@@ -48,5 +48,5 @@ crash. Read `02_Architecture/animation/lifetime-and-motion.md` before modifying 
 3. **No polling, no daemons, no per-event subprocesses.**
 4. **Bounded caches.** Every cache has a budget and an owner; browser resources die with the browser.
 5. **`settings.toml` has one writer** — the Noctalia GUI.
-6. **Generated config is validated then replaced atomically** (`animations.kdl` via `niri validate`).
+6. **Generated config is validated then replaced atomically** (the shell's `animations.kdl` and `glass.kdl`, via `niri validate`).
 7. **The packaged shell remains a working fallback.**

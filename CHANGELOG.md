@@ -3,6 +3,24 @@
 Commit hashes refer to `~/.local/src/noctalia-lockfade/source`. Dates are git author dates (local time).
 Entries are grouped by kind, as required by the documentation policy.
 
+## Motion, Zynith Corner and Glass — 2026‑09‑25
+
+### Architecture
+- Shared glass surface model (`shell::glass`); `ColorSpec` gains a live palette-role tint; custom transparency mode — `aaa69b0`
+- Shell generates `niri/rice/animations.kdl` and `rice/glass.kdl`: validated, atomic, coalesced, full-config rollback (ADR‑0015) — `f5cad71`
+- Global speed model: shell = 0.8 × preset × speed, niri slowdown = 1/speed (ADR‑0015 amendment) — `f5cad71`
+- Zynith Corner settings section with Motion and Glass groups; entries moved, none duplicated — `8c2b4eb`
+
+### Fixed
+- Motion trims could be set to 0 %, which divides by zero in the niri derivation; floor is now 50 % — `f5cad71`
+- Panels requested compositor blur behind an opaque fill (Solid mode); no longer — `aaa69b0`
+
+### Removed
+- Motion plugin, `motion.toml`, `motion.json` (backed up); `Super+Alt+A` now opens Zynith Corner
+
+### Tests
+- `niri_config_fragments_test` (byte-exact against the plugin), `glass_surface_test`, `zynith_config_ownership_test`; suite 122 / 123
+
 ## Phase 6A — 2026‑09‑25
 
 ### Architecture

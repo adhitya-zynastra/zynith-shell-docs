@@ -1,6 +1,6 @@
 # Known Failures (accepted, unresolved)
 
-## `upower_charge_limit_integration` — 1 of 120 tests
+## `upower_charge_limit_integration` — 1 of 123 tests
 
 **Status:** pre-existing, unrelated, deliberately not fixed.
 

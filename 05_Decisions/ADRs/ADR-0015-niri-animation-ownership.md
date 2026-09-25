@@ -1,6 +1,6 @@
 # ADR-0015 — The shell owns niri animation generation; the Motion plugin is retired
 
-**Status:** Accepted (decision), **implementation deferred to Phase 6B** · **Date:** 2026‑09‑21 (Phase 6A)
+**Status:** Accepted, **implemented 2026‑09‑25** (decisions 4 and 5 amended — see the end) · **Date:** 2026‑09‑21 (Phase 6A)
 **Evidence:** VERIFIED by source inspection at `ccfe125` and by reading the installed plugin.
 
 ## Context
@@ -84,3 +84,32 @@ coherent piece of Phase 6B work.
   thing this phase removes.
 - *Generate via the template system* — rejected: templates are palette-driven, and animation settings are not
   palette data. Wrong trigger.
+
+## Amendment — implementation, 2026‑09‑25
+
+Implemented as `NiriFragmentWriter` (`src/compositors/niri/`), which also serves glass (ADR‑0016). The Motion
+plugin is retired and `Super+Alt+A` opens Zynith Corner. Two of the decisions above changed, and why matters.
+
+**Decisions 4 and 5 were wrong about speed.** They kept `shell.animation.speed` as a *direct* multiplier for the
+shell's surfaces and set niri's `slowdown = 1/speed`. Working the migration through against the live values showed
+that model cannot carry the existing desktop over: with the plugin's Cinematic settings the shell ran at 0.64, so
+the direct model needs `speed = 0.64` — which then sets niri's slowdown to 1/0.64 = 1.56 and slows every window
+animation by half again. There is no single value that preserves both halves.
+
+The plugin's own model does. In it, speed is a **global** multiplier and the preset shapes both halves:
+
+```
+shell surfaces   MotionService speed = 0.8 x preset factor x speed
+niri             slowdown = 1 / speed; springs and durations scaled by preset factor x trim
+```
+
+With Cinematic and `speed = 1.0` that gives exactly 0.64 for the shell and exactly the previous `animations.kdl` —
+`tests/niri_config_fragments_test.cpp` checks the niri body byte for byte against the plugin's last output. So the
+global model was adopted. It does redefine what the Animation Speed slider means, which decision 4 set out to
+avoid; the only value ever written to that key on this machine came from the plugin's `motion.toml`, which is
+retired in the same change, so nothing that was set under the old meaning survives to be misread.
+
+The plugin's `shell` trim remains dropped: in the global model the preset already carries the shell's pace.
+
+**Trim floor.** The schema added in `ccfe125` allowed trims down to 0 %, but durations are `base / (factor × trim)`,
+so 0 divides by zero. The floor is now 50 %, matching the plugin.

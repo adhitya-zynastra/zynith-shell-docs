@@ -46,7 +46,7 @@ niri validate                                   # niri config
 
 ```sh
 cd ~/.local/src/noctalia-lockfade/build
-meson test                       # 120 tests; 119 expected to pass
+meson test                       # 123 tests; 122 expected to pass
 ./signal_dispatch_test           # lifetime contract — MUST pass
 ./animation_reentrancy_test      # tick contract — MUST pass
 ```
@@ -91,7 +91,7 @@ device.
 | Bar layout, panel geometry, OSD/notification placement, palette | `~/.config/noctalia/rice.toml` | `noctalia msg config-reload` |
 | Window glass, blur, per-app opacity, layer rules | `~/.config/niri/rice/rules.kdl` | `niri validate && niri msg action load-config-file` |
 | Keybindings | `~/.config/niri/rice/binds.kdl` | same |
-| Animation presets/speed | Motion panel (`Super+Alt+A`) | it validates and writes atomically |
+| Animation presets/speed, glass | Zynith Corner (`Super+Alt+A`), or `[shell.animation]` / `[shell.glass]` in `rice.toml` | the shell regenerates the niri fragments itself |
 | Lock screen | `~/.config/noctalia/lockscreen.toml` | reload |
 | Anything already set in `settings.toml` | the Noctalia **GUI** | — (never hand-edit that file) |
 

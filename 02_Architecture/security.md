@@ -23,9 +23,13 @@ This documents **only what exists**. It is not a design for a future security sy
 
 - One shell process, no setuid, no daemon added by Zynith.
 - Noctalia owns `org.freedesktop.Notifications` and `org.kde.StatusNotifierWatcher` on the session bus.
-- The Motion plugin writes files (`motion.json`, `motion.toml`, `animations.kdl`) through the plugin API's
-  unsandboxed `writeFile`/`renameFile`. **Plugins are trusted code** — there is no sandbox. Only two plugins exist,
-  both written for this project.
+- **The shell writes two niri config fragments** (`rice/animations.kdl`, `rice/glass.kdl`). Reviewed for this
+  surface: the paths are fixed (config home + a constant name, no user-supplied component); the content is rendered
+  from enums and clamped numbers, so no configuration string reaches the KDL; validation runs `niri validate` as an
+  **argument vector**, never a shell string; writes are atomic; the writers exist only under niri. Nothing
+  privileged.
+- **Plugins are trusted code** — there is no sandbox. One plugin remains (`identity`); the Motion plugin, which
+  wrote files through the plugin API's unsandboxed `writeFile`/`renameFile`, is retired.
 - Shell hooks (`[hooks] session_locked/unlocked`) execute a shell command on real logind events. Anything placed
   there runs with the user's privileges.
 

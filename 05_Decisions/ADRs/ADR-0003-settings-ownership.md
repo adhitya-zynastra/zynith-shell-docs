@@ -25,3 +25,7 @@ fight a settings panel.
 - Some settings genuinely cannot be controlled from `rice.toml` once the GUI has touched them — this is the
   documented cause of "my rice.toml edit did nothing" (bar widget list, bar thickness, bar font).
 - Troubleshooting must always check precedence first.
+
+> **Later note (2026‑09‑25).** The decision text above names `motion.toml` as part of the design layer. The
+> Motion plugin and `motion.toml` have since been retired; `[shell.animation]` now lives in `rice.toml`
+> (ADR‑0015). The rule itself — Zynith never writes `settings.toml` — is unchanged.

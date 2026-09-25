@@ -6,7 +6,7 @@ Verbs used throughout this project. `noctalia msg --help` lists the full set.
 
 | Verb | Purpose |
 |---|---|
-| `panel-open <id> [context]` | Open a panel. Ids used here: `control-center`, `launcher`, `wallpaper`, `session`, `dusk/motion:settings`. Context selects a section, e.g. `control-center bluetooth` |
+| `panel-open <id> [context]` | Open a panel. Ids used here: `control-center`, `launcher`, `wallpaper`, `session`. (`settings-open zynith-corner` opens Zynith Corner.) Context selects a section, e.g. `control-center bluetooth` |
 | `panel-toggle <id> [context]`, `panel-close [id]` | Toggle / close |
 | `config-reload` | Re-read `~/.config/noctalia/*.toml` |
 | `config validate`, `config export full` | Validate; print the **effective** config after precedence |

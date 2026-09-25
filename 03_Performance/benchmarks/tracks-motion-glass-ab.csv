@@ -1,0 +1,13 @@
+# Interleaved A/B at matched shell pace (0.64). A = a147fc1 (speed 0.64, direct model), B = 8c2b4eb content (speed 1.0 x Cinematic, global model).
+# Two media streams were playing in EVERY round, so idle includes the bar visualiser; constant across arms. niri slowdown read 1.0 in every round.
+label,build,seconds,noctalia_pct,niri_pct,rss_mb,threads,ctxsw_per_s,gpu_mhz_avg,zram_used_mb,media_streams_playing
+A1-idle,ccfe125f1c29-dirty,29.748,2.39,0.81,158.7,33,111,1,490,2
+B1-idle,a147fc1ec8b9-dirty,29.755,2.62,0.97,160.2,34,112,30,490,2
+A2-idle,ccfe125f1c29-dirty,30.024,2.63,0.83,159.5,34,110,6,490,2
+B2-idle,a147fc1ec8b9-dirty,29.760,2.45,0.71,159.9,34,108,27,490,2
+
+label,cycles,noctalia_ms_per_launcher_open_close
+A1-launcher,20,173.0
+B1-launcher,20,176.0
+A2-launcher,20,176.0
+B2-launcher,20,176.5

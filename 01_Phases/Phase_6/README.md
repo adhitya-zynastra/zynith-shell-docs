@@ -160,3 +160,16 @@ was.
 - → [`transient-ui.md`](../../02_Architecture/transient/transient-ui.md),
   [`tracks-launcher-osd-notify.md`](../../03_Performance/benchmarks/tracks-launcher-osd-notify.md). Tests 124 / 125.
 
+## Later amendment — lock screen, widgets, motion and a correction queue (2026‑09‑26, `e521a86`)
+
+- **Lock screen** — power controls as a placeable widget with arm-to-confirm, and a failed-password shake;
+  authentication untouched. Not exercised through a real lock (standing rule).
+- **Widgets** — anchored responsive placement on top of the existing position/rotation/flip/size system.
+- **Motion** — a defined language (exits shorter than entrances) and a true Control Center morph around one shared
+  indicator. → [`motion-language.md`](../../02_Architecture/animation/motion-language.md)
+- **Corrections** — mute cue, notification cue bursts, Glass scope, launcher footer, and the coordinate model
+  behind the off-centre bars and panels. → [`coordinate-model.md`](../../02_Architecture/layout/coordinate-model.md),
+  ADR‑0018
+- Validation: [`tracks-lock-widgets-motion.md`](../../03_Performance/benchmarks/tracks-lock-widgets-motion.md).
+  Tests 124 / 125.
+

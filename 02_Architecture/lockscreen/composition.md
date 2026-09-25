@@ -37,3 +37,31 @@ timer derive from the animation schedule.
 
 Recomposition as a single deliberate composition, power controls (sleep/reboot/shutdown/logout) with confirmation
 for destructive actions, and per-element configurability. None implemented.
+
+## Recomposition and power controls (fourth batch, 2026‑09‑25)
+
+**Research.** Before changing anything I had Claude look at current lock screens: Hyprlock configurations (a
+widget-per-element model — time, avatar, blurred input field), Caelestia's Quickshell lock screen (session lock with
+a fluid, organic treatment), and Android 14's Material lock screen (one large clock as the focal point, date and
+weather as one small secondary line, shortcuts pushed into the bottom corners). What I took from them is hierarchy,
+not layout: one vertical axis, one dominant element, secondary information quiet, actions out of the axis.
+
+**Finding.** My composition already follows that axis — visualiser, identity, `HH:MM:SS`, date, password pill, then
+media and weather as one low strip — so it was kept. What it lacked was power controls and an answer to a failed
+password.
+
+| Change | Where | Notes |
+|---|---|---|
+| **Power controls** — suspend, logout, reboot, shutdown as a new `session_actions` widget | bottom-right corner, `lockscreen.toml` | Icon-only glass discs, low emphasis, placeable anywhere with the lock screen editor; `vertical` and `show_labels` settings |
+| Logout / reboot / shutdown **arm first** | the widget | First press turns the button to the error role and shows "Press again to …"; a second press within 4 s runs it. The arm lapses on a one-shot event-loop timer. Suspend runs at once |
+| **Failed password shake** | `LockSurface::shakeLoginPanel` | ~360 ms damped horizontal shake of the pill, after PAM has already answered |
+
+**Security boundary.** The widget calls the existing `SessionActionRunner` built-in handlers (logind via
+`systemctl`/`loginctl` argv). It refuses `lock`, `lock_and_suspend`, `command` rows and any row with a custom command
+string — the power menu may run shell strings; the lock screen will not. It is given the runner only by the lock screen
+host, so it cannot exist on the desktop; the desktop editor does not offer it. PAM, `ext-session-lock-v1`, the
+password path and the lock/unlock lifecycle are unchanged. The existing login box's own session row (regular layout
+only) is untouched and still off in my preset.
+
+**Not tested by running a real lock**, by standing rule (lockout risk on a daily-driver machine). The composition was
+checked in the lock screen editor, which renders the same widgets without locking; see the validation record.

@@ -3,6 +3,34 @@
 Commit hashes refer to `~/.local/src/noctalia-lockfade/source`. Dates are git author dates (local time).
 Entries are grouped by kind, as required by the documentation policy.
 
+## Lock Screen, Widgets, Motion and Corrections — 2026‑09‑26
+
+### Architecture
+- `PositionReference` (`workspace` | `output`) for bars, their attached panels and the OSD; default unchanged (ADR‑0018) — `e521a86`
+- Control Center section switch is a morph: one shared selection indicator moves between tabs; content reshapes instead of sliding — `e521a86`
+- Motion language: exits on a shorter `animExit` token (200 base) with an accelerating curve; bar reveal on `EaseOutQuint` — `e521a86`
+
+### Features
+- Lock screen `session_actions` widget (suspend, logout, reboot, shutdown); destructive actions arm first; argv-only — `e521a86`
+- Failed-password shake on the lock screen — `e521a86`
+- Widget `anchor` setting: an anchored widget keeps its edge distance on other output sizes — `e521a86`
+- `[control_center].anchor_bar`; `Shift+Super+E` opens at the Time bar in the Zynith preset — `e521a86`
+
+### Fixed
+- Centred bars and their panels sat 20 px off-centre (implicit workspace reference); now explicit and `output` in the preset — `e521a86`
+- A panel wider than its bar was pinned to the bar's start edge on click; now centred on the bar — `e521a86`
+- A click on another bar's widget switched sections in a panel attached elsewhere; the panel now moves to that bar — `e521a86`
+- Mute cue was inaudible (played after the sink muted); it now plays first and the mute follows when it drains — `e521a86`
+- Notification cues were dropped while a previous chime played; the playing cue is now retriggered (≥150 ms apart) — `e521a86`
+- Glass tint never reached bars or bar-attached panels; setting descriptions now state each Glass key's scope — `e521a86`
+- Wallpaper carousel toggle claimed to need a restart; it applies on the next open — `e521a86`
+
+### Removed
+- Launcher key-hint footer and its `key_hints` key; the Zynith launcher hides its scrollbar — `e521a86`
+
+### Tests
+- responsive/transient config tests extended; roundtrip golden updated for `[bar].reference`; suite 124 / 125
+
 ## Launcher, OSD, Notifications and Audio — 2026‑09‑25
 
 ### Features

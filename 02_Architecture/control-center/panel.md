@@ -150,6 +150,12 @@ On the final build (details in the
 - Density: the frame rhythm changes by a few pixels per step (`cc-density.png`). Intentionally subtle.
 - Not verified: media → Media (nothing was playing, so the widget had nothing to show).
 
+### Morph and anchoring (2026‑09‑26)
+
+Section switching is now a morph around one shared selection indicator — see
+[`motion-language.md`](../animation/motion-language.md). Where the panel opens is defined by the bar's position
+reference and `[control_center].anchor_bar` — see [`coordinate-model.md`](../layout/coordinate-model.md).
+
 ### Density and placement of options
 
 `[control_center].density` (`compact` / `comfortable` / `spacious`, factor 0.75 / 1.0 / 1.35) scales the frame

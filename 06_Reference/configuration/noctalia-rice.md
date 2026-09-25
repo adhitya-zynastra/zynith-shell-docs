@@ -19,6 +19,8 @@
 | `[notification]`, `[osd]` | placement, opacity, scale; `[osd].duration_ms` (Zynith-added); `[notification].max_visible = 4` (Zynith preset) | fill tint/border colour/blur come from `[shell.glass]` |
 | `[control_center]` | `width`, `top_nav`, `hover_open`, `hover_open_delay_ms`, `density` | all but `width` are Zynith-added; `density` = `compact` / `comfortable` / `spacious` |
 | `[wallpaper]` | `carousel`, `carousel_card_width`, `transition`, `transition_duration` | `carousel` is read at panel construction — restart to switch. `carousel_card_width` (400–1400, default 760) is the *preferred* focused-card width; see `responsive-layout.md` |
+| `[bar.<name>].reference`, `[osd].reference` | `workspace` (default) or `output` | Zynith-added; see `coordinate-model.md`. The preset puts the Time and Media bars and the OSD on `output` |
+| `[control_center].anchor_bar` | bar a shortcut-opened Control Center attaches to | Zynith-added; preset `"Time"` |
 | `[backdrop]`, `[hot_corners.*]` | overview backdrop, corner actions | |
 | `[shell.animation]` | `enabled`, `speed`, `preset`, `niri_open/close/movement/overview` | The Zynith motion preset. Speed is **global**: shell = 0.8 × preset × speed, niri slowdown = 1/speed. Generates `niri/rice/animations.kdl` |
 | `[shell.glass]` | `opacity` (custom mode only), `blur`, `blur_strength`, `tint`, `tint_role`, `tint_strength`, `border_role`, `border_opacity` | The shared surface model. `blur_strength` generates `niri/rice/glass.kdl` and affects windows too |

@@ -112,6 +112,14 @@ than decoding more.
 content, the navigation's padding and the gap inside the content column — through `space()`. Each tab's internal
 spacing is its own and is not touched. The panel's width was already clamped to the output by `PanelManager`.
 
+## Widget anchors (2026‑09‑26)
+
+Desktop and lock screen widgets already had position, rotation, flip, box size and visibility, stored against the
+output size they were placed on and rescaled proportionally. A widget can now carry an `anchor` setting
+(`free` default, or an edge/corner/centre): on another output size an anchored widget keeps its distance to that edge
+instead of scaling (`desktop_widgets::rescaleToOutput`). A visualiser anchored `right` stays on the right edge of an
+ultrawide. Unit-tested; set in the widget editor.
+
 ## Window move and resize
 
 Not part of the primitive, but part of the same track: niri's native pointer gestures are used as-is.

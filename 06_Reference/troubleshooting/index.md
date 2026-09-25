@@ -165,3 +165,16 @@ Every entry here was an actual failure on this machine.
 - **Fix:** add `repeat=false` to the bind in `rice/binds.kdl` (every shipped `noctalia msg` bind has it since
   2026‑09‑25), then `niri validate`.
 - **Check:** in the shell log, a run of `panel manager: opened` / `closing` lines ~150 ms apart.
+
+## T‑17 · A centred bar (and its panels) sits a little off the screen centre
+
+- **Cause:** the bar reserves no space and uses the `workspace` reference, so it is centred between another bar's
+  reserved zone and the far edge (e.g. 20 px right with a 40 px left bar).
+- **Fix:** `[bar.<name>] reference = "output"` (Settings → Bar → Position Reference). Its panels follow; set
+  `[osd] reference = "output"` too if the OSD sits near it.
+
+## T‑18 · Muting gives no sound
+
+- **Cause:** before `e521a86` the mute cue played after the sink was muted — through the muted sink.
+- **Check:** `shell sounds` on and a `mute_sound` set; the log shows `sound "mute": playing` before the mute.
+

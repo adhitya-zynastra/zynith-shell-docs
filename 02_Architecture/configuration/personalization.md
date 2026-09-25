@@ -78,3 +78,18 @@ shows through again, and a later change to the preset reaches the reset key.
 - There is no per-group deep link: `settings-open` selects a section, not a group inside it.
 - Out-of-range values in hand-edited TOML are still clamped **silently** by the upstream parser; see the
   correction in [`configurability.md`](configurability.md).
+
+## Audit — does every visible setting do something? (2026‑09‑26)
+
+I reported options that changed nothing. Claude traced every Personalization key to its runtime consumer:
+
+| Group | Finding | Change |
+|---|---|---|
+| Glass — tint, tint colour, tint strength | reached floating panels, OSD and notifications, **not bars or bar-attached panels** — which is where my Control Center lives | tint now applies to bars and attached panels too (`shell::glass::tinted`), alpha still owned by `[bar].background_opacity` |
+| Glass — transparency, opacity, borders | floating panels only, by design (an attached panel must match its bar) | descriptions now say so |
+| Wallpaper Browser — carousel | said "applies after the shell restarts"; the panel is rebuilt on every open | description corrected: next open |
+| Launcher — key hints | removed with the footer | — |
+| Launcher, Control Center, OSD, notifications | apply on the next open / next appearance (their surfaces are temporary) — stated where it was not | — |
+| Motion, Sounds, wallpaper card size, CC hover | live | — |
+
+Runtime confirmation of the Glass-on-bars change is still outstanding (see the validation record).

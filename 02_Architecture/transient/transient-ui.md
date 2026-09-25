@@ -87,6 +87,16 @@ Both now use one `toastCardRadius()`.
 - Lock/unlock cues stay the `pw-play` hooks in `rice.toml`: one short process per real logind event, and moving them
   would have meant touching the lock path, which this batch does not.
 
+## Amendment — 2026‑09‑26 (`e521a86`)
+
+- **Key hints removed.** The footer was clutter at this size; `key_hints` is gone and the Zynith launcher also hides
+  its scrollbar (scrolling unchanged).
+- **Cue retrigger replaces cue dropping.** `SoundPlayer` now rewinds a still-playing cue instead of ignoring the
+  new request, with retriggers ≥150 ms apart coalesced — one stream per cue, in step with the newest event. The
+  "skipped/late" notification sounds I reported were dropped plays; stream start-up measured at 20 ms.
+- **Mute cue before the mute.** `PipeWireService::setMuted` calls an injected hook; the application plays the cue
+  and the mute is applied when it drains (event, not delay). A newer request cancels a pending mute.
+
 ## Settings
 
 Personalization gained four groups, by ADR‑0017's split (appearance/behaviour here, function in the feature's own

@@ -48,6 +48,7 @@ or depends on; the upstream tree is far larger than what is listed here.
 | `src/shell/veil/screen_veil.{h,cpp}` | Short-lived full-screen click-through layer: blurred/tinted, fades on the shell AnimationManager | Phase 2.5 |
 | `src/ui/controls/carousel_view.{h,cpp}` | Orbit-path carousel over the existing `VirtualGridAdapter` | Phase 6 (`99ac272`) |
 | `src/ui/controls/carousel_geometry.h` | The carousel's orbit and responsive arc fit, as pure arithmetic | 2026‑09‑25 (`b49ec4e`) |
+| `src/shell/desktop/widgets/desktop_session_actions_widget.{h,cpp}` | Lock screen power controls widget (argv-only, arm-to-confirm) | 2026‑09‑26 (`e521a86`) |
 | `src/ui/responsive.h` | Responsive layout primitives: extent resolution, fit count, density spacing | 2026‑09‑25 (`b49ec4e`) |
 | `tests/responsive_layout_test.cpp` | Primitive and carousel geometry at display sizes this laptop does not have | 2026‑09‑25 (`b49ec4e`) |
 | `tests/signal_dispatch_test.cpp` | Regression test for the Signal use-after-free | Phase 6 (`08f5454`) |

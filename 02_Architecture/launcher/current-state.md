@@ -1,5 +1,9 @@
 # Launcher — current state
 
+> **Amendment, 2026‑09‑25 (`b106c38`).** The redesign below as "planned" now exists as the Zynith style, with this
+> page's launcher kept as `style = "classic"`. Architecture, measurements and settings:
+> [`transient-ui.md`](../transient/transient-ui.md). The rest of this page is the pre-redesign record.
+
 ## What exists
 
 The upstream Noctalia launcher, configured through `[shell.launcher]` in `rice.toml`

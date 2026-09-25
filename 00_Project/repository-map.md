@@ -38,7 +38,7 @@ or depends on; the upstream tree is far larger than what is listed here.
     │       ├── style.h           ← motion duration tiers, spacing, radii
     │       ├── responsive.h      ← extent / fit / density primitives (Zynith-added)
     │       └── controls/         ← flex, scroll_view, virtual_grid_view, carousel_view + carousel_geometry (Zynith-added)
-    └── tests/                    ← 124 tests incl. signal_dispatch, animation_reentrancy, morph_transition, niri_config_fragments, glass_surface, zynith_config_ownership, responsive_layout (Zynith-added)
+    └── tests/                    ← 125 tests incl. signal_dispatch, animation_reentrancy, morph_transition, niri_config_fragments, glass_surface, zynith_config_ownership, responsive_layout, transient_ui_config (Zynith-added)
 ```
 
 ### Files created by Zynith (did not exist upstream)

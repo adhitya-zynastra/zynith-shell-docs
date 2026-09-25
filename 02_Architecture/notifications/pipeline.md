@@ -1,5 +1,8 @@
 # Notification Pipeline
 
+> **2026‑09‑25 (`b106c38`):** card appearance moved onto the glass model, blur-radius fix, burst cap preset and
+> cue behaviour — see [`transient-ui.md`](../transient/transient-ui.md). The pipeline below is unchanged.
+
 ```
  Application (notify-send, browser, …)
         │  org.freedesktop.Notifications  (D-Bus, session bus)

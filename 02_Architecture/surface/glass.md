@@ -73,7 +73,7 @@ desktop's configuration that is the **launcher, clipboard and session menu**.
 for their fill so they read as part of it. They do go through the glass blur gate, so `glass.blur = false` affects
 them, but fill, tint and border colour do not.
 
-**Not yet:** the bar, OSD, notifications, dock and desktop widgets still use their own opacity keys. They move onto
+**Not yet:** the bar, dock and desktop widgets still use their own opacity keys (the OSD and notifications moved onto glass on 2026‑09‑25, `b106c38`, keeping their own `background_opacity` as the owner of fill alpha — [transient-ui.md](../transient/transient-ui.md)). They move onto
 glass with their own redesigns — and when the bar does, attached panels follow automatically.
 
 ## Behaviour preserved

@@ -3,6 +3,23 @@
 Commit hashes refer to `~/.local/src/noctalia-lockfade/source`. Dates are git author dates (local time).
 Entries are grouped by kind, as required by the documentation policy.
 
+## Launcher, OSD, Notifications and Audio — 2026‑09‑25
+
+### Features
+- Zynith launcher style (default): search bar, tinted selection with `↵`, key-hint footer; width/height/icon/density keys; classic style kept unchanged — `b106c38`
+- `[osd].duration_ms`; Personalization groups Launcher, OSD, Sounds, Notifications — `b106c38`
+- `[notification].max_visible = 4` Zynith preset (in `rice.toml`)
+
+### Architecture
+- OSD and notification cards take tint, border colour and the blur gate from `shell::glass` — `b106c38`
+
+### Fixed
+- Notification blur region used a smaller corner radius than the card; blur showed past the corners — `b106c38`
+- Microphone mute gave no cue on mute (only on unmute), though a muted mic does not silence the speakers — `b106c38`
+
+### Tests
+- `transient_ui_config_test`; suite 124 / 125
+
 ## Wallpaper, Responsive Layout and Control Center — 2026‑09‑25
 
 ### Architecture

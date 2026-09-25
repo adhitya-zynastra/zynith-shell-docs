@@ -40,6 +40,10 @@ line, a registry entry (ADR‑0014) — and the only new thing is where the regi
 | **Glass** | transparency mode, opacity (custom only), blur, blur strength, tint, tint colour, tint strength, borders, border colour, border opacity, shadow | `[shell.glass]` + `[shell.panel]` |
 | **Control Center** | density *(new)*, top navigation, hover-open, hover delay, width | `[control_center]` |
 | **Wallpaper Browser** | cinematic carousel on/off, card size *(new)* | `[wallpaper]` |
+| **Launcher** | style *(new)*, width, height, icon size, density, key hints *(new)*; show icons, app grid, compact *(moved)* | `[shell.launcher]` |
+| **OSD** | orientation, scale, opacity, border *(moved)*; display duration *(new)* | `[osd]` |
+| **Sounds** | shell sounds, sound volume, volume/mute/notification cue files *(moved from Services → Audio)* | `[audio]` |
+| **Notifications** | scale, opacity, border *(moved)* | `[notification]` |
 
 Group order follows first declaration in the registry. Motion is declared first, so it is what `Super+Alt+A` lands
 on.

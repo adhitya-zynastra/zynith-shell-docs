@@ -148,3 +148,15 @@ was.
   `binds.kdl`.
 - Validation: [`tracks-wallpaper-layout-cc.md`](../../03_Performance/benchmarks/tracks-wallpaper-layout-cc.md).
   Tests 123 / 124.
+
+## Later amendment — launcher, OSD, notifications and audio tracks (2026‑09‑25, `b106c38`)
+
+- **Launcher** — the Zynith style (now the default) with the old launcher kept as `classic`; per-keystroke search
+  measured at 0.23–0.28 ms, so no index or debounce was added.
+- **OSD / notifications** — already one primitive each with temporary surfaces; moved onto glass, OSD hold made
+  configurable, a notification blur-radius bug fixed.
+- **Audio** — microphone mute cue both ways; burst coalescing found to exist already in `SoundPlayer`, so a second
+  mechanism I had Claude add was reverted before commit.
+- → [`transient-ui.md`](../../02_Architecture/transient/transient-ui.md),
+  [`tracks-launcher-osd-notify.md`](../../03_Performance/benchmarks/tracks-launcher-osd-notify.md). Tests 124 / 125.
+

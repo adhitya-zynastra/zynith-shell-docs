@@ -97,8 +97,8 @@ Full detail per phase in [`01_Phases/`](01_Phases/). Cross-phase amendments in
 
 ## Current verified state
 
-- **Commit:** `e521a86` · **working tree:** clean · **build:** clean (`meson compile --clean` then full build),
-  then incremental rebuilds recorded in [`tracks-lock-widgets-motion.md`](03_Performance/benchmarks/tracks-lock-widgets-motion.md)
+- **Commit:** `e521a86` · **working tree:** the fifth batch, **uncommitted** (no-git batch) · **build:** clean
+  (`meson compile --clean` then full build), recorded in [`tracks-cc-lock-visual.md`](03_Performance/benchmarks/tracks-cc-lock-visual.md)
 - **Tests:** 124 / 125 — the single failure (`upower_charge_limit_integration`) is pre-existing and unrelated;
   see [`04_Incidents/known-failures.md`](04_Incidents/known-failures.md)
 - **Config validation:** `niri validate` ✓, `noctalia config validate` ✓

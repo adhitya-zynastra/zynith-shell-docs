@@ -64,14 +64,15 @@ the entire time.
 
 | | |
 |---|---|
-| Commit | `e521a86`, working tree clean, clean build plus recorded incremental rebuilds |
+| Commit | `e521a86`, plus the fifth batch as **uncommitted** changes (run with no git operations by my instruction) — clean build plus recorded incremental rebuilds ([`tracks-cc-lock-visual.md`](03_Performance/benchmarks/tracks-cc-lock-visual.md)) |
 | Tests | 124 / 125 — the single failure is third-party and pre-dates the project |
 | Validation | `niri validate` ✓ · `noctalia config validate` ✓ |
 | Stability | No crashes since the lifetime fixes, across ~40 apply cycles, 14 browse sessions and 40+ panel transitions |
 
 ## What is not done
 
-The launcher redesign and its style variants, lock-screen recomposition and power controls, the broad
+The lock screen's new composition and power controls are built but **not live** — a Phase 2 editor layout in
+`settings.toml` shadows them until I run `noctalia msg lockscreen-widgets-reset`. Still open: the broad
 configurable-shell layout model, the GTK template cost, and **Zynith Settings** — the system-wide settings hub, which
 is designed on paper ([settings-information-architecture.md](02_Architecture/configuration/settings-information-architecture.md))
 and not built. All are listed as **planned** in [`06_Reference/future-work.md`](06_Reference/future-work.md); none is

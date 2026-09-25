@@ -173,3 +173,14 @@ was.
 - Validation: [`tracks-lock-widgets-motion.md`](../../03_Performance/benchmarks/tracks-lock-widgets-motion.md).
   Tests 124 / 125.
 
+## Later amendment — Control Center, lock screen and visual language (2026‑09‑26, uncommitted on `e521a86`)
+
+- **Control Center** — a Zynith style (default; classic kept): Home as a wallpaper hero, tinted quick controls on
+  landscape tiles, display-role titles. Three layout bugs were visible only in the capture and were fixed.
+  → [`panel.md`](../../02_Architecture/control-center/panel.md)
+- **Lock screen** — a focal composition in the preset, researched again. **Found:** the preset has been shadowed by
+  a Phase 2 editor layout since 2026‑09‑20, so the fourth batch's power controls were never live; a reset command
+  was added and not run. → [`composition.md`](../../02_Architecture/lockscreen/composition.md)
+- **Visual language** — one page of shared tokens. → [`visual-language.md`](../../02_Architecture/surface/visual-language.md)
+- Validation: [`tracks-cc-lock-visual.md`](../../03_Performance/benchmarks/tracks-cc-lock-visual.md). Tests 124 / 125.
+

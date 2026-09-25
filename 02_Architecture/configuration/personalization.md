@@ -38,7 +38,7 @@ line, a registry entry (ADR‑0014) — and the only new thing is where the regi
 |---|---|---|
 | **Motion** | animations on/off, speed, preset, four niri trims | `[shell.animation]` |
 | **Glass** | transparency mode, opacity (custom only), blur, blur strength, tint, tint colour, tint strength, borders, border colour, border opacity, shadow | `[shell.glass]` + `[shell.panel]` |
-| **Control Center** | density *(new)*, top navigation, hover-open, hover delay, width | `[control_center]` |
+| **Control Center** | style *(new, fifth batch: `zynith` / `classic`)*, density, top navigation, hover-open, hover delay, width | `[control_center]` |
 | **Wallpaper Browser** | cinematic carousel on/off, card size *(new)* | `[wallpaper]` |
 | **Launcher** | style *(new)*, width, height, icon size, density, key hints *(new)*; show icons, app grid, compact *(moved)* | `[shell.launcher]` |
 | **OSD** | orientation, scale, opacity, border *(moved)*; display duration *(new)* | `[osd]` |
@@ -93,3 +93,15 @@ I reported options that changed nothing. Claude traced every Personalization key
 | Motion, Sounds, wallpaper card size, CC hover | live | — |
 
 Runtime confirmation of the Glass-on-bars change is still outstanding (see the validation record).
+
+## Fifth batch additions (2026‑09‑26)
+
+| Key | Where it is set | Control |
+|---|---|---|
+| `[control_center].style` — `zynith` (default) / `classic` | Personalization → Control Center | segmented; lands on the next open (the panel is built on open) |
+| `[shell].display_font_family` — empty = the interface font | Appearance → Interface, beside the interface font | text or font picker, placeholder "Interface font" |
+| clock widget `weight` — `light` / `regular` / `bold` (default `bold`) | desktop and lock screen widget editors, digital clocks only | segmented |
+
+The display font is an appearance-wide typography role, not a Control Center option, so it sits beside `font_family`
+rather than in a Personalization group — one owner per property (ADR‑0016). The lock screen composition itself is not
+a setting: it is the preset in `lockscreen.toml`, and the editor's changes are overrides in `settings.toml`.

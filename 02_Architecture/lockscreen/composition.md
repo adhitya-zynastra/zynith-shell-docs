@@ -65,3 +65,76 @@ only) is untouched and still off in my preset.
 
 **Not tested by running a real lock**, by standing rule (lockout risk on a daily-driver machine). The composition was
 checked in the lock screen editor, which renders the same widgets without locking; see the validation record.
+
+> **Amendment (2026‑09‑26).** The power controls described above were **never on the real lock screen**: a
+> `settings.toml` layout saved by the editor in Phase 2 shadowed `lockscreen.toml`, and its `widget_order` did not
+> list the new widget. The fourth-batch editor capture that "showed an application window" is why this went
+> unnoticed. See *The preset was never live — and the way back* below.
+
+## Zynith composition (fifth batch, 2026‑09‑26)
+
+**Research, again, and what it changed.** The fourth batch kept my single vertical stack. Re-reading the same
+references with the question "where does the eye land first?" gave a different answer: in the Material lock screen
+the clock *is* the screen and everything else is a margin; Hyprlock setups that read well separate "what time is it"
+from "sign in" by distance, not by boxes; Caelestia treats the lock as an atmosphere rather than a form. The brief
+also named **Airlock**: I had Claude search for it and it could not identify a lock screen by that name (the nearest
+result was *aerial-lock*, a Quickshell `ext-session-lock` client, which was not studied). Nothing below is taken from
+it.
+
+My fourth-batch stack gave the visualiser, avatar, time, date and password equal spacing, so the time did not lead,
+and the visualiser — the most animated element — sat at the top, pulling the eye away from the clock.
+
+**Composition** (`~/.config/noctalia/lockscreen.toml`, the preset; the editor writes user changes to
+`settings.toml`):
+
+```
+                                                          ⏻ ⏾ ↻ ⎋    power: its own corner
+                          22:27                     ← focal: large, light weight, no seconds
+                   Saturday, 26 September           ← one quiet line
+                          ( ◉ )
+                       M.S. Adhitya                 ← who is signing in …
+                    (  ••••••••••  )                ← … directly above where they authenticate
+   ♪ media                                  ☁ 24°   ← periphery: small glass tiles, low emphasis
+ ▁▂▃▅▃▂▁▂▃▅▆▅▃▂▁▂▃▂▁▂▃▅▃▂▁▂▃▅▆▅▃▂▁▂▃▂▁▂▃▅▃▂▁▂▃▅▆   ← ambient horizon, primary → tertiary, only while audio plays
+```
+
+| Decision | Setting |
+|---|---|
+| The time is the one focal element: larger, **light** weight, no seconds (a ticking seconds field is motion competing with the clock) | clock `format = "{:%H:%M}"`, new clock `weight = "light"` |
+| The date is secondary: small, on-surface-variant | second clock widget, `weight = "regular"` |
+| Identity sits directly on the password — one authentication group | identity `cy = 716`, login box `cy = 826`, `compact` layout, no unlock hint |
+| The visualiser becomes a horizon: full width, bottom edge, no background, hidden when silent | `audio_visualizer`, `anchor = "bottom"`, `show_when_idle = false` |
+| Media and weather are the periphery, bottom corners, glass at 0.30, 16 px radius (the outer-surface radius) | `anchor = "bottom_left"` / `"bottom_right"`, `hide_when_no_media = true` |
+| Power leaves the composition for the top-right corner | `session_actions`, `anchor = "top_right"` |
+| The wallpaper stays the picture: slightly more blur, a palette tint for legibility, never a capture of the desktop | `blurred_desktop = false`, `blur_intensity = 0.16`, `tint_intensity = 0.44` |
+
+Every widget carries an `anchor`, so on another output size each keeps its distance from its edge or from the centre
+instead of scaling ([`responsive-layout.md`](../layout/responsive-layout.md)). Every colour is a palette role.
+
+**Code change for this:** the desktop/lock clock widget gained a `weight` setting (`light` / `regular` / `bold`,
+default `bold` = the previous look), offered by the widget editor for digital clocks.
+
+**Security boundary — unchanged.** `LockSurface`, the PAM conversation, `ext-session-lock-v1`, the login box's
+password path and the `session_actions` widget are unchanged from `e521a86`. The composition is configuration plus
+one generic clock setting. Two lock-adjacent changes were made, neither on the authentication path:
+the login box's *editor settings schema* gained `anchor` (placement metadata that placement already read), and the
+widget controller gained a reset command (below).
+
+### The preset was never live — and the way back
+
+**Finding (2026‑09‑26).** When I had Claude open the lock screen editor on an empty workspace, it showed my Phase 2
+composition, not this preset: visualiser at the top, `HH:MM:SS`, media and weather as a centre strip, no identity
+and no power controls. The cause is ownership. The editor saves its whole snapshot, `widget_order` included, as
+`settings.toml` overrides. That table has existed since at least 2026‑09‑20 (it is in the `phase3b` backup). An
+override `widget_order` replaces the preset's, and **a widget missing from the order is dropped**. So every widget
+added to `lockscreen.toml` since Phase 2 has been invisible on the real lock screen — including the fourth batch's
+power controls.
+
+**What was changed.** `noctalia msg lockscreen-widgets-reset` clears only the `[lockscreen_widgets]` overrides; the
+reload rebuilds from `lockscreen.toml`. It refuses while the editor is open, since the editor's exit would write
+the old snapshot back, and while the session is locked. The shadowing and the reset are covered by
+`zynith_config_ownership_test`.
+
+**What was not done.** The reset was **not run**. It discards the saved Phase 2 layout, and choosing between that
+layout and this preset is my decision, not the assistant's. Until I run it, the lock screen shows the Phase 2
+layout — with this batch's `anchor` and `weight` keys merged in by the editor's exit during the test.

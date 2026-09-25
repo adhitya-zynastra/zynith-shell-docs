@@ -163,3 +163,36 @@ rhythm through `ui::responsive::space` — see [`responsive-layout.md`](../layou
 the next time the panel opens. The Control Center's appearance options (density, top navigation, hover-open, hover
 delay, width) moved to **Personalization → Control Center**; its functional options (tabs, shortcuts, sidebar
 modes, placement) stay in its own section (ADR‑0017).
+
+## Zynith style (fifth batch, 2026‑09‑26)
+
+`[control_center].style = "zynith" | "classic"` (Personalization → Control Center). **Zynith is the default; Classic
+is the previous panel**, and every Zynith path sits behind the flag, as with the launcher.
+
+**What changed, and why.** The Home section was a column of equal cards: a user card, a separate date/time card,
+then shortcut buttons as solid primary blocks. Each element carried the same visual weight, so nothing led. The Zynith
+style keeps every function but changes the hierarchy:
+
+| Element | Classic | Zynith |
+|---|---|---|
+| Home — time and date | its own card beside the user card | the **hero**: 60 px Light time over date and weather, in the lower left of the wallpaper banner — the banner becomes the stage instead of a card background |
+| Home — identity | name, host, version, uptime beside a ≈ 114 px avatar | name and uptime only, lower right of the same banner, beside a ≈ 64 px avatar |
+| Quick controls | near-square tiles; solid `primary` when on, solid surface when off | landscape tiles (height 0.62 × width); the shared selection material: `primary` 0.18 tint + 0.55 primary hairline when on, card fill + 0.07 hairline when off |
+| Section title | Title size, bold, primary | header size, medium weight, on-surface, display face — the title names the section, the indicator carries the colour |
+| Navigation | the batch‑4 morph indicator | unchanged — the one moving shared object |
+
+The banner's height is **measured** from the clock column (`Node::measure`) plus headroom, rather than estimated,
+so a different display face or font size cannot overflow it. The date is `[shell].date_format`, which the preset now
+sets to `"%A, %d %B"`.
+
+The hero keeps both existing interactions: the wallpaper overlay (click/keyboard → wallpaper) and a new invisible
+overlay on the clock that opens Weather, as the classic date/time card did. The hero does not use the hover-card
+treatment — the banner stays a picture, not a button.
+
+**Not done**, deliberately: no new sections, no rearrangement of Audio/Network/Bluetooth/Media/Calendar/System
+contents, and no second animation engine. The other sections change only through the shared title, control material
+and radius.
+
+Evidence: `07_Assets/screenshots/cc-home-zynith.png`, `cc-home-classic.png`, `cc-morph-rapid.png`; validation in
+[`tracks-cc-lock-visual.md`](../../03_Performance/benchmarks/tracks-cc-lock-visual.md). The first build of this
+design had three layout bugs, which only the capture showed; they are recorded there.

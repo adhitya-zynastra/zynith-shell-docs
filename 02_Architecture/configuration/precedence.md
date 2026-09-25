@@ -59,6 +59,10 @@ owner per key, which is the point of [ADR‑0014](../../05_Decisions/ADRs/ADR-00
   `06_Reference/troubleshooting/index.md` (symptom "bar widget missing").
 - A Phase 1 edit once removed the wrong `font_family` line from `settings.toml` because a regex matched the
   desktop widget's key first. Recovery is documented in `01_Phases/Phase_1/bugs.md`.
+- The same pattern, for the lock screen: a Phase 2 editor save put the whole `[lockscreen_widgets]` layout in
+  `settings.toml`. Arrays such as `widget_order` are replaced, not merged, so every widget added to
+  `lockscreen.toml` afterwards was dropped. **VERIFIED** 2026‑09‑26. `noctalia msg lockscreen-widgets-reset` clears
+  that table; see [`composition.md`](../lockscreen/composition.md).
 
 ## Live reload
 

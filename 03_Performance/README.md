@@ -51,6 +51,7 @@ widely-included header are invalid; see `benchmarks/contaminated-measurements.md
 | `benchmarks/template-apply.csv` | Cost of a palette change: process forks, shell CPU, enabled-template inventory |
 | `benchmarks/tracks-motion-glass.md` + `tracks-motion-glass-ab.csv` | Motion/Personalization/Glass validation, matched-pace A/B |
 | `benchmarks/tracks-lock-widgets-motion.md` | Lock screen, widgets, motion, and the correction queue: coordinate model, cue timing |
+| `benchmarks/tracks-cc-lock-visual.md` | Zynith Control Center, lock screen preset, visual language: visual-inspection bugs, morph frames, CC open/close cost, the shadowed lock preset |
 | `benchmarks/tracks-launcher-osd-notify.md` | Launcher, OSD, notification and audio-cue validation: lifecycle, query cost, cue coalescing |
 | `benchmarks/tracks-wallpaper-layout-cc.md` | Responsive carousel, wallpaper lifecycle, Control Center routing and input validation |
 | `benchmarks/phase6a-motion.md` + `phase6a-*.csv` | Motion refactor: interleaved A/B, stress, and two measurement mistakes |

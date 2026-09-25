@@ -66,3 +66,11 @@ sounding (315 ms), so the chime a user heard often belonged to an older notifica
 
 Media-bar click position; lock screen composition, arming and shake at runtime; CC morph frames; Glass tint on bars
 and attached panels at runtime (code path only); wallpaper carousel toggle applying on next open (code path only).
+
+## Amendment — 2026‑09‑26
+
+The lock screen rows above were right to say "not visually verified". The fifth batch found that the preset these
+rows describe never reached the real lock screen: a Phase 2 editor save in `settings.toml` shadows `lockscreen.toml`,
+including its `widget_order`, so the `session_actions` widget was dropped. Details and the reset command:
+[`composition.md`](../../02_Architecture/lockscreen/composition.md),
+[`tracks-cc-lock-visual.md`](tracks-cc-lock-visual.md).

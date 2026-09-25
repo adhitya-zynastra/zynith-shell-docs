@@ -3,6 +3,39 @@
 Commit hashes refer to `~/.local/src/noctalia-lockfade/source`. Dates are git author dates (local time).
 Entries are grouped by kind, as required by the documentation policy.
 
+## Control Center, Lock Screen and Visual Language — 2026‑09‑26 (uncommitted, on `e521a86`)
+
+This batch was run with **no git operations**, by instruction. Changes are in the implementation's working tree,
+not a commit. Files: `config_types.h`, `config_schema.cpp`, `control_center_panel.cpp`,
+`tabs/home_tab.{h,cpp}`, `desktop_clock_widget.{h,cpp}`, `desktop_widget_factory.cpp`,
+`desktop_widget_settings_registry.cpp`, `settings_registry.cpp`, `lockscreen_widgets_controller.cpp`,
+`cli/schema_msg.h`, `assets/translations/en.json`, `docs/user/ipc/surfaces.mdx`, two tests. Configuration:
+`~/.config/noctalia/rice.toml`, `~/.config/noctalia/lockscreen.toml` (backups in
+`~/.config/rice-backups/20260926-020006-batch5/`).
+
+### Features
+- `[control_center].style` (`zynith` default, `classic` = the previous panel): Home becomes a wallpaper hero (60 px
+  Light time, date, weather; quiet identity), quick controls use the tinted selection material on landscape tiles,
+  section titles use the display role
+- `[shell].display_font_family` — the display typography role; empty = the interface font
+- Clock widget `weight` (`light` / `regular` / `bold`) for the desktop and lock screen
+- Lock screen preset recomposed: focal time, identity on the password, a peripheral media/weather pair, an ambient
+  horizon visualiser, power in its own corner — all anchored
+- `noctalia msg lockscreen-widgets-reset` — returns the lock layout to the preset (clears the editor's overrides)
+
+### Fixed
+- Login box lacked `anchor` in its settings schema (validation warning; the editor could not offer it)
+- Preset `date_format = "%A, %d %B"` replaces the numeric default date
+
+### Found
+- The lock screen preset has been shadowed by a Phase 2 editor save since 2026‑09‑20; the fourth batch's power
+  controls were never live. The reset is provided, **not run**
+- Hangul text renders blank (Wi‑Fi tile, Network list) — pre-existing, not investigated
+
+### Tests
+- `transient_ui_config_test` (CC style, display font), `zynith_config_ownership_test` (lock layout shadowing and
+  reset); suite 124 / 125
+
 ## Lock Screen, Widgets, Motion and Corrections — 2026‑09‑26
 
 ### Architecture

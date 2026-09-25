@@ -15,7 +15,9 @@ REPORT = [
     ("Architecture",                 ["ARCHITECTURE.md", "02_Architecture/system/layers.md",
                                       "02_Architecture/configuration/precedence.md",
                                       "02_Architecture/configuration/configurability.md",
-                                      "02_Architecture/configuration/zynith-corner.md",
+                                      "02_Architecture/configuration/personalization.md",
+                                      "02_Architecture/configuration/settings-information-architecture.md",
+                                      "02_Architecture/layout/responsive-layout.md",
                                       "02_Architecture/surface/glass.md",
                                       "02_Architecture/animation/lifetime-and-motion.md",
                                       "02_Architecture/animation/motion-settings.md",
@@ -38,6 +40,7 @@ REPORT = [
                                       "03_Performance/optimization-log.md",
                                       "03_Performance/benchmarks/phase6a-motion.md",
                                       "03_Performance/benchmarks/tracks-motion-glass.md",
+                                      "03_Performance/benchmarks/tracks-wallpaper-layout-cc.md",
                                       "03_Performance/benchmarks/contaminated-measurements.md"]),
     ("Reliability and Incidents",    ["04_Incidents/postmortems/2026-09-20-signal-uaf.md",
                                       "04_Incidents/postmortems/2026-09-21-incremental-build-abi-skew.md",
@@ -98,8 +101,22 @@ SHOTS = [
     ("settings-motion-before.png",
      "Settings \u2192 Appearance before the motion migration \u2014 the Motion group holds two entries, and the "
      "Overridden filter and Reset Page control that ADR-0014 depends on already exist"),
-    ("zynith-corner-motion.png",
-     "Zynith Corner, opened by Super+Alt+A: one section for Zynith's own customization, landing on Motion"),
+    ("personalization-motion.png",
+     "Personalization, opened by Super+Alt+A: one section for Zynith's own customization, landing on Motion"),
+    ("personalization-groups.png",
+     "Personalization with its four groups: Motion, Glass, Control Center and Wallpaper Browser. Control Center "
+     "appearance options moved here from the Control Center section; none is duplicated"),
+    ("carousel-1920.png",
+     "The responsive carousel at 1920 px: the same five cards and 21\u00b0 step as before the change"),
+    ("carousel-3200.png",
+     "The same laptop at niri scale 0.6 (logical 3200 px): the card keeps its size and the arc gains a pair "
+     "of neighbours"),
+    ("cc-routing.png",
+     "Bar widgets routed to their Control Center sections \u2014 network, bluetooth, volume, brightness, battery. "
+     "Five clicks, one panel open: every switch after the first retargeted in place"),
+    ("cc-density.png",
+     "Control Center density compact, comfortable and spacious: only the frame rhythm changes. The network "
+     "details row is redacted"),
     ("glass-tint-compare.png",
      "Glass on the launcher: default (left) and a 0.35 primary tint (right) \u2014 the tint is a palette role, "
      "so it follows the wallpaper"),

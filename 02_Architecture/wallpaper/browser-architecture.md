@@ -69,6 +69,16 @@ Consequences worth knowing:
 - **Visible card count is derived, not fixed**: the layout walks outward until a card would be illegible
   (< 0.42 drawn scale) or fully outside the viewport, capped at 3 per side. On this display that resolves to
   **5 cards**.
+
+> **Amendment, 2026‑09‑25 (three-track batch 2).** The count was derived, but because the card was 40 % of the
+> band and the stride a fixed ratio of the card, the geometry was scale-invariant: every display resolved to the
+> same 5 cards, only larger. The card is now sized from a preference (`[wallpaper].carousel_card_width`, 760) and
+> only *bounded* by the band (at the old 40 %), and the 21° step is replaced by a fixed 63° arc spread over as many
+> cards as the band carries (at most 6 per side). A card now counts as visible only if a fifth of it shows past the
+> card in front — the old "partly on screen" test ignored occlusion. The laptop still resolves to 5 cards at exactly
+> 21°; logical 3200 was seen to resolve to 7; 3440 computes to 7 and 3840 to 9. Details and the full table:
+> [`responsive-layout.md`](../layout/responsive-layout.md). The `θ = u · kAngleStepRad` line above now reads
+> `θ = u · angleStep`, with `angleStep` resolved per layout, and the card pool grew from 16 to 21 slots.
 - **Hit-testing walks the drawn rects front-to-back** (`m_slotGeometry`, nearest depth wins), so overlapping cards
   resolve exactly as painted.
 - **The hit-test overlay sits above the cards** (`kOverlayZIndex = 5000` vs card z ≤ 1000). It has to:
@@ -116,6 +126,15 @@ display-quality decode overlaps the settle animation instead of starting after i
 keep their own tag and survive; referenced entries are not idle at all. **The desktop wallpaper is never at risk —
 it lives in `SharedTextureCache`, a different cache entirely.**
 
+### Lifecycle, re-verified 2026‑09‑25
+
+The responsive change added cards on wide outputs but no new resource path, so I had Claude re-run the lifecycle on
+the final build rather than redesign anything. One browsing session over 168 wallpapers, about 120 traversal steps
+at 25–28 per second by wheel and keyboard, one neighbour click and one apply: **181 decodes** (168 previews + 13
+display-tier), 336 cache hits, **0 evictions**, peak idle 64.7 MB; RSS 175.7 MiB before open, 194.7 MiB just after
+open, 177.8 MiB 3 s and 8 s after close; threads constant at 34. Full conditions in the
+[validation record](../../03_Performance/benchmarks/tracks-wallpaper-layout-cc.md).
+
 ## Focus ≠ apply
 
 A standing, tested invariant:
@@ -126,7 +145,8 @@ A standing, tested invariant:
 | `Enter`, or clicking the **already-focused** card | apply, via the unchanged `applyWallpaperFromEntry()` |
 
 Re-activating the same wallpaper within 600 ms is treated as one gesture, so a double-click does not run palette
-extraction and a wallpaper transition twice.
+extraction and a wallpaper transition twice. Re-verified on the final build: a double-click 120 ms apart logged one
+`applied wallpaper` and one `ignoring repeat apply … within the double-click guard`.
 
 ## Live backdrop
 

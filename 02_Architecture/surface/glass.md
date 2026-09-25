@@ -32,10 +32,10 @@ change re-tints every glass surface without anything needing to re-apply its sty
 | Tint on/off | `shell.glass.tint` | |
 | Tint colour | `shell.glass.tint_role` | primary / secondary / tertiary / surface_variant |
 | Tint strength | `shell.glass.tint_strength` 0–1 | RGB mix; never changes opacity |
-| Border on/off | `shell.panel.borders` | unchanged key, moved into Zynith Corner |
+| Border on/off | `shell.panel.borders` | unchanged key, moved into Personalization |
 | Border colour | `shell.glass.border_role` | outline / primary / secondary / tertiary / surface_variant |
 | Border opacity | `shell.glass.border_opacity` 0–1 | scales the fill's alpha, as the border always has |
-| Shadow | `shell.panel.shadow` | unchanged key, moved into Zynith Corner |
+| Shadow | `shell.panel.shadow` | unchanged key, moved into Personalization |
 | Radius | `shell.corner_radius_scale` | unchanged, global; not duplicated here |
 
 The existing keys were kept where they already meant the right thing. Adding a second border toggle or a second
@@ -49,7 +49,7 @@ and make no sense as a tint, so they are not offered.
 I expected per-surface blur strength. niri does not support it. A shell surface can only *request* blur for a
 region (`ext-background-effect`); how strong that blur is comes from niri's single top-level `blur {}` node, and a
 second `blur` node is a hard config error. So `blur_strength` generates `~/.config/niri/rice/glass.kdl`, through
-the same validated writer as motion, and it affects every blurred surface — windows included. The Zynith Corner
+the same validated writer as motion, and it affects every blurred surface — windows included. The Personalization
 description says so.
 
 The 0–100 scale is intent-level rather than exposing niri's `passes` and `offset`, which a user cannot reason

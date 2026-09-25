@@ -124,7 +124,27 @@ Three foundation systems, built as system tracks inside Phase 6 rather than as a
   retired; `Super+Alt+A` opens Zynith Corner. The migrated desktop reproduces the plugin's last output byte for
   byte. → [`motion-settings.md`](../../02_Architecture/animation/motion-settings.md), ADR‑0015 amendment
 - **Zynith Corner** — a section in the existing settings window, not a new panel.
-  → [`zynith-corner.md`](../../02_Architecture/configuration/zynith-corner.md)
+  → [`personalization.md`](../../02_Architecture/configuration/personalization.md)
 - **Glass** — a shared surface model over the semantic palette, consumed by floating panels first.
   → [`glass.md`](../../02_Architecture/surface/glass.md), ADR‑0016
 - Validation: [`tracks-motion-glass.md`](../../03_Performance/benchmarks/tracks-motion-glass.md). Tests 122 / 123.
+
+## Later amendment — wallpaper, responsive layout and Control Center tracks (2026‑09‑25)
+
+The second set of system tracks: `b49ec4e` (responsive layout + carousel), `09990f8` (Control Center), `c5dd72d`
+(Personalization). The amendment above still says "Zynith Corner"; that was the name at the time and is left as it
+was.
+
+- **Zynith Corner → Personalization.** Renamed because the name described a brand, not the contents; Control Center
+  and Wallpaper Browser groups added; the future system-wide **Zynith Settings** hub is designed on paper only.
+  → [ADR‑0017](../../05_Decisions/ADRs/ADR-0017-personalization-and-zynith-settings.md),
+  [`settings-information-architecture.md`](../../02_Architecture/configuration/settings-information-architecture.md)
+- **Responsive layout** — a small primitive, first used by the wallpaper carousel: 1920 keeps its 5 cards, logical
+  3200 was seen to show 7. The first version passed its unit test and was wrong on screen; the runtime check caught
+  it. → [`responsive-layout.md`](../../02_Architecture/layout/responsive-layout.md)
+- **Control Center** — routing and in-place retargeting already existed; the clock route, density, Ctrl+Tab and a
+  fix for the clock-click/hover-open collision were added. → [`panel.md`](../../02_Architecture/control-center/panel.md)
+- **Input** — niri's native Mod+drag move/resize verified; a held-shortcut spawn storm found in the log and fixed in
+  `binds.kdl`.
+- Validation: [`tracks-wallpaper-layout-cc.md`](../../03_Performance/benchmarks/tracks-wallpaper-layout-cc.md).
+  Tests 123 / 124.

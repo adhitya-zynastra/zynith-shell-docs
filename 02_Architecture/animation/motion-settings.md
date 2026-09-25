@@ -1,6 +1,6 @@
 # Motion Settings — One Surface, One Owner
 
-**Status:** **complete** (2026‑09‑25). One owner (`[shell.animation]`), one UI (Zynith Corner → Motion), one
+**Status:** **complete** (2026‑09‑25). One owner (`[shell.animation]`), one UI (Personalization → Motion), one
 generator (the shell). The Phase 6A sections below are kept as the record of how it got here.
 
 ## What I wanted
@@ -169,7 +169,7 @@ The latent conflict described at the top of this page is gone, because there is 
 | Piece | Before | Now |
 |---|---|---|
 | Source of truth | plugin's `motion.json` **and** `[shell.animation]` | `[shell.animation]` only |
-| Where it is set | plugin panel (`Super+Alt+A`) **and** Appearance → Motion | Zynith Corner → Motion (`Super+Alt+A` opens it) |
+| Where it is set | plugin panel (`Super+Alt+A`) **and** Appearance → Motion | Personalization → Motion (`Super+Alt+A` opens it) |
 | `[shell.animation]` writer | plugin → `motion.toml` | the Zynith preset in `rice.toml`; the user's changes in `settings.toml` |
 | `animations.kdl` generator | plugin, only when its panel committed | the shell, on every config change that alters it |
 | Speed semantics | direct shell multiplier | **global**: shell = 0.8 × preset × speed, niri slowdown = 1/speed |

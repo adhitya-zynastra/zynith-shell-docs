@@ -3,6 +3,28 @@
 Commit hashes refer to `~/.local/src/noctalia-lockfade/source`. Dates are git author dates (local time).
 Entries are grouped by kind, as required by the documentation policy.
 
+## Wallpaper, Responsive Layout and Control Center — 2026‑09‑25
+
+### Architecture
+- `ui::responsive` — extent resolution, fit count and density spacing; no engine, nothing per frame — `b49ec4e`
+- Carousel geometry extracted to `carousel_geometry.h`; the focused card is sized from a preference and the arc fits as many cards as are genuinely visible — `b49ec4e`
+- "Zynith Corner" renamed **Personalization**; Control Center and Wallpaper Browser groups; future Zynith Settings hub documented, not built (ADR‑0017) — `c5dd72d`
+
+### Features
+- `[wallpaper].carousel_card_width` (400–1400, default 760); wider outputs gain neighbours rather than bigger cards — `b49ec4e`
+- `[control_center].density` (compact / comfortable / spacious) — `09990f8`
+- Ctrl+Tab / Ctrl+Shift+Tab / Ctrl+PgUp / Ctrl+PgDn cycle Control Center sections — `09990f8`
+- Clock click opens the Control Center at Home (`[widget.clock.actions]` in `rice.toml`; preset, not code)
+- niri `mod-key "Super"` stated explicitly; native Mod+drag move/resize documented and verified
+
+### Fixed
+- A clock click after hover-open toggled the panel shut once both routes opened Home; it now confirms the open — `09990f8`
+- The first responsive carousel counted occluded slivers as visible cards; caught at runtime and fixed before commit — `b49ec4e`
+- Holding a `noctalia msg` shortcut re-spawned it on every key repeat (seen: 13 wallpaper-panel toggles in 5 s); 17 binds now `repeat=false`
+
+### Tests
+- `responsive_layout_test`; suite 123 / 124
+
 ## Motion, Zynith Corner and Glass — 2026‑09‑25
 
 ### Architecture

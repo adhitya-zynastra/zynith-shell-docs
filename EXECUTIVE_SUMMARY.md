@@ -8,7 +8,7 @@ If you have ten minutes and you are about to inherit this project, read this pag
 **Zynith Shell** is my desktop environment for Fedora 44, built on the niri Wayland compositor and a locally
 patched Noctalia 5.1.0 shell. The design work began roughly four to five months earlier; the **live
 implementation** documented in these phases ran on my daily-driver laptop between **2026‑09‑19** and
-**2026‑09‑21**, with **Claude Code as my engineering assistant**. It is documented here at commit **`8c2b4eb`**.
+**2026‑09‑21**, with **Claude Code as my engineering assistant**. It is documented here at commit **`c5dd72d`**.
 
 I started it because I wanted a machine I actually control — one where I know what is running, know why, and can
 change it. That began as frustration with Windows deciding what my hardware spent itself on, went through Fedora
@@ -64,17 +64,19 @@ the entire time.
 
 | | |
 |---|---|
-| Commit | `8c2b4eb`, working tree clean, clean build |
-| Tests | 122 / 123 — the single failure is third-party and pre-dates the project |
+| Commit | `c5dd72d`, working tree clean, clean build plus recorded incremental rebuilds |
+| Tests | 123 / 124 — the single failure is third-party and pre-dates the project |
 | Validation | `niri validate` ✓ · `noctalia config validate` ✓ |
 | Stability | No crashes since the lifetime fixes, across ~40 apply cycles, 14 browse sessions and 40+ panel transitions |
 
 ## What is not done
 
-Morph transitions, the launcher redesign and its style variants, lock-screen recomposition and power controls, the
-broad configurability architecture, folding settings into one surface, and the GTK template cost. All are listed as
-**planned** in [`06_Reference/future-work.md`](06_Reference/future-work.md); none is described as complete anywhere
-in this set. The Zynith security and privacy layer is **future architecture only** — nothing of it is implemented.
+The launcher redesign and its style variants, lock-screen recomposition and power controls, the broad
+configurable-shell layout model, the GTK template cost, and **Zynith Settings** — the system-wide settings hub, which
+is designed on paper ([settings-information-architecture.md](02_Architecture/configuration/settings-information-architecture.md))
+and not built. All are listed as **planned** in [`06_Reference/future-work.md`](06_Reference/future-work.md); none is
+described as complete anywhere in this set. (Until 2026‑09‑25 this list also named morph transitions and folding
+settings into one surface; those are done — see the Phase 6 amendments.) The Zynith security and privacy layer is **future architecture only** — nothing of it is implemented.
 
 ## How to inherit this
 

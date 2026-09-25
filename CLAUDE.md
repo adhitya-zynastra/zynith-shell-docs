@@ -1,7 +1,7 @@
 # Zynith Shell — engineering documentation
 
 This repository is the owner's engineering record of Zynith Shell. The implementation lives elsewhere, at
-`~/.local/src/noctalia-lockfade/source` (currently `8c2b4eb`).
+`~/.local/src/noctalia-lockfade/source` (currently `c5dd72d`).
 
 **Markdown is canonical.** DOCX and PDF under `99_Reports/generated/` are build artifacts — never edit them by
 hand, and they are gitignored.

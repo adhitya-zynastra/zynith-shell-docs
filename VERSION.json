@@ -1,10 +1,10 @@
 {
-  "documentation_version": "1.6",
+  "documentation_version": "1.7",
   "generated": "2026-09-21",
   "source_repository": "/home/adhitya/.local/src/noctalia-lockfade/source",
-  "source_commit": "ccfe125",
+  "source_commit": "a147fc1",
   "last_audited_phase": 6,
-  "last_audited_commit": "ccfe125",
+  "last_audited_commit": "a147fc1",
   "canonical_format": "markdown",
   "generated_formats": [
     "docx",
@@ -23,7 +23,7 @@
     "compositor": "niri 26.04",
     "shell": "noctalia 5.1.0 (patched, local build)"
   },
-  "last_revised": "2026-09-21",
+  "last_revised": "2026-09-25",
   "authorship": {
     "owner": "project owner (first-person voice throughout)",
     "assistant": "Claude Code \u2014 implementation, investigation, measurement and drafting, under the owner's direction"

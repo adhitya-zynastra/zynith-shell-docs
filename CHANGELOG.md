@@ -3,6 +3,19 @@
 Commit hashes refer to `~/.local/src/noctalia-lockfade/source`. Dates are git author dates (local time).
 Entries are grouped by kind, as required by the documentation policy.
 
+## Phase 6A — 2026‑09‑25
+
+### Architecture
+- `MorphTransition` — shared, retargetable transition leg over `AnimationManager`; no new engine — `a147fc1`
+- Control Center section navigation consumes it; visual behaviour unchanged — `a147fc1`
+- ADR‑0015: shell to own niri animation generation, Motion plugin to be retired (decided, not implemented)
+
+### Tests
+- `morph_transition_test`; suite now 119 / 120
+
+### Documentation
+- Correction: out-of-range config values are clamped silently, not reported (`configurability.md`)
+
 ## Phase 6 — 2026‑09‑20 → 2026‑09‑21
 
 ### Fixed

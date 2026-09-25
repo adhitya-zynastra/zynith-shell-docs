@@ -94,9 +94,28 @@ the model to be usable, and both are buildable because the machinery is already 
 | **Migration** | `config_migrations.cpp`, versioned. A renamed or removed Zynith key gets a migration, never a silent drop |
 | **Reset / default** | `clearOverride(path)` — **delete the override**, never write the current default |
 | **Precedence** | defaults → `~/.config/noctalia/*.toml` (alphabetical) → `settings.toml`. Documented in [`precedence.md`](precedence.md) |
-| **Invalid values** | Rejected by validation with a diagnostic carrying the originating file and line; the previous valid value stands |
+| **Invalid values** | *Corrected in Phase 6A — see below.* An unknown enum value is warned about with file and line and falls back. Out-of-range and wrong-typed values are handled safely but **silently** |
 | **Subsystem boundaries** | Each subsystem owns one config sub-table (`[shell.launcher]`, `[shell.animation]`, …) and reads nothing outside it |
 | **UI exposure** | An entry in `settings_registry.cpp` binding a section, group, label, dotted path and control type |
+
+## Correction: invalid values are not always reported
+
+The table above originally said invalid values are *"rejected by validation with a diagnostic carrying the
+originating file and line"*. **That was only true for enums**, and I wrote it without testing it. Checked in
+Phase 6A by validating a throwaway config directory:
+
+| Input | What happens | Reported? |
+|---|---|---|
+| `preset = "warp9"` | falls back to the default | ✓ warning, with file:line |
+| `niri_open = 250` | clamped to 200 by `applyRange()` | ✗ silent |
+| `niri_close = -5` | clamped to 0 | ✗ silent |
+| `niri_movement = "fast"` | ignored; the default stands | ✗ silent |
+| `speed = 0.01` (an upstream field) | clamped to 0.1 | ✗ silent |
+
+The behaviour is safe and deterministic, and it is upstream's — the integer and float `field()` overloads in
+`schema/field.h` never touch their `Diagnostics&` parameter. But a user who types `niri_open = 250` gets 200 with
+no explanation. Adding diagnostics would change every ranged field in the parser, which is outside a motion
+phase; it is recorded in `future-work.md`.
 
 ## What becomes configurable, and what does not
 

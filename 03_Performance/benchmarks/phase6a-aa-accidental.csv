@@ -1,0 +1,25 @@
+# INVALID AS A/B: cp failed with 'Text file busy' so every round ran the SAME binary. Kept because it is accidentally an A/A test and quantifies restart-to-restart noise.
+cp: cannot create regular file '/home/adhitya/.local/opt/noctalia/bin/noctalia': Text file busy
+# A1 version=(ccfe125f1c29-dirty) media_playing=0
+AA-invalid-as-AB-A1-openclose-a,20,0.35,110.0,+1864,+0
+AA-invalid-as-AB-A1-openclose-b,20,0.35,110.5,+240,+0
+AA-invalid-as-AB-A1-complete-a,30,0.45,71.0,64.3,203,+4148
+AA-invalid-as-AB-A1-complete-b,30,0.45,65.0,63.0,198,+312
+cp: cannot create regular file '/home/adhitya/.local/opt/noctalia/bin/noctalia': Text file busy
+# B1 version=(ccfe125f1c29-dirty) media_playing=0
+AA-invalid-as-AB-B1-openclose-a,20,0.35,111.5,+1800,+0
+AA-invalid-as-AB-B1-openclose-b,20,0.35,109.5,+348,+0
+AA-invalid-as-AB-B1-complete-a,30,0.45,89.0,70.0,232,+4204
+AA-invalid-as-AB-B1-complete-b,30,0.45,74.3,67.7,212,+292
+cp: cannot create regular file '/home/adhitya/.local/opt/noctalia/bin/noctalia': Text file busy
+# A2 version=(ccfe125f1c29-dirty) media_playing=0
+AA-invalid-as-AB-A2-openclose-a,20,0.35,107.5,+1984,+0
+AA-invalid-as-AB-A2-openclose-b,20,0.35,103.0,+204,+0
+AA-invalid-as-AB-A2-complete-a,30,0.45,65.3,64.0,182,+4044
+AA-invalid-as-AB-A2-complete-b,30,0.45,63.0,64.7,179,+80
+cp: cannot create regular file '/home/adhitya/.local/opt/noctalia/bin/noctalia': Text file busy
+# B2 version=(ccfe125f1c29-dirty) media_playing=0
+AA-invalid-as-AB-B2-openclose-a,20,0.35,113.5,+2024,+0
+AA-invalid-as-AB-B2-openclose-b,20,0.35,109.0,+0,+0
+AA-invalid-as-AB-B2-complete-a,30,0.45,70.7,63.3,201,+7036
+AA-invalid-as-AB-B2-complete-b,30,0.45,64.7,63.7,200,+52

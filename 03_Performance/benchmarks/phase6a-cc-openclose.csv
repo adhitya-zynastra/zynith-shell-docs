@@ -1,0 +1,10 @@
+label,cycles,hold_s,noctalia_ms_per_cycle,rss_delta_kb,thread_delta
+baseline-1,20,0.35,108.5,+236,+0
+baseline-2,20,0.35,108.0,+60,+0
+baseline-3,20,0.35,110.5,+48,+0
+after-1,20,0.35,116.5,-372,+0
+after-2,20,0.35,113.5,+36,+0
+after-3,20,0.35,115.5,-612,+0
+after-warm-4,20,0.35,118.0,+408,+0
+after-warm-5,20,0.35,113.5,+136,+0
+after-warm-6,20,0.35,114.0,+20,+0

@@ -1,7 +1,7 @@
 # Motion Settings — One Surface, One Owner
 
-**Status:** in progress, Phase 6. **Implemented at:** config model and settings UI landed; niri generation
-still owned by the Motion plugin (see *What is not done yet*).
+**Status:** model and UI done (Phase 6, `ccfe125`); ownership **decided** in Phase 6A
+([ADR‑0015](../../05_Decisions/ADRs/ADR-0015-niri-animation-ownership.md)); generator migration **not done**.
 
 ## What I wanted
 
@@ -118,3 +118,46 @@ honest description of the current state is: *the settings live in the main surfa
 
 Recorded as remaining work in [`future-work.md`](../../06_Reference/future-work.md) rather than described as
 finished.
+
+## Phase 6A status
+
+### Ownership — decided, not implemented
+
+[ADR‑0015](../../05_Decisions/ADRs/ADR-0015-niri-animation-ownership.md) settles it: the shell becomes the sole
+generator of `animations.kdl`, the Motion plugin is retired, and `shell.animation` is the single source of truth.
+The deciding fact is that the plugin is a *panel* and cannot run when the main settings change, so settings and
+generator cannot live in different places.
+
+It also corrects this page: moving generation into the shell is **not** a new responsibility. Noctalia's `niri`
+builtin template already writes `~/.config/niri/noctalia.kdl`.
+
+### Why `Super+Alt+A` still opens the plugin
+
+The phase brief asked for the separate animation UI to be removed or repointed. **It has not been**, on purpose.
+Until the shell generates `animations.kdl`, the plugin is the *only* thing that turns a preset into niri
+configuration. Repointing the key to Settings → Appearance → Motion now would send the owner to controls that
+change nothing on the compositor side — a regression dressed as a cleanup. It moves with the generator in 6B.
+
+So for now two surfaces still touch motion. The conflict remains latent, as described above: `settings.toml`
+carries no `shell.animation` table.
+
+### Reset semantics
+
+Reset is the existing `clearOverride()` path described in ADR‑0014 — it deletes the key from `settings.toml` so
+the value falls back to `rice.toml` or the default. Phase 6A changed nothing here. It was **not** exercised at
+runtime for the motion keys: doing so means clicking Reset in the GUI and letting it write `settings.toml`, and
+the preset and trims currently have no runtime consumer to observe. It will be worth checking once the generator
+exists and a reset has a visible effect.
+
+### Validation
+
+Checked against a throwaway config directory rather than the live one. A bad preset name warns and falls back;
+out-of-range and wrong-typed trims are clamped or ignored **silently**. That is upstream parser behaviour shared
+by every ranged field — see the correction in
+[`configurability.md`](../configuration/configurability.md).
+
+### Settings stress — not performed
+
+Rapidly changing preset, speed and trims means driving the GUI (the only sanctioned writer of `settings.toml`)
+with synthetic input, for keys that do nothing at runtime until 6B. Judged not worth it in this phase; it becomes
+meaningful alongside the generator, where rapid changes would each trigger a regenerate-and-validate.

@@ -1,0 +1,15 @@
+# Runtime instrumentation (temporary, reverted, byte-identical rebuild verified). Tab ids: Home 0, Audio 2, System 4, Network 5, Bluetooth 6.
+zmorph start from=0 to=5 dir=1 carry=0.00
+zmorph start from=5 to=6 dir=1 carry=0.00
+zmorph start from=6 to=5 dir=-1 carry=7.18
+zmorph start from=5 to=6 dir=1 carry=0.00
+zmorph start from=6 to=2 dir=-1 carry=9.29
+zmorph start from=2 to=4 dir=1 carry=-8.95
+zmorph start from=4 to=6 dir=1 carry=8.94
+first-frame carry=0.00 y=0.00 jump=+0.00
+first-frame carry=0.00 y=0.00 jump=+0.00
+first-frame carry=7.18 y=7.18 jump=+0.00
+first-frame carry=0.00 y=0.00 jump=+0.00
+first-frame carry=9.29 y=9.29 jump=+0.00
+first-frame carry=-8.95 y=-8.95 jump=+0.00
+first-frame carry=8.94 y=8.94 jump=+0.00

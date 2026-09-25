@@ -1,0 +1,67 @@
+Control Center navigation stress
+  pid=97048  cycles=20  dwell=0.12s  sections=10
+  binary: noctalia v5.1.0 (ccfe125f1c29-dirty)
+
+phase          rss_kb  threads      ctxsw    fds
+before         172904       33      25528     82
+cycle 5        180380       33      32458     82
+cycle 10       180876       33      39258     82
+cycle 15       180628       33      46121     82
+cycle 20       181044       33      53036     82
+settled        180988       33      53318     82
+
+shell alive:      yes (pid 97048, up 236s)
+noctalia cores:   before=26 after=26
+verdict:          no new coredumps
+Control Center navigation stress
+  pid=97048  cycles=50  dwell=0.12s  sections=10
+  binary: noctalia v5.1.0 (ccfe125f1c29-dirty)
+
+phase          rss_kb  threads      ctxsw    fds
+before         179956       33      53532     82
+cycle 5        180816       33      60519     82
+cycle 10       181648       33      67546     82
+cycle 15       181092       33      74640     82
+cycle 20       181640       33      81622     82
+cycle 25       181688       33      88450     82
+cycle 30       181356       33      95522     82
+cycle 35       181216       33     102421     82
+cycle 40       181760       33     109459     82
+cycle 45       181888       33     116390     82
+cycle 50       181388       33     123311     82
+settled        181404       33     123543     82
+
+shell alive:      yes (pid 97048, up 444s)
+noctalia cores:   before=26 after=26
+verdict:          no new coredumps
+Control Center navigation stress
+  pid=97048  cycles=100  dwell=0.12s  sections=10
+  binary: noctalia v5.1.0 (ccfe125f1c29-dirty)
+
+phase          rss_kb  threads      ctxsw    fds
+before         180460       33     123760     82
+cycle 5        181592       33     130710     82
+cycle 10       181768       33     137509     82
+cycle 15       181724       33     144594     82
+cycle 20       182532       33     151622     82
+cycle 25       182480       33     158505     82
+cycle 30       182004       33     165532     82
+cycle 35       182060       33     172531     82
+cycle 40       182308       33     179415     82
+cycle 45       182208       33     186272     82
+cycle 50       183904       34     193271     99
+cycle 55       183416       34     200216     99
+cycle 60       184176       34     207663    101
+cycle 65       184312       34     215452    101
+cycle 70       184680       34     223116    101
+cycle 75       184896       34     230731    101
+cycle 80       184368       34     238402    101
+cycle 85       184432       34     246091    101
+cycle 90       184356       34     253782    101
+cycle 95       184384       34     261505    101
+cycle 100      185036       34     269267    101
+settled        184256       34     269688    101
+
+shell alive:      yes (pid 97048, up 849s)
+noctalia cores:   before=26 after=26
+verdict:          no new coredumps

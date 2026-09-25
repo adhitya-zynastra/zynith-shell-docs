@@ -1,0 +1,18 @@
+# Interleaved A/B. A = ccfe125, B = Phase 6A (a147fc1 content). Same launch method, 60 s warm-up, media paused, versions verified each round.
+label,switches_or_cycles,dwell_or_hold_s,noctalia_ms,niri_ms_or_rss_kb,ctxsw_or_threads,rss_delta_kb
+A1-openclose-a,20,0.35,111.5,+1740,+0
+A1-openclose-b,20,0.35,108.5,+48,+0
+A1-complete-a,30,0.45,71.3,64.0,197,+6976
+A1-complete-b,30,0.45,66.7,62.3,205,+68
+B1-openclose-a,20,0.35,110.0,+1824,+0
+B1-openclose-b,20,0.35,106.0,+36,+0
+B1-complete-a,30,0.45,64.7,61.0,177,+6472
+B1-complete-b,30,0.45,63.3,64.7,184,+240
+A2-openclose-a,20,0.35,105.0,+1768,+0
+A2-openclose-b,20,0.35,103.5,+0,+0
+A2-complete-a,30,0.45,67.0,63.0,181,+6556
+A2-complete-b,30,0.45,60.3,63.0,180,+192
+B2-openclose-a,20,0.35,104.5,+1752,+0
+B2-openclose-b,20,0.35,104.0,+104,+0
+B2-complete-a,30,0.45,69.0,64.0,185,+6644
+B2-complete-b,30,0.45,60.3,62.0,180,+212

@@ -1,0 +1,16 @@
+label,switches,dwell_s,noctalia_ms_per_switch,niri_ms_per_switch,ctxsw_per_switch,rss_delta_kb
+baseline-complete-1,30,0.45,63.7,60.0,206,-492
+baseline-retarget-1,60,0.08,19.5,15.8,59,+112
+baseline-complete-2,30,0.45,64.7,63.3,206,+72
+baseline-retarget-2,60,0.08,19.3,15.7,60,+860
+baseline-complete-3,30,0.45,61.0,60.0,206,-756
+baseline-retarget-3,60,0.08,21.5,17.0,62,+244
+after-complete-1,30,0.45,70.7,64.0,208,-3252
+after-retarget-1,60,0.08,20.5,15.5,59,-572
+after-complete-2,30,0.45,66.0,61.7,202,+52
+after-retarget-2,60,0.08,20.7,15.8,62,+68
+after-complete-3,30,0.45,66.0,63.3,203,+508
+after-retarget-3,60,0.08,21.2,15.8,63,+212
+after-warm-complete-4,30,0.45,67.3,64.3,203,+464
+after-warm-complete-5,30,0.45,66.7,63.0,206,-20
+after-warm-complete-6,30,0.45,65.0,60.7,200,+156

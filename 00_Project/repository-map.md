@@ -37,7 +37,7 @@ or depends on; the upstream tree is far larger than what is listed here.
     │       ├── signal.h          ← Signal/ScopedConnection  (rewritten twice for lifetime safety)
     │       ├── style.h           ← motion duration tiers, spacing, radii
     │       └── controls/         ← flex, scroll_view, virtual_grid_view, carousel_view (Zynith-added)
-    └── tests/                    ← 119 tests incl. signal_dispatch_test, animation_reentrancy_test (Zynith-added)
+    └── tests/                    ← 120 tests incl. signal_dispatch_test, animation_reentrancy_test, morph_transition_test (Zynith-added)
 ```
 
 ### Files created by Zynith (did not exist upstream)

@@ -97,3 +97,20 @@ See `04_Incidents/postmortems/2026-09-21-wallpaper-quality-regression.md`.
 Morph primitive, Control Center morphing, launcher redesign and style variants, lock-screen recomposition and power
 controls, the configurability architecture, folding settings into one surface, and the GTK template optimization.
 All tracked in `06_Reference/future-work.md` as **planned**, not completed.
+
+## Later amendment — Phase 6A (2026‑09‑25, `a147fc1`)
+
+The "Not done in Phase 6" list above is the state at `57debbc` and is left as it was. Two of its items have since
+moved:
+
+- **Morph primitive — done.** `MorphTransition` extracted from the Control Center's bespoke transition state;
+  the Control Center now consumes it. A refactor with preserved behaviour, verified at runtime with a zero-jump
+  retarget trace, ~420 stress cycles, and an interleaved A/B showing no regression.
+  → [`morph-primitive.md`](../../02_Architecture/animation/morph-primitive.md),
+  [`phase6a-motion.md`](../../03_Performance/benchmarks/phase6a-motion.md)
+- **Control Center morphing — done, and was already behaviourally correct** from `e9e27b0`.
+- **Motion settings in the main surface — model and UI done** (`ccfe125`); **niri generator decided but not
+  migrated** ([ADR‑0015](../../05_Decisions/ADRs/ADR-0015-niri-animation-ownership.md)), so `Super+Alt+A` still
+  opens the plugin deliberately.
+
+Tests moved from 118 / 119 to **119 / 120** because the suite gained `morph_transition_test`.

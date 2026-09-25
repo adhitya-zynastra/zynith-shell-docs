@@ -46,7 +46,7 @@ niri validate                                   # niri config
 
 ```sh
 cd ~/.local/src/noctalia-lockfade/build
-meson test                       # 119 tests; 118 expected to pass
+meson test                       # 120 tests; 119 expected to pass
 ./signal_dispatch_test           # lifetime contract — MUST pass
 ./animation_reentrancy_test      # tick contract — MUST pass
 ```

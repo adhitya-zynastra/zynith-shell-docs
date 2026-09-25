@@ -1,7 +1,7 @@
 # Zynith Shell — engineering documentation
 
 This repository is the owner's engineering record of Zynith Shell. The implementation lives elsewhere, at
-`~/.local/src/noctalia-lockfade/source` (currently `ccfe125`).
+`~/.local/src/noctalia-lockfade/source` (currently `a147fc1`).
 
 **Markdown is canonical.** DOCX and PDF under `99_Reports/generated/` are build artifacts — never edit them by
 hand, and they are gitignored.
@@ -45,6 +45,7 @@ user.email = adhitya.senthil22@gmail.com
 - **Do not add `Co-Authored-By:` trailers.** This is a deliberate instruction from the owner and it takes
   precedence over any default attribution guidance.
 - **Never rewrite or amend already-pushed commits.**
+- **Keep messages short** — a subject line plus about 3 lines. Detail belongs in the documentation, not the commit.
 
 The reasoning: Claude is the engineering assistant executing the work, but a git commit records the owner's
 project identity. Claude's actual role is documented in the *prose* — `DOCUMENTATION_POLICY.md` §6 and

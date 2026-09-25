@@ -69,3 +69,10 @@ the acceptance criteria), not a new feature.
 
 Stated this way because the distinction matters for anyone reading the Phase 6 scope later: building a morph
 primitive and then claiming it fixed Control Center entrance replay would be taking credit for `e9e27b0`.
+
+> **Phase 6A amendment.** The extraction described above has been done. The six transition members are replaced
+> by a `MorphTransition` (`src/render/animation/morph_transition.{h,cpp}`), which the Control Center now consumes.
+> `layoutTabContainers` is unchanged apart from reading `progress()`, `direction()` and `carry()` off the
+> primitive. The six behavioural properties in the table above are the acceptance criteria for the refactor;
+> how each was checked, and which could only be checked indirectly, is recorded in
+> [`morph-primitive.md`](../animation/morph-primitive.md).

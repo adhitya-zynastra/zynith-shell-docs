@@ -1,7 +1,8 @@
 # Wallpaper, Responsive Layout and Control Center — Validation Record
 
 **Date:** 2026‑09‑25. **Implementation:** `b49ec4e` (responsive layout + carousel) → `09990f8` (Control Center) →
-`c5dd72d` (Personalization). **Binary tested:** a clean build (`meson compile --clean`, 1000 targets, zero
+`c5dd72d` (Personalization) → `679c0c1` (promotion window + decode counter, see the follow-up at the end).
+**Binary tested:** a clean build (`meson compile --clean`, 1000 targets, zero
 failures, the same 6 libstdc++ `-Wmaybe-uninitialized`/`-Wrestrict`/`-Wstringop-overflow` warnings as the previous
 two clean builds), then incremental rebuilds for the changes described below. The installed binary is byte-identical
 to the final build of the committed tree. The two intermediate commits were **not** built on their own.
@@ -72,7 +73,7 @@ process from `/proc`; CPU is `utime+stime` (100 ticks/s).
 | Click on a neighbour | focus only — `settings.toml` and the niri palette export unchanged |
 | Double-click on the focused card (clicks 120 ms apart) | **one** apply (`applied wallpaper …`), second rejected: `ignoring repeat apply … within the double-click guard` |
 | Palette | `noctalia.kdl` regenerated after the apply |
-| Session statistics at close | **181 decodes** (168 previews + 13 display-tier), 336 cache hits, **0 evictions**, peak idle 64.7 MB |
+| Session statistics at close | **181 decodes** (168 previews + 13 display-tier), 336 cache hits, **0 evictions**, peak idle 64.7 MB. *The decode counter over-counted at this build — see the follow-up* |
 | RSS before open / 2.5 s after open / 3 s and 8 s after close | 175.7 / 194.7 / 177.8 / 177.8 MiB; threads 34 throughout |
 | Restore | original wallpaper set back through `noctalia msg wallpaper-set`; `settings.toml` then **byte-identical** to its pre-test copy |
 
@@ -89,13 +90,14 @@ niri's `output … scale` was changed temporarily (not written to config) and se
 | 3200 (scale 0.6) | final | **7** — focus + 3 per side, card still 760 logical px (`carousel-3200.png`) |
 | 2560 (scale 0.75) | first version | 7 *counted*, **5 perceptible** — the third card showed ~22 px past its neighbour |
 | 1536 (scale 1.25) | first version | **3** — the outer pair was entirely covered |
+| 2560 (scale 0.75) | final | **5**, outer pair mostly exposed |
+| 1536 (scale 1.25) | final | **5**, outer pair showing as on the laptop |
 
 **The first version was wrong, and the runtime check is what showed it.** `fitArc` counted a card as visible if
 any of it was on screen, ignoring that the nearer card paints over it; and the 46 % band cap left no room for the
 outer pair on narrow outputs. Fixed before commit: a neighbour counts only when ≥ 20 % of its drawn width shows
-past the card in front (the laptop's outer pair shows ~25 %), and the band cap is the pre-responsive 40 %. The
-2560 and 1536 rows were not re-run on the final code; the final code's values for them (5 and 5) are computed, and
-the unit test asserts them.
+past the card in front (the laptop's outer pair shows ~25 %), and the band cap is the pre-responsive 40 %. Both
+failing geometries were re-run on the final code and now match the computed values.
 
 **A misreading, corrected.** The first multi-scale run captured no browser at all, and I briefly took that for a
 ~3 s IPC open latency after a scale change. The log says otherwise: the key-repeat storm described under *Input*
@@ -140,6 +142,35 @@ held letter key, which the testing rules forbid while I have an editor open.
 ## Not verified
 
 - Media → Media routing: no media was playing, so the widget had nothing to click.
-- 2560 and 1536 logical on the final code (computed only).
 - Held-key behaviour after `repeat=false`.
 - GPU memory — not observable from `/proc`.
+
+## Follow-up — promotion window and decode counter (`679c0c1`)
+
+With the arc now resolving 2–6 cards per side, the display-tier promotion window was still fixed at focus −1 … +3.
+On this laptop that left the trailing outer card drawn from the 384 px preview (528 px wide, ~1.4× upscale); on a
+9-card arc it would have been three cards at up to ~1.6×. I had Claude derive the window from the arc instead —
+every visible card plus one lead card on the side of travel — and re-derive it when a relayout changes the arc.
+
+Measuring that change turned up two more things. Each figure is one IPC open (2.5 s), close, ×3, on this laptop;
+168 wallpapers; the wallpaper in use is entry 7.
+
+| Build | Decodes per session | Notes |
+|---|---|---|
+| before (`c5dd72d`) | 177, 177, 177 | window −1…+3 |
+| window from the arc | 177, 178, 178 | expected 174 |
+| + no promotion from the provisional first focus | 174, 178, 178 | a temporary trace showed one window per open: focus 7 → 5…10 |
+| + counter fixed | **174, 174, 174** | 168 previews + 6 display-tier = the 5 visible cards + 1 lead |
+
+- **Provisional focus.** `rebindGrid()` notifies the carousel of new entries before it focuses the wallpaper in
+  use, and the carousel reports index 0 in between. That provisional focus derived a promotion window and queued
+  768 px decodes for entries 0–3 on every open. A construction-time seed of the same range did the same. Promotion
+  now waits for the real initial focus.
+- **Counter.** `ThumbnailService::enqueueDecodeIfNeeded` counted a request before checking whether the key was
+  already in flight, so a tile acquiring what the window prefetch had just queued was counted twice even though
+  only one decode ran — hence 174 vs 178 depending on timing. The header documents the stat as "images sent to a
+  worker"; the implementation now matches. **Every `decodes` figure logged before `679c0c1`, including the 181
+  above, may include such duplicates.**
+- CPU for the three cycles was 1.94 CPU‑s before and 2.08 after, measured sequentially: noise-level, and I draw no
+  conclusion from it. The saving is in decodes, not in a measured CPU number.
+

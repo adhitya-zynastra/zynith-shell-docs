@@ -80,10 +80,10 @@ are **computed, not observed**.
 | Output | Logical width | Card | Per side | Visible | Step | |
 |---|---|---|---|---|---|---|
 | 1366×768 @1 | 1366 | 540 px | 2 | 5 | 21.0° | |
-| 1920×1200 @1.25 | 1536 | 608 px | 2 | 5 | 21.0° | |
+| 1920×1200 @1.25 | 1536 | 608 px | 2 | 5 | 21.0° | seen |
 | **1920×1200 @1 (this laptop)** | **1920** | **760 px** | **2** | **5** | **21.0°** | seen |
 | 2560×1600 @1.25 | 2048 | 760 px | 2 | 5 | 21.0° | |
-| 2560×1440 @1, 3840×2160 @1.5 | 2560 | 760 px | 2 | 5 | 21.0° | |
+| 2560×1440 @1, 3840×2160 @1.5 | 2560 | 760 px | 2 | 5 | 21.0° | seen (as the laptop at scale 0.75) |
 | (laptop at scale 0.6) | 3200 | 760 px | 3 | 7 | 15.75° | seen |
 | 3440×1440 @1 | 3440 | 760 px | 3 | 7 | 15.75° | |
 | 3840×2160 @1 | 3840 | 760 px | 4 | 9 | 12.6° | |
@@ -131,9 +131,9 @@ shell emulates or intercepts these — niri handles them before a client sees th
 
 - Only two consumers so far. The launcher, OSD and notifications still use their own fixed sizes; they are due to
   be redesigned and should adopt `resolve()` then rather than be retrofitted now.
-- Seen on hardware: logical 1920 and 3200, both on this laptop's panel. Everything else in the table is computed.
+- Seen on hardware: logical 1536, 1920, 2560 and 3200, all on this laptop's panel via niri's output scale.
+  Everything else in the table is computed.
 - The 0.40 band cap, the 20 % exposure threshold and the legibility threshold are tuned by eye on this display.
-- Cards outside the promotion window draw from the 384 px preview tier. Computed from the geometry, a 9-card arc
-  draws its outer cards 475–632 px wide, so the ones behind the direction of travel are upscaled up to about 1.6×.
-  The laptop already makes the same trade for its outer card on the trailing side (528 px, about 1.4×). Whether it
-  is visible on a real ultrawide is **UNKNOWN**.
+- The display-tier set grows with the arc: since `679c0c1` every visible card is promoted (plus one lead), so a
+  9-card arc holds 10 display-tier textures instead of the laptop's 6. Before that change, cards behind the
+  direction of travel drew from the 384 px preview — up to ~1.6× upscaled on a 9-card arc.

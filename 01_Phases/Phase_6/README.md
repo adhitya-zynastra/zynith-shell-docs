@@ -132,7 +132,7 @@ Three foundation systems, built as system tracks inside Phase 6 rather than as a
 ## Later amendment — wallpaper, responsive layout and Control Center tracks (2026‑09‑25)
 
 The second set of system tracks: `b49ec4e` (responsive layout + carousel), `09990f8` (Control Center), `c5dd72d`
-(Personalization). The amendment above still says "Zynith Corner"; that was the name at the time and is left as it
+(Personalization), `679c0c1` (wallpaper promotion window and decode counter). The amendment above still says "Zynith Corner"; that was the name at the time and is left as it
 was.
 
 - **Zynith Corner → Personalization.** Renamed because the name described a brand, not the contents; Control Center

@@ -13,6 +13,7 @@ Entries are grouped by kind, as required by the documentation policy.
 ### Features
 - `[wallpaper].carousel_card_width` (400–1400, default 760); wider outputs gain neighbours rather than bigger cards — `b49ec4e`
 - `[control_center].density` (compact / comfortable / spacious) — `09990f8`
+- Wallpaper display-tier promotion covers every visible card plus one lead, derived from the arc — `679c0c1`
 - Ctrl+Tab / Ctrl+Shift+Tab / Ctrl+PgUp / Ctrl+PgDn cycle Control Center sections — `09990f8`
 - Clock click opens the Control Center at Home (`[widget.clock.actions]` in `rice.toml`; preset, not code)
 - niri `mod-key "Super"` stated explicitly; native Mod+drag move/resize documented and verified
@@ -21,6 +22,8 @@ Entries are grouped by kind, as required by the documentation policy.
 - A clock click after hover-open toggled the panel shut once both routes opened Home; it now confirms the open — `09990f8`
 - The first responsive carousel counted occluded slivers as visible cards; caught at runtime and fixed before commit — `b49ec4e`
 - Holding a `noctalia msg` shortcut re-spawned it on every key repeat (seen: 13 wallpaper-panel toggles in 5 s); 17 binds now `repeat=false`
+- Every wallpaper-browser open decoded entries 0–3 at 768 px from a provisional focus, on screen or not — `679c0c1`
+- `ThumbnailService` counted in-flight duplicate requests as decodes; earlier logged `decodes` figures are upper bounds — `679c0c1`
 
 ### Tests
 - `responsive_layout_test`; suite 123 / 124

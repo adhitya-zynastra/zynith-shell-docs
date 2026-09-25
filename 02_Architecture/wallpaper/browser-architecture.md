@@ -93,8 +93,8 @@ Consequences worth knowing:
         ├─ on open: beginSession() ─ prefetch EVERY entry at 384 px (preview tier)
         │                            ordered outward from the focused item
         │
-        ├─ promotion window: focus−1 … focus+3, leaning in the direction of travel
-        │                    prefetched at 768 px (display tier)
+        ├─ promotion window: every visible card + 1 lead in the direction of travel
+        │                    (focus−1 … focus+3 until 679c0c1), prefetched at 768 px (display tier)
         │
         ├─ tile holds BOTH tiers; draws the promoted texture if decoded, else the preview
         │                    → a card never blanks, and never shows a spinner mid-flick
@@ -134,6 +134,14 @@ at 25–28 per second by wheel and keyboard, one neighbour click and one apply: 
 display-tier), 336 cache hits, **0 evictions**, peak idle 64.7 MB; RSS 175.7 MiB before open, 194.7 MiB just after
 open, 177.8 MiB 3 s and 8 s after close; threads constant at 34. Full conditions in the
 [validation record](../../03_Performance/benchmarks/tracks-wallpaper-layout-cc.md).
+
+> **Amendment (`679c0c1`).** The decode counter over-counted in-flight duplicates, so "181" above is an upper
+> bound. Two changes followed. The promotion window is now derived from the arc — every visible card plus one lead
+> card in the direction of travel — rather than fixed at −1 … +3, so no visible card is drawn from the 384 px
+> preview. And promotion waits for the real initial focus; a provisional focus on entry 0 used to decode entries 0–3
+> at 768 px on every open. **Trade-off:** the display-tier set now grows with the output — 6 textures on this
+> laptop, at most 14 on the widest arc (~1.4 MiB each at 768 × 480), inside the session's 128 MB idle budget, and
+> still decoded only when motion settles. A plain open/close is now exactly 174 decodes: 168 previews + 6.
 
 ## Focus ≠ apply
 

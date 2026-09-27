@@ -55,3 +55,7 @@ morph. The morph is the indicator plus the stable frame; the content is honestly
 
 - Lock screen: a rejected password gets a ~360 ms damped horizontal shake of the password pill — the only lock
   screen motion that answers the user directly. One animation on the surface's manager, restored exactly on completion.
+
+> **Amendment (2026‑09‑26, sixth batch).** The exit token and the entrance/exit curves on this page became semantic
+> motion roles, and a spring model was added for retargetable elements: [`design/motion-language.md`](../design/motion-language.md).
+> Attached panels now close on the dismissal role too.

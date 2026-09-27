@@ -3,6 +3,85 @@
 Commit hashes refer to `~/.local/src/noctalia-lockfade/source`. Dates are git author dates (local time).
 Entries are grouped by kind, as required by the documentation policy.
 
+## Zynith Control Center and lock screen — 2026‑09‑26 (Batch 7, uncommitted on `e521a86`)
+
+Built on the Batch 6 foundation; no git history was written (no-git batch). The working tree carries Batches 5, 6
+and 7 on top of `e521a86`. Implementation files:
+- changed: `control_center_panel.*`, `control_center/tab.*`, `tabs/home_tab.*`, `panel_manager.cpp`,
+  `cli/schema_msg.h`, `config_service.h`, `config_overrides.cpp`, `lockscreen_widgets_controller.*`,
+  `lockscreen_widgets_host.*`, `desktop_clock_widget.*`, `desktop_widget_factory.cpp`,
+  `desktop_widget_settings_registry.cpp`, `desktop_session_actions_widget.cpp`, `assets/translations/en.json`,
+  `docs/user/ipc/surfaces.mdx`;
+- tests: `zynith_config_ownership` (extended: stash, reset, restore).
+- configuration: `~/.config/noctalia/lockscreen.toml` (new composition). `settings.toml` was changed only through
+  the shell's IPC (lock reset; Control Center style set and restored).
+
+### Features
+- **Zynith Control Center**: one command bar (sections, the section's actions, close; no title row) with items that
+  fold and unfold their labels around one travelling selection capsule; a rebuilt Home (a wallpaper stage with the
+  time as the focal readout, a now-playing band, capsule chips); sections on embedded plates
+- **Lock "aperture" composition**: eyebrow date above a display-face time, identity above a glass capsule field, ink
+  on the scene in the corners, one power capsule
+- Clock widget `face` (`custom` / `display` / `interface`) and `tabular` settings
+- IPC `control-center-style-set zynith|classic`, `lockscreen-widgets-restore`
+
+### Changed behaviour
+- The lock-widget editor writes `settings.toml` only when the layout changed
+- `lockscreen-widgets-reset` keeps what it clears in `settings.toml.lockscreen_widgets.stash`
+
+### Fixes
+- **Shell crash on a config reload while locked** (upstream erase-while-iterating in `LockscreenWidgetsHost`) —
+  it froze my session on 2026‑09‑26; see the postmortem
+- A dangling `ScrollView` pointer in the Control Center's top navigation (a write into freed memory on keyboard
+  navigation); the likely cause of two `Select::~Select` crashes
+
+### Tests
+- Suite 127 / 128 (the known `upower_charge_limit_integration`); `noctalia config validate` and `niri validate` valid
+
+## Design Foundation — 2026‑09‑26 (Batch 6, uncommitted on `e521a86`)
+
+No screen was redesigned and no configuration key changed. Implementation files:
+- new: `render/animation/motion_physics.*`, `motion_role.*`, `motion_value.*`; `ui/tokens.*`, `ui/typography.*`,
+  `ui/semantic_color.*`; `render/text/font_spec.h`; `shell/surface/surface_role.*`; `shell/spatial/spatial_origin.h`
+  and `spatial_model.*`;
+- changed: `animation_manager.*`, `morph_transition.*`, `cairo_text_renderer.cpp`, `button.cpp`,
+  `panel_manager.*`, `bar.cpp`, `control_center_panel.*`, `notification_toast.cpp`, `wallpaper_panel.cpp`,
+  `osd_overlay.cpp`, `desktop_widgets_host.cpp`, `wallpaper.cpp`, `application_services.cpp`, `meson.build`;
+- tests: `motion_language`, `design_tokens` and `spatial_model` (new), `cairo_text_renderer` (extended).
+
+### Architecture
+- **Motion language:** semantic roles (focus, surface reveal/dismiss, content reveal/dismiss, element move/resize,
+  morph, scene change) chosen by `AnimationManager::animate(role, …)`
+- **Critically damped springs** as a second kind of `AnimationManager` entry (same engine), retargetable with
+  position and velocity kept; `MotionValue` / `MotionRect` for components
+- **Design tokens:** spacing 4–64, radius families, stroke, sizes; typography roles with face fallback lists and
+  tabular figures; semantic colours; WCAG contrast helpers
+- **Surface hierarchy** (scene → floating) with depth, lifetime, layer, and materials drawn from Glass and the
+  existing shadow keys
+- **Spatial model:** panel open requests carry an origin (bar widget, bar area, command); `PanelManager` records
+  and logs it
+
+### Changed behaviour
+- The Control Center nav indicator moves on a spring (velocity kept through rapid switches); pixel-identical at rest
+- Attached panels close on the dismissal role (200 ms `EaseInQuad`), not upstream's 300 ms `EaseInOutQuad`
+- With animations off, state-change roles keep a 90–150 ms fade instead of snapping (spatial roles still snap)
+
+### Refactors (no visual change)
+- One surface-radius token replaced three private copies (panels, toasts, wallpaper browser)
+- OSD, desktop widgets, wallpaper and the panel default take their layer from their surface role
+
+### Tests
+- Suite 127 / 128; two mutation tests confirmed the new checks catch the faults they target
+
+## Design Research — 2026‑09‑26 (documentation only; no implementation change)
+
+### Docs
+- Reference study of six showcase videos (frame-level motion measurements) and three GPL‑3.0 source trees
+  (Caelestia, Clavis, Ryoku) — [`design-research-2026-09.md`](02_Architecture/design/design-research-2026-09.md)
+- Proposed Zynith design language ("Optics") — [`design-language.md`](02_Architecture/design/design-language.md)
+- Architecture assessment (keep / refine / rebuild / do not touch) and a five-stage roadmap, primitives before
+  screens — [`design-roadmap.md`](02_Architecture/design/design-roadmap.md)
+
 ## Control Center, Lock Screen and Visual Language — 2026‑09‑26 (uncommitted, on `e521a86`)
 
 This batch was run with **no git operations**, by instruction. Changes are in the implementation's working tree,

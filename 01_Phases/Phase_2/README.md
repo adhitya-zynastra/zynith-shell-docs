@@ -87,6 +87,7 @@ the diffs confirm it.
 | Phase 2.5 (`6de342a`) | `ScreenVeil` reused for the modal backdrop; `PanelManager` gained `showModalBackdrop()`/`hideModalBackdrop()` |
 | Phase 6 (`e9e27b0`) | `ScreenVeil` gained `showTint()` (no image node) and `Panel::ModalBackdropMode`; panel reveal easing changed to `EaseOutQuint` |
 | Phase 6 (`08f5454`) | The `AnimationManager` that drives these transitions was rewritten for reentrancy safety |
+| Batch 7 (2026‑09‑26, uncommitted) | The lock-widget editor now saves only a changed layout. My Phase 2 layout, saved as a full `settings.toml` override, had shadowed every later lock preset; it was reset and stashed (`lockscreen-widgets-restore` brings it back). A config reload while locked could crash the shell (upstream lock-host bug), now fixed — [postmortem](../../04_Incidents/postmortems/2026-09-26-lock-reload-crash.md) |
 
 ## Limitations
 

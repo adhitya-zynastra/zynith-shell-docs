@@ -97,12 +97,15 @@ Full detail per phase in [`01_Phases/`](01_Phases/). Cross-phase amendments in
 
 ## Current verified state
 
-- **Commit:** `e521a86` · **working tree:** the fifth batch, **uncommitted** (no-git batch) · **build:** clean
-  (`meson compile --clean` then full build), recorded in [`tracks-cc-lock-visual.md`](03_Performance/benchmarks/tracks-cc-lock-visual.md)
-- **Tests:** 124 / 125 — the single failure (`upower_charge_limit_integration`) is pre-existing and unrelated;
+- **Commit:** `e521a86` · **working tree:** the fifth, sixth and seventh batches, **uncommitted** (no-git batches) ·
+  **build:** clean (`meson compile --clean`, 1017 targets), recorded in
+  [`control-center-lock-batch7.md`](03_Performance/benchmarks/control-center-lock-batch7.md)
+- **Tests:** 127 / 128 — the single failure (`upower_charge_limit_integration`) is pre-existing and unrelated;
   see [`04_Incidents/known-failures.md`](04_Incidents/known-failures.md)
 - **Config validation:** `niri validate` ✓, `noctalia config validate` ✓
-- **Crashes:** no new coredumps since the lifetime fixes of `08f5454`
+- **Crashes:** three on 2026‑09‑26 (the first new ones since the lifetime fixes of `08f5454`), all fixed in Batch 7 —
+  one root cause proven, one inferred; see the
+  [postmortem](04_Incidents/postmortems/2026-09-26-lock-reload-crash.md)
 
 ## Documentation conventions
 

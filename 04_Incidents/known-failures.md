@@ -15,10 +15,17 @@
 - **What would settle it:** running the test against a different sdbus-c++ version, or auditing the fake object's
   message lifetime. Neither has been done.
 
+## Shell crash in `Select::~Select` on a Control Center teardown — cause inferred, not proven
+
+Two crashes on 2026‑09‑26 (02:18 at exit, 12:16 when the panel closed). The most likely cause, a dangling
+`ScrollView` pointer in top-navigation mode, was fixed in Batch 7. The release cores cannot confirm it. Closed only
+if no recurrence is seen. Details:
+[`2026-09-26-lock-reload-crash.md`](postmortems/2026-09-26-lock-reload-crash.md).
+
 ## Deliberately untested
 
 | Area | Why |
 |---|---|
-| Lock / unlock under automation | Risk of locking me out of my daily-driver machine. Validated visually and by timing arithmetic instead |
+| Lock / unlock under automation | Risk of locking me out of my daily-driver machine. Validated visually and by timing arithmetic instead. Batch 7 consequence: the fix for the reload-while-locked crash is verified by reasoning and the full suite only |
 | Per-process GPU memory | `intel_gpu_top` requires privileges not available in this environment; only `gt_act_freq_mhz` was readable |
 | Frame timing / jank | No instrumentation exists |

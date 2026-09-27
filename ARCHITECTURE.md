@@ -1,6 +1,7 @@
 # Architecture Overview
 
-A one-page map. Every claim here is expanded, with evidence, in `02_Architecture/`.
+A one-page map. Every claim here is expanded, with evidence, in `02_Architecture/`. The most recent whole-system
+check of what actually runs is the [Phase 0 audit](02_Architecture/phase0-audit-2026-09-26.md) (2026‑09‑26).
 
 ![System layers](07_Assets/diagrams/system-layers.svg)
 

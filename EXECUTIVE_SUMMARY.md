@@ -64,15 +64,15 @@ the entire time.
 
 | | |
 |---|---|
-| Commit | `e521a86`, plus the fifth batch as **uncommitted** changes (run with no git operations by my instruction) — clean build plus recorded incremental rebuilds ([`tracks-cc-lock-visual.md`](03_Performance/benchmarks/tracks-cc-lock-visual.md)) |
-| Tests | 124 / 125 — the single failure is third-party and pre-dates the project |
+| Commit | `e521a86`, plus the fifth, sixth and seventh batches as **uncommitted** changes (run with no git operations by my instruction) — clean build ([`control-center-lock-batch7.md`](03_Performance/benchmarks/control-center-lock-batch7.md)) |
+| Tests | 127 / 128 — the single failure is third-party and pre-dates the project |
 | Validation | `niri validate` ✓ · `noctalia config validate` ✓ |
-| Stability | No crashes since the lifetime fixes, across ~40 apply cycles, 14 browse sessions and 40+ panel transitions |
+| Stability | **Three shell crashes on 2026‑09‑26** after a long clean run: one a lock-screen crash on a config reload while locked, which froze my session (upstream bug, fixed), and two in a Control Center teardown (likely a Zynith dangling pointer, fixed; cause not proven) — [postmortem](04_Incidents/postmortems/2026-09-26-lock-reload-crash.md). Before that: no crashes since the lifetime fixes, across ~40 apply cycles, 14 browse sessions and 40+ panel transitions |
 
 ## What is not done
 
-The lock screen's new composition and power controls are built but **not live** — a Phase 2 editor layout in
-`settings.toml` shadows them until I run `noctalia msg lockscreen-widgets-reset`. Still open: the broad
+The lock screen's composition is now live (Batch 7) but has been checked only in the editor, never through a real
+lock. The Zynith Control Center is built and verified. My own setting stays `classic` until I choose otherwise. Still open: the broad
 configurable-shell layout model, the GTK template cost, and **Zynith Settings** — the system-wide settings hub, which
 is designed on paper ([settings-information-architecture.md](02_Architecture/configuration/settings-information-architecture.md))
 and not built. All are listed as **planned** in [`06_Reference/future-work.md`](06_Reference/future-work.md); none is

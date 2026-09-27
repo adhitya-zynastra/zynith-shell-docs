@@ -196,3 +196,139 @@ and radius.
 Evidence: `07_Assets/screenshots/cc-home-zynith.png`, `cc-home-classic.png`, `cc-morph-rapid.png`; validation in
 [`tracks-cc-lock-visual.md`](../../03_Performance/benchmarks/tracks-cc-lock-visual.md). The first build of this
 design had three layout bugs, which only the capture showed; they are recorded there.
+
+> **Amendment (Batch 7, 2026‑09‑26).** The fifth-batch Zynith style above was a restyle inside the classic
+> structure, and I switched back to Classic within the hour. Batch 7 replaced it — the Home code of the fifth batch
+> was discarded (the Classic Home is back to its `e521a86` form) and the section below describes what `zynith` means
+> now.
+
+## Zynith Control Center (Batch 7, 2026‑09‑26)
+
+`[control_center].style = "zynith"` now changes the panel's **structure**, not only its colours. `classic` is the
+previous panel and stays selectable (Personalization → Control Center, or
+`noctalia msg control-center-style-set classic`). Every Zynith path is behind the flag.
+
+### Composition
+
+```
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ ( ⌂ Home )  ◌  ◌  ◌  ◌  ◌  ◌  ◌  ◌  ◌  ◌  ◌                    ⚙  ⏻  ✕   │ ← command bar
+│──────────────────────────────────────────────────────────────────────────────│ ← one hairline
+│ ┌ stage ──────────────────────────────────────────────────────────────────┐  │
+│ │ (the wallpaper, clear above, settling into the surface below)           │  │
+│ │ 22:27                                               Name        (◉)    │  │ ← the focal readout
+│ │ Saturday, 26 September · ☁ 24° Cloudy               user@host          │  │
+│ └─────────────────────────────────────────────────────────────────────────┘  │
+│ ┌ band ───────────────────────────────────────────────────────────────────┐  │
+│ │ [art] Track · Artist                                   Playing · 1:23    │  │ ← now playing
+│ └─────────────────────────────────────────────────────────────────────────┘  │
+│ ( chip )  ( chip )  ( chip )                                                 │ ← controls
+│ ( chip )  ( chip )  ( chip )                                                 │
+└──────────────────────────────────────────────────────────────────────────────┘
+```
+
+| Element | Classic | Zynith |
+|---|---|---|
+| Navigation | a tray of icon buttons (or a left rail) plus a separate title row | **one command bar**: the sections on the left, the section's own actions and close on the right, no title row — the unfolded item names the section |
+| Selection | an indicator behind the active icon | a **capsule** that travels between items while the old item folds its label away and the new one unfolds its label (below) |
+| Divider | the tray's own fill | one hairline between navigation and content |
+| Home | four equal cards (user, media, date/time, shortcut grid) | a **stage** (the wallpaper with the time as the focal readout and identity opposite), a now-playing **band**, and **chips** |
+| Sections' containers | bordered cards (`setCardStyle`) | embedded **plates**: a lighter tone step, a hairline only when `[shell].card_borders` asks for one, the plate radius token |
+| Section headings | Title size, bold | the `Subtitle` role (16 px, medium, on-surface) for headings built by the shared helpers — one weight lighter than the Title-size bold titles most sections build themselves, so the two read as one family |
+| Header actions | filled square icon buttons | clear capsules: every action gets the capsule radius; close and Home's settings/session become the Ghost variant. Sections' own action buttons keep their variants and selected states (a DND toggle, a destructive clear) |
+
+### The command bar
+
+The bar is the old `m_sidebar` row. With the command bar it has no fill, and the per-section header actions move
+into it (`justify = SpaceBetween`: navigation left, actions right).
+
+Its items are **placed by hand**, not by the flex pass:
+
+- Each item is a `Button` that does not participate in layout. `doLayout` arranges it once at its **unfolded** size,
+  measured from the label text: `height + gap + text`, with the glyph centred in the collapsed square.
+- Each item then shows a visible width of `collapsed + e × (unfolded − collapsed)`, where `e` is its **expansion**, a
+  `MotionValue` (0 = icon, 1 = icon + label).
+- The item clips its children, so the label is revealed by the width. The label's ink fades in over the second half
+  of the unfold, so a half-open item never shows a squeezed word.
+- Positions are cumulative, so when the old label folds and the new one unfolds, every item between them slides.
+- The geometry changes through `setFrameSize` / `setPosition`, which repaint **without asking for a layout pass**, so
+  the whole reconfiguration costs one redraw per frame.
+- The strip's width is pinned to the widest unfolded state, so nothing else in the bar moves.
+
+The **selection capsule** is the batch-6 `MotionRect` on the `ElementMove` spring. Its destination is where the new
+item **will be** once every expansion has settled (`commandBarNavRest`), not where it is mid-motion, so it makes one
+journey there and the items converge on it. Expansions use the same role, so both start from rest together and
+arrive together. A burst of switches retargets both from their current position and velocity. The section content
+still switches through the existing `MorphTransition` (`Morph` role): **one** section morph, **one** travelling
+capsule, **N** expansion values — no new animation engine, and all of them are entries in the panel's
+`AnimationManager`.
+
+**Responsive, labels first.**
+- An item's unfold (gap + label) does not depend on its height, so the items shrink, from the medium control
+  height (38 px) down to 30 px, to make room for the widest label beside the actions. At my default width
+  (0.85 × 780) that gives 34 px items with labels.
+- Only if even 30 px leaves no room does the strip go icon-only (tooltips name the items). It may then shrink to
+  28 px before anything overlaps.
+- The room is measured against the **widest section's actions** plus close, not the active section's. The first
+  capture measured the active one, and the whole strip jumped at the moment of a switch: Home has three actions,
+  most sections one.
+- Keyboard handling is unchanged: the roving navigation, Ctrl+Tab and the wheel over the bar all go through
+  `selectTab`.
+
+**Label ink follows the capsule.** Items and capsule converge on the same end state, but by different paths. The
+first filmstrip showed the incoming word ("Med…") beside the capsule for about three frames. The fix:
+- the active item's label ink is capped by how close the capsule is to its rest (it appears within the last 12 px);
+- an item the capsule has left may only lose ink. Otherwise, in a burst of switches, every item passed through on
+  the way flashed its half-unfolded word.
+
+**When a section is opened directly** (`sidebar_section = "none"`, as in my settings), the panel has no navigation.
+It shows the classic title row with the Zynith header treatment (title, clear capsule actions).
+
+### Home
+
+Built by `HomeTab::createZynith()` / `layoutZynith()`. The classic view is untouched, and both share the data paths:
+`sync()`, the clock timer, the wallpaper layers, the avatar picker and the shortcut instances.
+
+- **Stage.**
+  - The user card becomes the stage: the wallpaper layers with a vertical scrim (clear down to 34 % of the height,
+    then settling to 82 % of the surface colour at the bottom).
+  - The **time** is set in the `Display` type role (64 px, light, tabular figures, the display face).
+  - Beneath the time: one readout line with the date (`[shell].date_format`), a separator and the weather.
+  - Identity sits opposite: name (`Subtitle`), `user@host` and uptime (`Micro`), and a 48 px avatar with a hairline
+    ring that becomes the accent focus ring on hover or focus.
+  - Interactions are kept: the stage opens the wallpaper browser (its pointer target ends before the identity, so
+    the avatar keeps its picker), and the time and date open Weather (the clock column sits above the stage's target).
+- **Band.** Now playing as one plate: 40 px art, track, artist, and the status as a `Data` readout (monospaced,
+  tabular), so the position ticks without jitter. The accent is used only while playing. Click → Media.
+- **Chips.** The shortcuts as 38 px capsules, three across. An active toggle uses the selection material
+  (`SelectionFill` / `SelectionEdge`, accent label). Everything else is a quiet tone step. Right-click and the scroll
+  wheel still reach the shortcut. The Noctalia version line is not shown on the Zynith Home; it is in Settings → About.
+
+### Where things live
+
+| Concern | Code |
+|---|---|
+| Style switch and command bar | `ControlCenterPanel::create`, `layoutCommandBarNav`, `applyCommandBarNavGeometry`, `commandBarNavRest`, `syncCommandBarNavTargets` |
+| Plates and headings for every section | `control_center::setZynithSurfaces`, `applySectionCardStyle`, `addTitle`, `makeCardHeaderRow` (`tab.cpp`) |
+| Home | the "zynith Home" section of `home_tab.cpp` |
+| Style from a script | `noctalia msg control-center-style-set zynith|classic` — the same `settings.toml` override the Settings window writes |
+
+### Evidence (Batch 7)
+
+Captures were taken on a verified-empty workspace, cropped to the panel. The Wi‑Fi chip's network name is
+pixelated in the Home capture.
+- **Home:** [`cc-zynith-home.png`](../../07_Assets/screenshots/cc-zynith-home.png).
+- **Section plates** (System, opened directly): [`cc-zynith-section-plates.png`](../../07_Assets/screenshots/cc-zynith-section-plates.png).
+- **One switch, Home → Media**, every second frame ≈ 26 ms apart:
+  [`cc-zynith-command-bar-switch.png`](../../07_Assets/screenshots/cc-zynith-command-bar-switch.png).
+- **Four switches 80 ms apart, Home → System:**
+  [`cc-zynith-command-bar-morph.png`](../../07_Assets/screenshots/cc-zynith-command-bar-morph.png).
+- **Attachment moved to the left bar** by a click on its brightness widget:
+  [`cc-zynith-attached-left-bar.png`](../../07_Assets/screenshots/cc-zynith-attached-left-bar.png).
+
+Numbers are in [`control-center-lock-batch7.md`](../../03_Performance/benchmarks/control-center-lock-batch7.md).
+
+The attachment model is untouched. Which bar the panel attaches to, centring when the panel is wider than its
+bar, and a click on another bar's widget moving the attachment all live in `PanelManager` and the bar's position
+reference ([`coordinate-model.md`](../layout/coordinate-model.md)); the Zynith style only changes what is inside the
+panel.

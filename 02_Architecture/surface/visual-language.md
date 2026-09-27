@@ -4,6 +4,10 @@
 launcher, OSD and notifications are built on, so each surface consumes a token instead of inventing a value.
 Validation: [`tracks-cc-lock-visual.md`](../../03_Performance/benchmarks/tracks-cc-lock-visual.md).
 
+> **Superseded in intent (2026‑09‑26, same day).** The design research that followed found this page to be a set of
+> parameters on an unchanged structure. The proposed replacement is [`design-language.md`](../design/design-language.md);
+> this page stays as the record of what the fifth batch shipped.
+
 ## Material
 
 | Role | Token | Used by |

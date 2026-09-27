@@ -138,3 +138,77 @@ the old snapshot back, and while the session is locked. The shadowing and the re
 **What was not done.** The reset was **not run**. It discards the saved Phase 2 layout, and choosing between that
 layout and this preset is my decision, not the assistant's. Until I run it, the lock screen shows the Phase 2
 layout — with this batch's `anchor` and `weight` keys merged in by the editor's exit during the test.
+
+## "Aperture" composition (Batch 7, 2026‑09‑26)
+
+**References, for ideas only.** Hyprlock setups separate "what time is it" from "sign in" by distance, not boxes.
+The Material lock screen makes one clock the whole screen and pushes everything else to the margins. Caelestia
+treats the lock as an atmosphere. Airlock still could not be identified (see the fifth batch). Nothing was copied:
+no layout, asset or code.
+
+**The composition.** One focal point, a quiet periphery, and the wallpaper as the picture:
+
+```
+                                                      ( ⏾ ⎋ ↻ ⏻ )   power: one glass capsule, top right
+                    Saturday, 26 September          ← eyebrow above the time, small, muted
+                     22:27                          ← focal: display face, light, tabular figures
+                                                    ← negative space: the wallpaper
+                            ( ◉ )
+                     (   ••••••••   )               ← identity directly above a glass capsule field
+   ♪ track · artist                        ☁ 24°    ← periphery written on the scene: no plates
+ ▁▂▃▅▃▂▁▂▃▅▆▅▃▂▁▂▃▂▁▂▃▅▃▂▁▂▃▅▆▅▃▂▁▂▃▂▁▂▃▅▃▂▁▂▃▅▆▅   ← ambient horizon, only while audio plays
+```
+
+| Decision | Setting (`lockscreen.toml`) |
+|---|---|
+| The date moves **above** the time as an eyebrow line: the eye lands on the time and the date reads as its caption, rather than one more row of a stack | date clock `cy = 372`, `face = "interface"`, `weight = "regular"`, `on_surface` + shadow (quiet by size, not by colour — see below) |
+| The time is set in the shell's **display** face, light, with **tabular figures** so the minute change does not shift the digits | time clock `face = "display"`, `tabular = true`, `weight = "light"`, box 760 × 200 |
+| A deliberate gap between the time and the authentication group | identity `cy = 770`, field `cy = 872` |
+| The password field is a **glass capsule** — a lens on the wallpaper, not a slab | `input_opacity = 0.26`, `input_radius = 28`, `center_password_text`, no hint, no login button; Caps Lock warning kept |
+| Media and weather are **written on the scene** (text with a shadow, no plates) in the bottom corners | `background = false`, `shadow = true`, `hide_when_no_media = true` |
+| Power is **one capsule** in the top-right corner | `session_actions` (restyled, below) |
+| The visualiser stays the ambient horizon | unchanged from the fifth batch |
+
+All colours are palette roles, and every widget is anchored (centre, bottom corners, top right).
+
+### Code changes
+
+| Change | Where | Notes |
+|---|---|---|
+| Clock `face` = `custom` (default, the widget's `font_family`) / `display` / `interface`, and `tabular` (default off) | `DesktopClockWidget`, factory, widget settings registry, `en.json` | Uses the `ui::type` faces, so a clock follows `[shell]` fonts without naming one; tabular figures via the `font_spec` feature suffix (Batch 6). Offered in the widget editor for digital clocks |
+| `session_actions`: one glass capsule (surface 0.30, hairline, concentric radius) holding clear 38 px items; hover is a tone step; an armed action is the **only solid fill** (error role) | `desktop_session_actions_widget.cpp` | Styling only: the arm/confirm logic, the 4 s window, the refusal of `lock`/`command` rows and of custom command strings are unchanged |
+| The editor saves only a **real** edit | `LockscreenWidgetsController::exitEdit` | It saved on every exit before, so opening and closing the editor froze the whole preset into `settings.toml`. That was how the Phase 2 override was born |
+| `lockscreen-widgets-reset` keeps what it discards | `ConfigService::stashOverrideTable` | Writes `settings.toml.lockscreen_widgets.stash` next to `settings.toml` (never read as configuration) |
+| `lockscreen-widgets-restore` | new IPC | Puts the stashed overrides back through the normal validated override commit |
+| A crash on a config reload while locked | `LockscreenWidgetsHost` | See the [postmortem](../../04_Incidents/postmortems/2026-09-26-lock-reload-crash.md) |
+
+**Security boundary — unchanged.** `LockSurface`, the login box's password path, the PAM conversation,
+`ext-session-lock-v1` and the lock/unlock lifecycle have no changes in this batch; `git diff` shows no edit to
+`lock_surface.cpp`, `lock_screen.cpp` or `lockscreen_login_box.*`. The login box is styled only through its existing
+preset keys. The lock host fix touches widget bookkeeping (attach, detach and frame ticks of the widgets around the
+field), not authentication.
+
+### Making it live, and what the editor showed
+
+> **Amendment to "What was not done" above.** On 2026‑09‑26 at 14:27 I had Claude run
+> `noctalia msg lockscreen-widgets-reset` on the Batch 7 binary. The Phase 2 layout was not discarded: it is in
+> `~/.local/state/noctalia/settings.toml.lockscreen_widgets.stash`, and `noctalia msg lockscreen-widgets-restore`
+> puts it back. `settings.toml` has no `[lockscreen_widgets]` table since, so the lock screen follows
+> `lockscreen.toml`.
+
+**First editor capture** (on a verified-empty workspace): the time, the identity group, the glass field, the corner
+periphery and the power capsule rendered as designed. But the eyebrow date was **nearly invisible**:
+`on_surface_variant` on the light upper part of my wallpaper. The real lock adds blur and a 0.44 palette tint,
+which would help, but that is not a reason to depend on it. The date is now `on_surface` with its shadow: quiet by
+size, not by colour. Re-captured: legible.
+- Full composition (editor, half size): [`lock-aperture-editor.png`](../../07_Assets/screenshots/lock-aperture-editor.png).
+- The focal group: [`lock-aperture-focal.png`](../../07_Assets/screenshots/lock-aperture-focal.png).
+- The power capsule: [`lock-power-capsule.png`](../../07_Assets/screenshots/lock-power-capsule.png).
+
+**Editor exit without an edit:** both runs left `settings.toml` byte-identical (hash compared before and after) and
+without a `[lockscreen_widgets]` table. This confirms the dirty-only save.
+
+**Not verified:** the real lock screen. It was not locked by automation (standing rule). The editor draws the same
+widgets but not the lock's blur, tint, password states, fade choreography or the unlock bridge. The reload-while-locked
+crash fix is described in the postmortem and was not exercised at runtime.
+

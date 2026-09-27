@@ -184,3 +184,35 @@ was.
 - **Visual language** — one page of shared tokens. → [`visual-language.md`](../../02_Architecture/surface/visual-language.md)
 - Validation: [`tracks-cc-lock-visual.md`](../../03_Performance/benchmarks/tracks-cc-lock-visual.md). Tests 124 / 125.
 
+## Later amendment — design foundation (2026‑09‑26, Batch 6, uncommitted on `e521a86`)
+
+- **Motion language:** semantic roles and critically damped springs inside `AnimationManager`, retargetable with
+  velocity kept. `MotionValue`/`MotionRect` for components. The nav indicator is the first consumer, and attached
+  panels now close on the dismissal role. → [`motion-language.md`](../../02_Architecture/design/motion-language.md)
+- **Tokens:**
+  - geometry, typography roles (tabular figures measured working) and semantic colour, plus contrast helpers;
+  - one surface-radius token replaced three private copies.
+  → [`design-tokens.md`](../../02_Architecture/design/design-tokens.md)
+- **Surface hierarchy and spatial model:** depth, lifetime, layer and material per role; panel requests carry an
+  origin, logged at runtime. → [`surface-hierarchy.md`](../../02_Architecture/design/surface-hierarchy.md),
+  [`spatial-model.md`](../../02_Architecture/design/spatial-model.md)
+- No screen redesigned; no configuration changed. Validation:
+  [`foundation-batch6.md`](../../03_Performance/benchmarks/foundation-batch6.md). Tests 127 / 128.
+
+## Later amendment — Zynith Control Center and lock screen (2026‑09‑26, Batch 7, uncommitted on `e521a86`)
+
+- **Control Center:**
+  - a command bar with one travelling selection capsule and folding/unfolding labels;
+  - a rebuilt Home (stage, band, chips);
+  - sections on embedded plates.
+  `classic` unchanged. → [`panel.md`](../../02_Architecture/control-center/panel.md)
+- **Lock screen:**
+  - the "aperture" composition, made live by a reversible reset;
+  - clock `face`/`tabular`;
+  - a power capsule.
+  Authentication untouched. → [`composition.md`](../../02_Architecture/lockscreen/composition.md)
+- **Incident:** my session froze when the assistant's preset write reloaded config while I was locked (an upstream
+  lock-host bug). Fixed. → [postmortem](../../04_Incidents/postmortems/2026-09-26-lock-reload-crash.md)
+- Validation and numbers:
+  [`control-center-lock-batch7.md`](../../03_Performance/benchmarks/control-center-lock-batch7.md). Tests 127 / 128.
+

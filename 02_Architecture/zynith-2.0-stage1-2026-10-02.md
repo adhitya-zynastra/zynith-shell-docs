@@ -1,4 +1,4 @@
-# Zynith 2.0 — Stage 1 implementation record (2026‑10‑02)
+# Zynith 2.0 — implementation record: Stage 1 and the migration (2026‑10‑02)
 
 This is the record of what was built for [Zynith 2.0](Zynith-Architecture-2.0.md). The architecture document
 describes the target; this page describes what exists. On 2026‑10‑02 I accepted the architecture and told Claude
@@ -128,6 +128,78 @@ Prototype idle with nothing open: **0.03–0.05 % of a core once settled** (0.20
 unlocked. **Its cost while the session is locked is UNKNOWN.** Measuring it needs a real lock, which I do myself:
 `~/.config/zynith/scripts/tests/locked-renderer-cost.sh` walks through it. Whether to pause the renderer while
 locked will be decided from that number.
+
+## The migration (evening of 2026‑10‑02)
+
+That evening I told Claude to stop gating and start the real migration: Quickshell draws every normal visible
+surface, and the native shell becomes the engine behind them. I asked for implementation first and measurement
+afterwards. Claude did the work below; what is on my screen changed with it.
+
+### What changed hands
+
+The handover switch is new: `~/.config/zynith/zynith.toml [surfaces]`. The native shell reads it and steps aside
+per surface, and Settings → Zynith UI flips it back.
+
+| Surface | Now drawn by | How the native one stepped aside | Keys |
+|---|---|---|---|
+| Bars | Zynith: my three native bars, recreated in `bars.toml`. A left rail, a time bar at the bottom and a media bar at the top; the last two hide while windows are open | native gate in `Bar::syncInstances` (`407729d`) | — |
+| Launcher | Zynith: calculator `=`, windows `>`, wallpapers `@`, emoji `:`, session `!` | keybindings | `Mod+D`, `Mod+Alt+E` |
+| Notifications | Zynith, as the only owner of `org.freedesktop.Notifications` | `[notification] enable_daemon = false` (rice.toml) | `Mod+Shift+N` |
+| Control Panel | Zynith; replaces Home and Quick Settings | keybinding | `Mod+Shift+E` |
+| Clipboard, wallpaper, session menu | Zynith | keybindings | `Mod+Alt+V`, `Mod+W`, `Ctrl+Alt+P` |
+| OSD | Zynith: volume, microphone, brightness, keyboard layout | `[osd] enabled = false` (rice.toml) | brightness keys → `zynith-ui cmd brightness` |
+| Desktop widgets | Zynith: my twelve widgets, recreated from the native layout in `widgets.toml` | `[desktop_widgets] enabled = false` (rice.toml) | — |
+| Overview wallpaper | **live** (my new decision; the poster stays as the fallback) | generated `rice/wallpaper.kdl` | — |
+
+- **Still native:**
+  - the lock screen (see below);
+  - the dock, which the earlier decision keeps out of the critical path;
+  - the window switcher, screenshot annotation and the native Settings GUI (`Mod+T`).
+- **Zynith Settings** opens from the Control Panel's gear and from the launcher.
+- **Startup:** the Zynith UI starts with niri from `config.kdl`.
+- **Rollback:**
+  - set a surface back to `"native"` in `zynith.toml`;
+  - re-enable its rice.toml switch where it has one;
+  - restore the keybinding from `~/.config/rice-backups/*-zynith-ui-*`.
+
+### Foundations built for it
+
+- **Configuration lives in `~/.config/zynith/*.toml`.**
+  - It is read and written by a native `ConfigFile` type: TOML, atomic writes, live reload.
+  - The Stage 1 `shell.json` was migrated once.
+  - See the [configuration reference](../06_Reference/configuration/zynith.md).
+- **Wallpaper-aware tokens.**
+  - Surfaces lean toward the wallpaper's colour (`appearance.toml` tint), not grey.
+  - Accent, contrast, edges, radius, text size and motion speed and style are all settings.
+- **A keybinding socket (`CommandServer`).** `zynith-ui cmd …` reaches the UI in about 20 ms; `quickshell ipc`
+  took about 100 ms. If the UI is not running, it falls back to the native panel.
+- **Desktop-widget layout from the native shell.** It was read once, never written, so my composition carried
+  over.
+- **Native additions:** `weather-status`, `surfaces-sync`, and `windowList()`/`focusWindow()` on `NiriState`.
+
+### What went wrong
+
+- **Notification server across live reloads.** It survived a reload but the new UI generation did not attach to
+  it, so for a moment notifications would have gone nowhere. Fixed by remembering ownership across reloads
+  (`PersistentProperties`). Claude verified it: a notification sent after four reloads was delivered.
+- **Two `FileView` pitfalls again.**
+  - Emoji did not load until the file's path was set on first use.
+  - A `for` statement is not allowed as a bare QML handler expression.
+- **I locked the session during the OSD handover.** Claude stopped before writing anything, built Settings and
+  desktop widgets in the meantime, and finished the handover after I unlocked. No configuration was written while
+  I was locked.
+
+### Not done yet
+
+- **Lock screen UI in Quickshell.** This needs my decision. The session lock and PAM must stay native, but only the
+  client holding the lock can draw on the lock surfaces, so QML cannot draw them from the UI process. The way that
+  keeps both rules is a small native lock client that renders a Qt Quick (QML) interface with PAM in C++, the
+  `zynith-secure` role from the architecture.
+- **Live wallpaper on the lock screen.** The lock surface is opaque and belongs to the lock client, so this belongs
+  with the item above.
+- **A Zynith workspace/overview surface.** niri's overview is the compositor's own; a Zynith one would need window
+  thumbnails through screencopy.
+- **Measurement:** the full performance, stress and lifecycle pass, deliberately after the migration.
 
 ## Next
 

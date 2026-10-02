@@ -11,3 +11,4 @@ zynith-ui NetworkState instead of Quickshell.Networking,wakeups of the Network s
 zynith-ui CoreClient instead of noctalia msg processes,CPU per core call,60,0.15,ms,2026-10-02,7061d00,clean,20-call timing; wallpaper panel open made 3 calls
 zynith-ui nine-patch shadow instead of MultiEffect,CPU per Home panel cycle (Balanced),328-332,321-335,ms,2026-10-02,reverted,clean,within noise - reverted
 zynith-ui visualizer counts bound to bands,main thread ticks per 20 s with music,194,185,ticks,2026-10-02,dfdfb1d,clean,small
+renderer: Wayland display passed to mpv (VA-API zero-copy),renderer CPU 4K H.264 video,98,13.9,pct_of_core,2026-10-02,f89e82c (linux-wallpaperengine local),clean,1080p item 37.1 -> 13.1

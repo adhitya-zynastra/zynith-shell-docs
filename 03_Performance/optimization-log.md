@@ -124,3 +124,34 @@ What music costs, measured in the same 20 s (Balanced, nothing open):
 
 At 30 visualizer frames a second, ≈ 2 ms each is ≈ 6 % before any widget work. Performance turns the visualizer
 off; the Balanced rate (30 fps) is unchanged and is a UX choice for me to make.
+
+## O‑14 · Video wallpapers decoded on the GPU (renderer patch f89e82c, local branch of linux-wallpaperengine)
+While measuring the session, Claude found the live renderer at **98 % of a core**: my wallpaper was a 4K H.264
+video. mpv's own log suggested `--hwdec=auto`, which linux-wallpaperengine already sets. It had no effect because
+the renderer creates mpv's OpenGL render context without the native display, so mpv can never open a VA-API
+device for zero-copy interop:
+
+- the 4K item fell back to **software** decoding;
+- a 1080p item used **`vaapi-copy`**, copying every frame back to RAM.
+
+Decode-only checks on this machine, 300 frames of the 4K file:
+
+| | CPU |
+|---|---|
+| software (`ffmpeg`) | 16.0 s |
+| VA-API with frames left on the GPU | **1.16 s** |
+
+The patch passes the Wayland display (`MPV_RENDER_PARAM_WL_DISPLAY`) to `mpv_render_context_create`. With it, mpv
+reports "Using hardware decoding (vaapi)", zero-copy.
+
+| Same item, same minutes, renderer process | before | after |
+|---|---|---|
+| 1080p24 H.264 (`3364786939`, my wallpaper at the time) | 37.1 % (`vaapi-copy`) | **13.1 %** |
+| 4K30 H.264 (`1214148605`) | ≈ 98 % (software; measured 20 min earlier) | **13.9 %** |
+
+The 4K item was shown for about 30 s for the second row and then my own wallpaper was restored.
+
+*Conditions: TuneD `powersave`; Intel Arc iGPU with `iHD` from `dri-nonfree`; mpv 0.41, RPM Fusion ffmpeg 8.1.*
+
+- **The patch lives only in my clone.** Rebuilding the renderer from upstream `main` would drop it.
+- Offering it upstream would be my decision, because it means publishing to someone else's project.

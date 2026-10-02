@@ -21,6 +21,17 @@ The video figure is software decoding: the renderer configures libmpv without `h
 profile directory in `/tmp` (`/tmp/dd39e50d-…`, removed by hand); that observation is why the supervisor now gives
 the child a private `TMPDIR` and deletes it after exit.
 
+> **Amended 2026‑10‑02:** the reason given above is wrong.
+>
+> - linux-wallpaperengine *does* set `hwdec=auto`, but through libmpv's render API it never told mpv which display
+>   it renders for, so mpv could not open a VA-API device for its OpenGL interop.
+> - It fell back to `vaapi-copy`, which copies every frame back to RAM (this 1080p item), or to software decoding
+>   (the 4K item above).
+> - A local renderer patch passes the Wayland display (`~/linux-wallpaperengine`, branch
+>   `zynith/vaapi-wayland-display`, `f89e82c`). See the [optimization log](../optimization-log.md), O‑14:
+>   - the 4K video drops from **≈ 98 % to 13.9 %** of a core;
+>   - a 1080p video drops from **37.1 % to 13.1 %**.
+
 ## Discovery
 
 | step | first run | warm (runs 2–3) |

@@ -51,6 +51,8 @@ and `~/.local/state/zynith`.
 
 These are implementation choices. They are not on the architecture's decision list.
 
+- **The UI talks to the native shell over its IPC socket directly** (`CoreClient`, `7061d00`), not through
+  `noctalia msg` processes. Each process had cost ≈ 60 ms of CPU; see the optimization log, O‑11.
 - **Apps from the launcher are spawned by niri, not by the shell.**
   - Quickshell sets its own environment (`QSG_RENDER_LOOP`, `QML_IMPORT_PATH`, `QS_*`). An app started by the shell
     would inherit it.

@@ -82,3 +82,17 @@ list of nearby networks, and the signals behind it, exists only while the Wi‑F
 
 Decision record: [ADR‑0020](../05_Decisions/ADRs/ADR-0020-measure-builtins-before-adopting.md).
 *Conditions: TuneD `powersave`; three audio streams uncorked; the native shell running beside it.*
+
+## O‑11 · The Zynith UI calls the shell's socket instead of `noctalia msg` (`feature/zynith-ui` `7061d00`)
+Clipboard, Quick Settings and the Wallpaper panel asked the native shell for data by running `noctalia msg …`.
+Each such process starts the whole 34 MB shell binary only to forward one line to the shell's socket. Claude timed
+20 calls of `status` each way:
+
+- through the CLI: **1.22 s wall, 1.19 s CPU (≈ 60 ms per call)**;
+- straight to the socket: **0.009 s wall, 0.003 s CPU (≈ 0.15 ms per call)**.
+
+Opening the Wallpaper panel made three such calls, so it had cost ≈ 180 ms of CPU before drawing anything. Zynith.Native's
+`CoreClient` now speaks the socket's one-shot protocol: connect, write, half-close, read to EOF. Without the
+half-close, the shell would wait out its 100 ms receive timeout on its own main loop. This stands in for the helper
+protocol (Architecture 2.0 §4.2) until that exists.
+*Conditions: TuneD `powersave`; shell `4f68939`-based build.*

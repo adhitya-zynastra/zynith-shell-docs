@@ -8,3 +8,4 @@ modal backdrop snapshot vs live,CPU per browser open+close,210,202,ms,2026-09-21
 OSD hold via TimerManager instead of animateTimer,extra wakeups while OSD visible,50-80,0,per_s,2026-09-20,40c1936,not recorded,recovered from session record
 bar cluster recomposition,idle CPU,1.07-1.12,1.10-1.12,pct_of_core,2026-09-20,config-only,clean,no regression
 zynith-ui NetworkState instead of Quickshell.Networking,wakeups of the Network service alone,68,0,per_s,2026-10-02,b136894,clean,40 access points nearby; prototype idle 0.23 -> 0.03 pct
+zynith-ui CoreClient instead of noctalia msg processes,CPU per core call,60,0.15,ms,2026-10-02,7061d00,clean,20-call timing; wallpaper panel open made 3 calls

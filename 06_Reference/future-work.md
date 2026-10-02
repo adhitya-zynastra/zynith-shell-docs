@@ -66,7 +66,9 @@ Nothing on this page is implemented. Implemented work lives in `01_Phases/`.
 | Greeter sync | kept only while existing functionality depends on it; otherwise deferred |
 | Setup wizard | deferred until the Zynith UI and Settings architecture is stable |
 | Hot corners and screen corners | deferred until the interaction architecture is stable |
-| Luau plugin capability model (`exec`, `network`, `files`, `notifications`; no `/bin/sh -c`) | 2026‑10‑02 decision: keep Luau, improve its security model; not part of the first migration stages |
+| ~~Luau plugin capability model~~ | **Done 2026‑10‑02** (`54204d2`, [ADR‑0021](../05_Decisions/ADRs/ADR-0021-plugin-capabilities.md)). Still open: showing and granting capabilities in Settings → Privacy & security |
+| QML plugin model | evaluate separately, after the migration (2026‑10‑02 decision: Luau stays for now) |
+| Desktop widgets in the Quickshell UI | not started; the native shell's desktop widgets stay in use |
 | Overview backdrop as the live renderer itself (Architecture 2.0 option B) | option A (blurred poster) first; B stays possible later |
 
 ## Rejected

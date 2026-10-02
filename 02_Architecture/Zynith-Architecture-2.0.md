@@ -368,6 +368,8 @@ Proposed budgets: zynith-ui ≤ 250 MB with bars and one panel; whole Zynith idl
 | PAM, password buffers, lock | zynith-secure only; non-dumpable; PAM helper re-exec kept; buffers wiped (Phase 1 code moves as is) |
 | polkit, Wi‑Fi secrets, Bluetooth pairing | zynith-secure only; the UI receives "prompt pending", never the secret |
 | Plugins | capability manifest (`exec`, `network`, `files`, `notify`). No `/bin/sh -c`: commands go through zynithd as argv arrays and only if the capability was granted. Notify-only updates |
+
+*Amended 2026‑10‑02: implemented in the native Luau host as declared ∩ granted capabilities (`exec`, `shell`, `network`, `files`, `notifications`, `clipboard`, `env`); shell strings are a separate capability rather than impossible; secret stores closed regardless ([ADR‑0021](../05_Decisions/ADRs/ADR-0021-plugin-capabilities.md)).*
 | Hooks and templates | run by zynithd with argv arrays, timeouts and bounded concurrency; new hooks off until I enable them (Clavis's trust model) |
 | Notifications | history retention setting; contents redacted on the lock screen by default |
 | Clipboard | history stays encrypted at rest; entries carrying password-manager hints are skipped |

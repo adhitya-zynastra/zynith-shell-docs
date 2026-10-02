@@ -28,7 +28,7 @@ the child a private `TMPDIR` and deletes it after exit.
 > - It fell back to `vaapi-copy`, which copies every frame back to RAM (this 1080p item), or to software decoding
 >   (the 4K item above).
 > - A local renderer patch passes the Wayland display (`~/linux-wallpaperengine`, branch
->   `zynith/vaapi-wayland-display`, `f89e82c`). See the [optimization log](../optimization-log.md), O‑14:
+>   `zynith/vaapi-wayland-display`, f89e82c). See the [optimization log](../optimization-log.md), O‑14:
 >   - the 4K video drops from **≈ 98 % to 13.9 %** of a core;
 >   - a 1080p video drops from **37.1 % to 13.1 %**.
 

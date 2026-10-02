@@ -138,4 +138,6 @@ the adaptive rule. Raw output is at the end of the re-run file.
   - merging the click-catcher into the panel surface, which saves one surface map per open (≈ 16 ms in the
     attribution runs);
   - fewer per-frame bindings on the card.
+- **With music playing** (Balanced, 20 s, nothing open): the prototype uses 11.2 % of a core, the native shell
+  15.4 %. Both are dominated by animating the bar visualizer; see the optimization log, O‑13.
 - Not measured: multi-monitor, long sessions (leaks), Enhanced/Max on the Legion.

@@ -96,3 +96,31 @@ Opening the Wallpaper panel made three such calls, so it had cost ≈ 180 ms of 
 half-close, the shell would wait out its 100 ms receive timeout on its own main loop. This stands in for the helper
 protocol (Architecture 2.0 §4.2) until that exists.
 *Conditions: TuneD `powersave`; shell `4f68939`-based build.*
+
+## O‑12 · Nine-patch shadow instead of a blurred `MultiEffect`: no effect, reverted
+The Stage 1 attribution runs had put the panel shadow at ≈ 14 ms per open + close. Claude replaced the
+`MultiEffect` drop shadow with a pre-blurred nine-patch image, with no offscreen pass and no blur, and alternated the
+two in place, three rounds each, under the same conditions (Balanced, TuneD `powersave`, music playing):
+
+- effect: **328–332 ms** per cycle;
+- image: **321–335 ms** per cycle.
+
+That is no measurable difference, so the change was reverted rather than kept for its theory. The earlier 14 ms
+had come from removing shadows altogether, which also removes their window padding, so it never showed that the
+blur itself was the cost.
+
+## O‑13 · Visualizer: per-frame work limited to each bar's level (`feature/zynith-ui` `dfdfb1d`)
+Every bar's count, and with it its colour (a JS mix per bar), was bound to the spectrum's value list, so it was
+recomputed on every frame. Counts and colours now follow the band count, which changes only with the profile.
+**Main thread 194 → 185 ticks per 20 s** with music playing (Balanced). The remaining cost is the frame itself:
+Qt's render-loop timing gives ≈ 2 ms per bar frame, most of it the buffer swap.
+
+What music costs, measured in the same 20 s (Balanced, nothing open):
+
+| | CPU |
+|---|---|
+| Zynith UI, whole process | **11.2 %** of a core (main thread ≈ 9 %, spectrum thread ≈ 0.7 %) |
+| native shell, same music | **15.4 %** |
+
+At 30 visualizer frames a second, ≈ 2 ms each is ≈ 6 % before any widget work. Performance turns the visualizer
+off; the Balanced rate (30 fps) is unchanged and is a UX choice for me to make.

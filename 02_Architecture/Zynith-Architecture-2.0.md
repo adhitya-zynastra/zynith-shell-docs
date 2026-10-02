@@ -120,6 +120,8 @@ Every domain is one QML singleton in zynith-ui with the same three parts:
 | Theme | zynithd (palette, templates) | — |
 | Config | zynithd (schema, validation, single writer) | **one writer per file** |
 
+*Amended 2026‑10‑02: network state is read by Zynith.Native's `NetworkState`, not `Quickshell.Networking`, after the latter measured 68 wakeups/s on a campus network ([ADR‑0020](../05_Decisions/ADRs/ADR-0020-measure-builtins-before-adopting.md)).*
+
 ### 4.2 Transports
 
 1. **In process**: QML bindings to Quickshell built-ins and Zynith.Native (zero copies, used for anything ≥ 1 Hz).

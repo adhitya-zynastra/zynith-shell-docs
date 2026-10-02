@@ -37,6 +37,11 @@ and `~/.local/state/zynith`.
 | Panels | One router per output with history. Home, Media, System, Network, Bluetooth; in-surface navigation; a surface stays warm for a profile-defined time and idle while hidden | `da26550`, `5f10738` |
 | Launcher | Centred surface, fuzzy search over desktop entries, keyboard navigation, ranking by recent use. Apps are spawned by niri | `f5b1984` |
 | OSD | volume, mute, keyboard layout; off by default while the native OSD runs | `9b10bdc` |
+| Clipboard | Centred panel over the native shell's encrypted history. The shell gained `clipboard-history` (previews of at most 240 bytes), `clipboard-select` and `clipboard-remove`; a full payload leaves the shell only by going back onto the clipboard | `09974ee`; native `a2bf7b6` |
+| Window behaviour | `window.behaviour` → `~/.config/niri/rice/layout.kdl` (as configured · scrolling · tiling-like), validated by niri before an atomic rename ([niri reference](../06_Reference/configuration/niri.md)) | `46770bd` |
+| Notifications | Server, popups, in-memory history and Do Not Disturb. **Off** (`notifications.server`), and it never takes `org.freedesktop.Notifications` from another owner. Tested on a private D-Bus session (`tools/notify-test.sh`) | `5c5f93f` |
+| Network | Native `NetworkState` instead of `Quickshell.Networking` ([ADR‑0020](../05_Decisions/ADRs/ADR-0020-measure-builtins-before-adopting.md)) | `b136894` |
+| Quick Settings | Volume, microphone, brightness (native `Backlight`: sysfs read, logind write), Wi‑Fi, Bluetooth, DND, night light, stay awake, microphone, power profile. The shell's own switches are read from its status | `9aa9f91`; native `f09531b` |
 | Settings | Separate instance: Home, Experience, Appearance, Bars, Window behaviour, About | `3bad9da` |
 | Native core in the UI | `NiriState` (one event-stream connection, emits only on change); `AudioSpectrum` (passive PipeWire monitor, demand-counted, sleeps on silence) | `43ed17d`, `133143c`, `e381281` |
 
@@ -57,6 +62,15 @@ These are implementation choices. They are not on the architecture's decision li
 - **Names that shadow Qt types are avoided in services.**
   - A singleton called `Palette` silently resolved to QtQuick's own type.
   - `Network` and `Bluetooth` collide with Quickshell modules unless those modules are imported under an alias.
+- **Live-reload findings, recorded for whoever continues.**
+  - A new QML file is visible to other files only after a second reload: Quickshell scans the directory once
+    per reload.
+  - A changed native plugin needs a restart, because a loaded plugin is not replaced.
+  - A plain JS array as a `Repeater` model rebuilds every delegate on each change. That restarted every
+    notification's entrance and timeout until the lists moved to `ScriptModel`.
+- **The window-behaviour default is "as configured".** `shell.json` held `"scrolling"`, a default the prototype had
+  written itself and that nothing had ever applied. Claude migrated it to `"config"` before switching the generator
+  on, so my window behaviour did not change. My hand-written `layout {}` already matched the Tiling-like preset.
 - **The launcher's surface is not tied to a bar.** Panel geometry gained a `center` placement whose top stays
   fixed while the list grows.
 
@@ -102,16 +116,22 @@ These figures are from the same-conditions re-run under TuneD `powersave`:
   toggle had already closed the launcher, so it showed my terminal. Claude deleted it at once. The later captures
   were crops of the surface only and were deleted after inspection.
 
+## Measured after the second batch
+
+Prototype idle with nothing open: **0.03 % of a core, 2 wakeups/s, PSS 77 MB** (Performance profile, after
+`b136894`). The live renderer, measured for reference in the same session: 4.95 % of a core and 201 MB RSS while
+unlocked. **Its cost while the session is locked is UNKNOWN.** Measuring it needs a real lock, which I do myself:
+`~/.config/zynith/scripts/tests/locked-renderer-cost.sh` walks through it. Whether to pause the renderer while
+locked will be decided from that number.
+
 ## Next
 
-From the architecture's list, in the order Claude is taking them:
-
-1. Clipboard history.
-2. The window-behaviour generator: `shell.json` → a generated niri fragment, including the honest Tiling-like
-   preset.
-3. Pausing the live renderer while locked.
-4. Notifications and Quick Settings for the cut-over.
-5. Wallpaper browsing in the new UI.
+1. **The stage gate:** whether the prototype starts replacing native surfaces on my desktop (architecture Stage 3:
+   one surface at a time, each with a parity checklist and a rollback). That is my decision.
+2. Wallpaper browsing in the new UI, over the one WallpaperState.
+3. The helper protocol (§4.2), to replace the interim `noctalia msg` calls.
+4. Pausing the live renderer while locked, if the measurement shows a cost.
+5. Panel cost in Balanced (≈ 1.6× native).
 
 Still open from §18: removing the stale `/usr/local/bin/quickshell` needs my `sudo`, and the capability model for
 Luau plugins is tracked as deferred.

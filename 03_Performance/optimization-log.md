@@ -68,3 +68,17 @@ which is user configuration. See `04_Incidents/postmortems/2026-09-21-template-f
 | Remove the bar's once-per-second update | Idle CPU unchanged (1.10 % vs 1.00 %, within noise) | Reverted — it was not the cost |
 | Dirty-gate the shared layout pass | Layout of a small tree twice a second is microseconds | Not attempted; risk outweighed benefit |
 | Lower the session idle budget to shrink RSS | Peak idle never reached the ceiling anyway | Ceiling kept as headroom; documented as unexercised |
+
+## O‑10 · The Zynith UI stops following every access point (`feature/zynith-ui` `b136894`)
+The prototype's Wi‑Fi icon read Quickshell's `Networking` module, which follows every access point
+NetworkManager knows. On this campus that is 40 of them (4 distinct names, 30 hidden), each updating its strength
+on every background scan. Claude found it by bisecting the idle prototype service by service, each one alone in
+its own instance for 15 s: `Network` alone cost **68 wakeups/s and ≈ 0.4 % of a core**, and every other service
+cost 0–1 wakeups/s.
+The fix is a native `NetworkState` that follows NetworkManager's own object and the access point in use. The
+list of nearby networks, and the signals behind it, exists only while the Wi‑Fi panel holds it.
+- **`Network` alone: 68 → 0 wakeups/s.**
+- **Whole prototype idle (Performance profile, 60 s): 0.23 % → 0.03 % of a core, 7–9 → 2 wakeups/s.**
+
+Decision record: [ADR‑0020](../05_Decisions/ADRs/ADR-0020-measure-builtins-before-adopting.md).
+*Conditions: TuneD `powersave`; three audio streams uncorked; the native shell running beside it.*

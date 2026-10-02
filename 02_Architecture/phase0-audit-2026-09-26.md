@@ -158,3 +158,11 @@ before each subsystem. Candidates, all **unread**: launchers (walker, anyrun, vi
    Sora are not).
 5. Then the prompt's Phase 3 work in order of gap size, each preceded by its own research (0J): launcher → contextual
    dashboard → notification grouping → Keystone-style transient object → lock two-state.
+
+## Retrospective amendments
+
+- **2026‑10‑02**: two statements above are wrong, found by the
+  [current architecture audit](Zynith-Current-Architecture.md). Noctalia 5.1.0 is **MIT**, not GPL‑3.0 (§1; its
+  `LICENSE` reads "MIT License, Copyright (c) 2026 noctalia-dev"). The clipboard history is **encrypted at rest**,
+  not a plain file (§7; `index.enc`, `src/security/encrypted_file_store`). Notification history, screen time and
+  usage counts are plain files as stated.

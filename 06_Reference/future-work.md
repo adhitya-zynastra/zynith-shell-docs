@@ -61,6 +61,13 @@ Nothing on this page is implemented. Implemented work lives in `01_Phases/`.
 |---|---|
 | Automated lock/unlock testing | Risk of locking me out of my own machine; validated visually instead |
 | Making the test count 119/119 | The failing test is unrelated third-party behaviour; changing unrelated infrastructure to improve a count is explicitly against policy |
+| Dock in the Quickshell UI | 2026‑10‑02 decision: kept in the native shell, architecture-compatible, not on the migration's critical path |
+| Screenshot UI in the Quickshell UI | same decision as the dock; niri's own screenshot UI remains available |
+| Greeter sync | kept only while existing functionality depends on it; otherwise deferred |
+| Setup wizard | deferred until the Zynith UI and Settings architecture is stable |
+| Hot corners and screen corners | deferred until the interaction architecture is stable |
+| Luau plugin capability model (`exec`, `network`, `files`, `notifications`; no `/bin/sh -c`) | 2026‑10‑02 decision: keep Luau, improve its security model; not part of the first migration stages |
+| Overview backdrop as the live renderer itself (Architecture 2.0 option B) | option A (blurred poster) first; B stays possible later |
 
 ## Rejected
 

@@ -1,7 +1,13 @@
 # Architecture Overview
 
 A one-page map. Every claim here is expanded, with evidence, in `02_Architecture/`. The most recent whole-system
-check of what actually runs is the [Phase 0 audit](02_Architecture/phase0-audit-2026-09-26.md) (2026‑09‑26).
+check of what actually runs is the [current architecture audit](02_Architecture/Zynith-Current-Architecture.md)
+(2026‑10‑02), which supersedes the [Phase 0 audit](02_Architecture/phase0-audit-2026-09-26.md) (2026‑09‑26) where
+they differ.
+
+**Next architecture (proposal, not implemented):** [Zynith Architecture 2.0](02_Architecture/Zynith-Architecture-2.0.md),
+built on the [Quickshell study](02_Architecture/Zynith-Quickshell-Architecture-Study.md) and the
+[reference rice study](02_Architecture/Zynith-Reference-Rice-Study.md).
 
 ![System layers](07_Assets/diagrams/system-layers.svg)
 

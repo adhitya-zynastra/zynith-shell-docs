@@ -102,4 +102,68 @@ for i,(t,s) in enumerate(cfg):
     if i < len(cfg)-1: b += arrow(350, y+50, 350, y+66)
     y += 66
 svg("configuration-precedence.svg", 700, y+6, b)
+
+def group(x, y, w, h, title, accent=False):
+    s = (f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="10" fill="none" '
+         f'stroke="{ACCENT if accent else LINE}" stroke-width="1.4" stroke-dasharray="{"" if accent else "5 4"}"/>')
+    s += f'<text x="{x+14}" y="{y+20}" font-size="12" font-weight="700" fill="{INK}">{title}</text>'
+    return s
+
+def note(x, y, text):
+    return f'<text x="{x}" y="{y}" font-size="10" fill="{MUTE}">{text}</text>'
+
+# 6 — current architecture (2026-10-02 audit)
+b  = box(30, 16, 840, 48, "niri 26.04", "windows · workspaces · overview · blur · enforces ext-session-lock")
+b += arrow(450, 64, 450, 90, "layer-shell surfaces · niri IPC socket · generated .kdl")
+b += group(30, 90, 840, 250, "noctalia — Noctalia 5.1.0 + Zynith patches · one C++23 process · one poll loop · 34 threads", accent=True)
+row = [("Bars ×3", "start / center / end widgets"), ("Panel host", "one surface · one panel at a time"),
+       ("Lock · OSD · toasts", "ext-session-lock surfaces"), ("Wallpaper · backdrop", "Settings window (xdg)")]
+for i, (t, s) in enumerate(row):
+    b += box(46 + i*206, 118, 196, 52, t, s, small=True)
+b += note(46, 186, "Application owns ≈ 100 members; services push single callbacks, surfaces pull in doUpdate()")
+row = [("Config · theme · templates", "TOML merge · MCU palette"), ("PipeWire · spectrum · MPRIS", "WirePlumber mixer"),
+       ("Network · Bluetooth · Power", "NM · BlueZ · UPower · logind · agents"), ("Notifications · tray · polkit", "D-Bus names owned")]
+for i, (t, s) in enumerate(row):
+    b += box(46 + i*206, 196, 196, 52, t, s, small=True)
+row = [("Scene graph → GLES", "per surface · Cairo/Pango text"), ("Luau plugins", "in-process · runAsync"),
+       ("IPC socket", "noctalia msg · dmenu"), ("Live wallpaper controller", "branch feature/live-wallpaper")]
+for i, (t, s) in enumerate(row):
+    b += box(46 + i*206, 268, 196, 52, t, s, small=True)
+b += arrow(450, 340, 450, 366, "fork / exec")
+row = [("PAM helper", "re-exec · non-dumpable"), ("linux-wallpaperengine", "exactly one · supervised"),
+       ("hook and template commands", "post-hooks · user hooks"), ("plugin git · niri validate", "short-lived")]
+for i, (t, s) in enumerate(row):
+    b += box(46 + i*206, 366, 196, 50, t, s, small=True)
+b += arrow(450, 416, 450, 442, "D-Bus · PipeWire · sysfs · files")
+b += box(30, 442, 840, 50, "Linux · Wayland · D-Bus services",
+         "PipeWire/WirePlumber · NetworkManager · BlueZ · UPower · logind · polkitd · gnome-keyring · Steam library")
+svg("zynith-current-architecture.svg", 900, 510, b)
+
+# 7 — proposed Zynith Architecture 2.0
+b  = box(30, 16, 900, 48, "niri", "windows · workspaces · layout presets (generated) · blur · overview · lock enforcement")
+b += arrow(350, 90, 350, 64, "layer-shell · xdg")
+b += arrow(810, 90, 810, 64)
+b += group(30, 90, 640, 262, "zynith-ui — Quickshell (QML) · draws, never fetches", accent=True)
+row = [("Bars", "N · edge + anchor"), ("Panels", "focused surfaces"), ("Transient", "toasts · OSD · menus"),
+       ("Launcher", "providers"), ("Desktop", "wallpaper · widgets")]
+for i, (t, s) in enumerate(row):
+    b += box(44 + i*124, 118, 116, 50, t, s, small=True)
+b += arrow(350, 168, 350, 194, "bind state · call intents")
+b += box(44, 194, 612, 44, "State — one QML singleton per domain", "state · intents · demand (retain / release)", accent=True)
+b += box(44, 254, 300, 84, "Quickshell built-ins", "MPRIS · Notifications · Tray · UPower", small=True)
+b += f'<text x="194" y="324" text-anchor="middle" font-size="10" fill="{MUTE}">PipeWire · Bluetooth · Networking (D-Bus direct)</text>'
+b += box(356, 254, 300, 84, "Zynith.Native (C++ QML module)", "niri model · spectrum · sampler · images", accent=True, small=True)
+b += box(690, 90, 240, 120, "zynith-settings", "Quickshell app · started on demand")
+b += box(690, 228, 240, 124, "zynith-secure (native)", "lock + PAM · polkit · Wi-Fi · pairing", accent=True)
+b += note(702, 336, "secrets never leave this process")
+b += arrow(350, 352, 350, 380, "JSON lines · subscribe / call")
+b += box(30, 380, 640, 56, "zynithd (native helper daemon)",
+         "config · theme / templates / hooks · wallpaper · niri fragments · clipboard · night light · weather · plugins")
+b += arrow(200, 436, 200, 462, "supervises")
+b += box(30, 462, 340, 44, "linux-wallpaperengine (one)", "")
+b += arrow(520, 436, 520, 530)
+b += arrow(810, 352, 810, 530)
+b += box(30, 530, 900, 50, "Linux · Wayland · D-Bus services",
+         "PipeWire · NetworkManager · BlueZ · UPower · logind · polkitd · gnome-keyring · Steam library")
+svg("zynith-architecture-2.0.svg", 960, 600, b)
 print("diagrams written to", OUT)

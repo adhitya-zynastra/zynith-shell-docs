@@ -8,11 +8,11 @@ Zynith 2.0's configuration root. Map of the directory: `~/.config/zynith/README.
 | `appearance.toml` | Zynith Settings | Zynith UI | tint, accent, contrast, surface opacity, blur, edges, radius, font scale |
 | `animation.toml` | Zynith Settings | Zynith UI | speed, style (fluid · crisp · calm), reduced motion |
 | `experience.toml` | Zynith Settings, Control Panel | Zynith UI | profile, adaptive, `[overrides]` |
-| `bars.toml` | Zynith Settings | Zynith UI | one `[[bar]]` per bar: edge, anchor, offset, margin, thickness, length, visibility, layer, widgets, style |
-| `panels.toml` | Zynith Settings | Zynith UI | `[panels]`, `[launcher]`, `[control_panel]` modules, `[osd]` |
-| `notifications.toml` | Zynith Settings | Zynith UI | location, density, grouping, DND, sound, lock redaction |
-| `wallpaper.toml` | Zynith Settings | Zynith UI → `rice/wallpaper.kdl` | folder, overview `live` or `poster`, lock |
-| `widgets.toml` | by hand for now (seeded from the native layout) | Zynith UI | `[[widget]]`: type, output, cx, cy, width, height, rotation, flip, reference, settings |
+| `bars.toml` | Settings → Bars | Zynith UI | `[[bar]]`: edge, anchor, offset, margin, thickness, length, visibility, layer, reserve, screens, enabled, style (opacity, radius or `radius_top_left`…, border, `border_color`, `border_width`, shadow, padding, spacing, `font_family`, `font_scale`, `hover_highlight`, `capsule*`), `widgets` (start/center/end), `[bar.actions]` (empty space), `[[bar.group]]`. `[widget.<name>]`: a widget's settings in the native keys (`type` when the name is not a kind) and `[widget.<name>.actions]`: left right middle back forward scroll_up/down/left/right → an action |
+| `panels.toml` | Zynith Settings | Zynith UI | `[panels]`; `[launcher]` width, rows, position, density, layout (list · grid), categories, actions, auto_paste, terminal; `[control_panel]` modules; `[osd]` duration, margin, position (top · bottom), hidden kinds |
+| `notifications.toml` | Zynith Settings | Zynith UI | location, density, grouping, DND, sound, lock redaction, max_popups (the rest queue), history_persist, history_retention_hours, show_app_name, show_actions, monitor, `[[filter]]` (match, match_content, show_popup, save_history, play_sound, bypass_dnd, timeout_ms, urgencies) |
+| `wallpaper.toml` | Zynith Settings | Zynith UI → `rice/wallpaper.kdl` | folder, browser `layout` (carousel · grid) and `card_width`, overview `live` or `poster`, lock |
+| `widgets.toml` | the desktop editor (`Mod+Alt+W`) | Zynith UI | `[[widget]]`: type (clock label sticker audio_visualizer weather media_player calendar sysmon volume session_actions button), output, cx, cy, width, height, rotation, flip, hidden, reference, settings (native keys; `anchor` keeps an edge's distance) |
 | `window.toml` | Zynith Settings | Zynith UI → `rice/layout.kdl` | behaviour |
 | `shell.json` | (Stage 1) | nothing since the migration | kept only as the source of the one-time migration |
 | `plugin-grants.toml` | `noctalia msg plugins grant\|revoke` | native shell (Luau host) | `[grants] "author/plugin" = ["exec", …]`. Plugins can never write it ([ADR‑0021](../../05_Decisions/ADRs/ADR-0021-plugin-capabilities.md)) |
@@ -33,6 +33,9 @@ Zynith 2.0's configuration root. Map of the directory: `~/.config/zynith/README.
 | File | What |
 |---|---|
 | `palette.json` | the live palette (generated) |
-| `launcher.json` | launch counts and times, for ranking. Nothing else |
+| `launcher.json` | launch counts and times, pinned apps, and whether the native history was imported |
+| `wallpapers.json` | images applied recently (the shell keeps no such list for static wallpapers) |
+| `notifications.json` | the notification history (mode 0600), when `history_persist` is on |
 
-The notification history is held in memory only and is never written.
+The notification history is written only when `history_persist` is on (the default, as the native shell kept it),
+to a file only I can read; turning it off removes the file.

@@ -201,6 +201,68 @@ per surface, and Settings → Zynith UI flips it back.
   thumbnails through screencopy.
 - **Measurement:** the full performance, stress and lifecycle pass, deliberately after the migration.
 
+## Functional parity pass (night of 2026‑10‑02 → 2026‑10‑03)
+
+Next I set a new floor: every migrated surface must keep what the native one could do, and then be better. I
+added three things while it ran. The wallpaper carousel had to stay an option, with real motion. Nothing could be
+hard-coded. And every bar widget menu had to work, whatever I choose to keep. Claude audited each native surface
+against its QML replacement, then rebuilt what was missing. The commits are on `feature/zynith-ui` (`42be15a` …
+`e574f67`) and `feature/zynith-core` (`bebce09`, `9a8d8c6`).
+
+### The audit's gaps, and what closed them
+
+| Surface | Missing after the migration | Now |
+|---|---|---|
+| Wallpaper browser | Installed/Favourites/Recent/Collection tabs, carousel rotation, static favourites, sort, per-screen | All of it, filtered from held state and refreshed by native change events (no delays). A carousel layout after the native arc, with choreography, beside a grid layout |
+| Desktop widgets | The editor: nothing could be added, moved, resized or configured | An editor over the wallpaper itself (`Mod+Alt+W`): move with grid and centre guides, scale, rotate, lasso, duplicate, flip, layer order, hide, undo, copy/paste, a schema inspector, a live picker. Five new kinds (calendar, system, volume, session, button), an analog clock, visualizer wave and rings |
+| Launcher | App actions, categories, pinned apps, auto-paste, `/calc`-style prefixes, my usage history | All carried over; native usage counts imported once |
+| Clipboard | Pin, image preview, paste into the previous window, live refresh | Two panes: filters, pins, the selected entry whole (images as a data URI, nothing on disk), Enter pastes |
+| Notifications | Queue beyond `max_popups`, persistent history, per-app filters | Queue, `[[filter]]` rules, history in a 0600 file, progress, inline reply, stack tags, swipe; history sections and collapsible groups |
+| OSD | Lock keys, keyboard backlight, track changes, privacy, Wi-Fi/Bluetooth/profile/caffeine/night light/DND | Every native OSD event is forwarded to the UI (`OsdOverlay::show`), so all fourteen kinds show |
+| Bars | 14 of the 34 native widget kinds; per-widget settings; gestures; capsule groups; named instances | The whole catalogue under native names and keys; `[widget.<name>]` and `.actions`; groups with accordions; per-bar corners, border, shadow, font, empty-space actions; Settings → Bars edits all of it |
+
+My native bar configuration was carried over faithfully. `settings.toml` (the GUI's) overrides `rice.toml`, so the
+effective left bar was the GUI's: the `g1` accordion, the status capsule and the clock variants. The hand
+translation in the migration had dropped theme-mode, clipboard and the accordion; they are back. The previous
+`bars.toml` is in `~/.config/rice-backups/20261003-005305-zynith-bars-native-import/`.
+
+### Native additions
+
+- **Change events to the UI** (`zynith::notifyUi`): the shell connects to the UI's socket without blocking and
+  writes `event wallpaper | clipboard | lock on/off | osd {json}`. The UI no longer asks on a timer.
+- **IPC:** `wallpaper-live-library`, `wallpaper-favorites`, `wallpaper-favorite`, `clipboard-pin`,
+  `clipboard-image`, `clipboard-entry-text`, `clipboard-paste`.
+- **`uiOwns()`** caches `zynith.toml` by modification time; OSD events ask it on every volume step.
+
+### Motion
+
+`Motion` now carries Material 3's expressive and emphasized curves (the family Caelestia and end-4 use, read from
+their source in `~/.config/quickshell`), by role. `Anim` and `Glide` replace ad-hoc animations. One finding: my
+machine runs the Performance profile while power saver is on, and that profile turned springs off, so focus
+moves *jumped*. Lighter profiles now shorten motion instead of removing it.
+
+### What went wrong
+
+- **The UI failed to load twice**, each time for a few minutes, from QML errors that only show at load (a
+  property named `left`, a missing import, capitalised property names, a read-only `implicitHeight`). Bars and
+  notifications were gone meanwhile. `zynith-ui start` now detects a failed load and runs the last commit from a
+  snapshot instead.
+- **Every live reload removed the UI's socket.** Qt unlinks a local server's path when it closes, and the old
+  generation closes after the new one listens. Keybindings then fell back to the native panels, which is probably
+  why I found myself in the native wallpaper browser. The server now listens on a private name and renames it into
+  place.
+- **A niri layer rule for blur was wrong.** It blurred the whole surface, margins included, and overrode the
+  Experience profile. It is removed; surfaces request blur for their own region, which niri honours.
+- **Two captures showed my terminal**, before Claude switched to privacy-blurred and region-only captures. Both
+  were deleted immediately.
+
+### Not verified
+
+- Pointer gestures in the desktop editor (drag, scale, rotate, lasso) and in the carousel (drag, fling): no input
+  injection tool is installed. Keyboard and IPC paths were exercised.
+- Plugin launcher providers (Luau): none of my enabled plugins has one, and the bridge is deferred.
+- The lock screen in QML, and the live lock wallpaper, are next.
+
 ## Next
 
 1. **The stage gate:** whether the prototype starts replacing native surfaces on my desktop (architecture Stage 3:

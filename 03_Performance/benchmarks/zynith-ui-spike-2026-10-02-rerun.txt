@@ -1,0 +1,54 @@
+# zynith-ui spike re-run, 2026-10-02 13:53-14:01 (single instance, after e381281; build=clean for the native shell 67f09d4)
+# tuned profile: powersave (platform_profile low-power) throughout
+
+## run A: UI profile Performance (automatic, limited by power saver)
+# zynith-ui spike 2026-10-02T13:53:42+05:30  load: 1.82 3.79 5.26
+audio streams playing: 2
+## startup (5 runs): spawn -> config loaded, spawn -> bar visible
+run 1: loaded 464 ms, bar visible 578 ms
+run 2: loaded 442 ms, bar visible 606 ms
+run 3: loaded 475 ms, bar visible 648 ms
+run 4: loaded 441 ms, bar visible 648 ms
+run 5: loaded 489 ms, bar visible 575 ms
+## idle 60s (bar visible, no panel)
+zynith-ui: 6 ticks (0.10 % of one core), 2 context switches/s, PSS 77 MB, threads 13
+native shell, same window: 159 ticks (2.65 %)
+spectrum: {'consumers': 0, 'active': False, 'bands': 1}
+## panel cycles (10 x open home -> close)
+cpu during cycles: 131 ticks over ~12 s; per cycle ~131 ms
+frame pacing: {"panel-open":{"runs":10,"frames":77,"meanMs":16.08,"worstMs":23.1,"over20ms":2,"over33ms":0},"panel-close":{"runs":10,"frames":60,"meanMs":16.04,"worstMs":17.2,"over20ms":0,"over33ms":0}}
+PSS after cycles: 90 MB
+## live reload
+reload: 188 ms
+## reload survival (20 reloads)
+survived 20 reloads, PSS 85 MB
+report: /home/adhitya/.cache/zynith/spike-20261002-135342.txt
+
+## A/B panels, UI profile Performance
+round 1: native control-center 127 ms/cycle, zynith-ui home 131 ms/cycle
+round 2: native control-center 112 ms/cycle, zynith-ui home 126 ms/cycle
+
+## A/B panels, UI profile Balanced (selected explicitly for the run, then back to auto)
+round 1: native control-center 117 ms/cycle, zynith-ui home 186 ms/cycle
+round 2: native control-center 110 ms/cycle, zynith-ui home 181 ms/cycle
+
+## run B: UI profile Balanced
+# zynith-ui spike 2026-10-02T13:57:49+05:30  load: 2.05 2.71 4.45
+audio streams playing: 2
+## startup (3 runs): spawn -> config loaded, spawn -> bar visible
+run 1: loaded 459 ms, bar visible 597 ms
+run 2: loaded 451 ms, bar visible 584 ms
+run 3: loaded 462 ms, bar visible 612 ms
+## idle 60s (bar visible, no panel)
+zynith-ui: 39 ticks (0.65 % of one core), 2 context switches/s, PSS 79 MB, threads 15
+native shell, same window: 169 ticks (2.82 %)
+spectrum: {'consumers': 1, 'active': False, 'bands': 16}
+## panel cycles (10 x open home -> close)
+cpu during cycles: 187 ticks over ~12 s; per cycle ~187 ms
+frame pacing: {"panel-open":{"runs":10,"frames":145,"meanMs":16.35,"worstMs":43.5,"over20ms":3,"over33ms":2},"panel-close":{"runs":10,"frames":110,"meanMs":15.97,"worstMs":17,"over20ms":0,"over33ms":0}}
+PSS after cycles: 96 MB
+## live reload
+reload: 190 ms
+## reload survival (20 reloads)
+survived 20 reloads, PSS 89 MB
+report: /home/adhitya/.cache/zynith/spike-20261002-135749.txt

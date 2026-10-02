@@ -30,3 +30,19 @@ aligned. The authoritative evidence is the instrumented `frameW = 753.6 / texW =
 Record `build=clean|incremental|instrumented` next to every measurement. Only `clean` may be quoted. Counters
 (decode counts, cache hits, context-switch counts per operation) are acceptable from instrumented builds because
 they are not timing-dependent — those rows are marked as such in `optimizations.csv`.
+
+## Zynith UI spike, 2026‑10‑02: stray processes and a power-profile mismatch
+
+Two separate problems affected the Stage 1 spike
+([benchmark](zynith-ui-spike-2026-10-02.md), [postmortem](../../04_Incidents/postmortems/2026-10-02-zynith-ui-reload-crash.md)).
+
+| Figure | What it claimed | Reality | Cause |
+|---|---|---|---|
+| Prototype PSS **62–63 MB** idle (79–80 after panels) | Memory about half the native shell's | **77–79 MB** idle, 90–96 MB after panels | Copies relaunched by Quickshell's crash handler shared Qt's pages, which lowered the measured process's proportional share |
+| Panel cycle "regression ≈ 1.5–1.8×" against the native **84–90 ms** | A fixed per-panel tax | Parity in Performance (126–131 vs 112–127 ms); **≈ 1.6×** in Balanced (181–187 vs 110–117 ms) | The native figure came from Batch 7 under TuneD `balanced`; the spike ran under `powersave` |
+
+## Rules derived from this
+
+- Record the TuneD profile (`/sys/firmware/acpi/platform_profile`) with every timing.
+- Compare against another component only when both were measured in the same session, under the same profile.
+- Before a measurement, check that exactly one instance of the measured process exists (`pgrep -c`).

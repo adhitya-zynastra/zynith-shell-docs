@@ -21,9 +21,10 @@ fails, warns, checked = [], [], {"commits": 0, "paths": 0, "links": 0}
 def git(*a):
     return subprocess.run(["git", "-C", SRC] + list(a), capture_output=True, text=True)
 
-# 1 — commit hashes
+# 1 — commit hashes: master plus the pushed branches (feature work is documented before it merges).
+# The local backup of the pre-rewrite history is deliberately not included.
 known = set()
-for line in git("log", "--pretty=%h").stdout.split():
+for line in git("log", "--pretty=%h", "HEAD", "--remotes=origin").stdout.split():
     known.add(line)
 for f in md:
     text = open(f).read()

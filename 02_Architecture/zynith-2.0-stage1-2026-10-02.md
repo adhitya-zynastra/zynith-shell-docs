@@ -40,6 +40,7 @@ and `~/.local/state/zynith`.
 | Clipboard | Centred panel over the native shell's encrypted history. The shell gained `clipboard-history` (previews of at most 240 bytes), `clipboard-select` and `clipboard-remove`; a full payload leaves the shell only by going back onto the clipboard | `09974ee`; native `a2bf7b6` |
 | Window behaviour | `window.behaviour` → `~/.config/niri/rice/layout.kdl` (as configured · scrolling · tiling-like), validated by niri before an atomic rename ([niri reference](../06_Reference/configuration/niri.md)) | `46770bd` |
 | Notifications | Server, popups, in-memory history and Do Not Disturb. **Off** (`notifications.server`), and it never takes `org.freedesktop.Notifications` from another owner. Tested on a private D-Bus session (`tools/notify-test.sh`) | `5c5f93f` |
+| Wallpaper | Centred panel: images from the wallpaper folder and live wallpapers from the collection (new native `wallpaper-live-list`), applied through the core, so desktop, overview, lock screen and palette follow. Applying was **not** exercised, because it would have changed my wallpaper | `3695532`; native `4f68939` |
 | Network | Native `NetworkState` instead of `Quickshell.Networking` ([ADR‑0020](../05_Decisions/ADRs/ADR-0020-measure-builtins-before-adopting.md)) | `b136894` |
 | Quick Settings | Volume, microphone, brightness (native `Backlight`: sysfs read, logind write), Wi‑Fi, Bluetooth, DND, night light, stay awake, microphone, power profile. The shell's own switches are read from its status | `9aa9f91`; native `f09531b` |
 | Settings | Separate instance: Home, Experience, Appearance, Bars, Window behaviour, About | `3bad9da` |
@@ -118,8 +119,8 @@ These figures are from the same-conditions re-run under TuneD `powersave`:
 
 ## Measured after the second batch
 
-Prototype idle with nothing open: **0.03 % of a core, 2 wakeups/s, PSS 77 MB** (Performance profile, after
-`b136894`). The live renderer, measured for reference in the same session: 4.95 % of a core and 201 MB RSS while
+Prototype idle with nothing open: **0.03–0.05 % of a core once settled** (0.20 % in the first minute after a start),
+2–4 wakeups/s, PSS 75–77 MB (Performance profile, after `b136894`; final run at 14:44 with every panel present). The live renderer, measured for reference in the same session: 4.95 % of a core and 201 MB RSS while
 unlocked. **Its cost while the session is locked is UNKNOWN.** Measuring it needs a real lock, which I do myself:
 `~/.config/zynith/scripts/tests/locked-renderer-cost.sh` walks through it. Whether to pause the renderer while
 locked will be decided from that number.
@@ -128,10 +129,10 @@ locked will be decided from that number.
 
 1. **The stage gate:** whether the prototype starts replacing native surfaces on my desktop (architecture Stage 3:
    one surface at a time, each with a parity checklist and a rollback). That is my decision.
-2. Wallpaper browsing in the new UI, over the one WallpaperState.
-3. The helper protocol (§4.2), to replace the interim `noctalia msg` calls.
-4. Pausing the live renderer while locked, if the measurement shows a cost.
-5. Panel cost in Balanced (≈ 1.6× native).
+2. The helper protocol (§4.2), to replace the interim `noctalia msg` calls.
+3. Pausing the live renderer while locked, if the measurement shows a cost.
+4. Panel cost in Balanced (≈ 1.6× native).
+5. Desktop widgets (not started).
 
 Still open from §18: removing the stale `/usr/local/bin/quickshell` needs my `sudo`, and the capability model for
 Luau plugins is tracked as deferred.

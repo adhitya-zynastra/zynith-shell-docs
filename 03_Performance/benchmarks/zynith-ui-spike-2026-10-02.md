@@ -111,6 +111,22 @@ What changes:
 Since this re-run, the *automatic* profile follows power (`127f3b8`): it is at most Balanced on battery, and
 Performance while power saving is on or the battery is low. On this machine today that means Performance.
 
+## After the second batch (14:44)
+
+The prototype now also has the launcher, clipboard, notifications (off), Quick Settings, Wallpaper panel, window
+behaviour generator and the native `NetworkState`. Same conditions: TuneD `powersave`, UI profile Performance by
+the adaptive rule. Raw output is at the end of the re-run file.
+
+| | Result |
+|---|---|
+| Startup → bar visible | 562–649 ms (5 runs) |
+| Idle CPU, first minute after a start | 0.20 % (still settling) |
+| Idle CPU, settled | **0.05 %** (3 ticks / 60 s; 2.2 + 1.6 wakeups/s on the two busiest threads) |
+| Native shell, same minute | 2.60 % |
+| PSS idle → after 10 panel cycles | 75 → 89 MB |
+| Panel open + close (Home) | 122 ms, against 112–127 ms for the native Control Center measured at 13:5x under the same profile |
+| 20 live reloads | survived |
+
 ## Open
 
 - Idle 0.5 % is mostly the spectrum's PipeWire thread processing silent buffers (~0.7 % of its own over 12 s of

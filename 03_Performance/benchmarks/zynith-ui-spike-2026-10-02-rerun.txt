@@ -52,3 +52,30 @@ reload: 190 ms
 ## reload survival (20 reloads)
 survived 20 reloads, PSS 89 MB
 report: /home/adhitya/.cache/zynith/spike-20261002-135749.txt
+
+## final run after the second batch (2026-10-02 14:44, single instance, UI profile Performance via adaptive power-saver limit)
+# zynith-ui spike 2026-10-02T14:44:24+05:30  load: 2.64 3.45 2.91  platform profile: low-power
+audio streams playing: 2
+## startup (5 runs): spawn -> config loaded, spawn -> bar visible
+run 1: loaded 565 ms, bar visible 649 ms
+run 2: loaded 501 ms, bar visible 633 ms
+run 3: loaded 465 ms, bar visible 562 ms
+run 4: loaded 459 ms, bar visible 596 ms
+run 5: loaded 473 ms, bar visible 587 ms
+ui profile: performance, other zynith-ui instances: 0
+## idle 60s (bar visible, no panel)
+zynith-ui: 12 ticks (0.20 % of one core), 7 context switches/s, PSS 75 MB, threads 13
+native shell, same window: 156 ticks (2.60 %)
+spectrum: {'consumers': 0, 'active': False, 'bands': 1}
+## panel cycles (10 x open home -> close)
+cpu during cycles: 122 ticks over ~12 s; per cycle ~122 ms
+frame pacing: {"panel-open":{"runs":10,"frames":75,"meanMs":16.07,"worstMs":23.9,"over20ms":4,"over33ms":0},"panel-close":{"runs":10,"frames":60,"meanMs":15.97,"worstMs":16.9,"over20ms":0,"over33ms":0}}
+PSS after cycles: 89 MB
+## live reload
+reload: 213 ms
+## reload survival (20 reloads)
+survived 20 reloads, PSS 85 MB
+report: /home/adhitya/.cache/zynith/spike-20261002-144424.txt
+
+## settled idle, same instance, measured 80 s after the run above
+settled idle 60 s: 3 ticks (0.05 %); main thread 2.2 wakeups/s, QThread 1.6/s

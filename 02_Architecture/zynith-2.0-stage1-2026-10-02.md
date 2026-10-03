@@ -315,6 +315,45 @@ Panels now stop at the screen's height and scroll inside the card (with all modu
   the keyboard and IPC tests exercised.
 - EasyEffects profiles and calendar events: neither is set up on this machine; both replies were checked empty.
 
+### Settings cover every native setting (2026‑10‑03)
+
+The standing rule for the native Settings window was: migrate each setting, deprecate it with a reason, or keep
+it native — never lose one silently. Copying them by hand would have meant about five hundred fields drifting
+from the code. The native shell already describes every setting in one registry (`buildSettingsRegistry`: section,
+group, title, config path, control kind with its bounds or options, visibility), which its own window draws from.
+Claude exposed that registry instead (`feature/zynith-core` `9c9a8a4`):
+
+- `settings-schema [section]` serialises it; `settings-set` / `settings-reset` apply one change through
+  `ConfigService::validateOverride` and `setOverrides` — the native window's own writer, so `settings.toml` keeps
+  one owner. Writes are refused while the session is locked.
+- **Settings → Shell settings** (`feature/zynith-ui` `92f316d`) draws any section from it, filters it, hides
+  advanced settings unless asked, and writes a change a moment after the last one (a slider drag is one write).
+  A section whose surface Zynith now draws says so and links to Zynith's own page.
+- New Zynith pages for the categories that were missing: **Desktop widgets** and **On-screen display**.
+
+The [coverage map](../06_Reference/configuration/native-settings-coverage.md) is generated from the same registry by
+`scripts/native-settings-coverage.py`: 511 settings, 466 edited in Shell settings, 45 in native editors (keybinds,
+idle behaviours, notification filters, session actions, the template grid and similar), which Shell settings opens
+at their section. None is lost; six sections are marked superseded while their surface is Zynith's.
+
+Checked: re-setting an existing override to its own value left `settings.toml` byte-identical; a wrong type, an
+unknown path and malformed input were refused; a reset of a value that is not overridden wrote nothing.
+Captures (no personal data): `07_Assets/screenshots/settings-shell-settings.png`, `settings-osd.png`,
+`settings-desktop-widgets.png`.
+
+#### What went wrong
+
+- The first OSD page showed a "Shown" toggle off while the OSD was on: the UI shows it whenever
+  `zynith.toml [surfaces] osd` is `zynith`, and that toggle was a prototype flag. It is now the owner switch.
+- The first coverage map printed a phone's name and Bluetooth address, from the title of a per-device battery
+  setting. Device paths and titles are now redacted by the generator; that version was never committed.
+- I locked the screen while this was being built. The install and restart waited for the unlock (a config reload
+  under the lock crashed the shell once before).
+
+#### Not verified
+
+- A real change through Shell settings by pointer (no input injection); the IPC path it uses was exercised.
+
 ## Next
 
 1. **The stage gate:** whether the prototype starts replacing native surfaces on my desktop (architecture Stage 3:

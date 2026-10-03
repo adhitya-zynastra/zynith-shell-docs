@@ -31,6 +31,8 @@ Each prints JSON (or `ok`) for the UI to read; none is polled.
 | `effects-status` | EasyEffects' output and input profiles and the active ones (`effects-profile-set` applies one) |
 | `wallpaper-live-library`, `wallpaper-favorites`, `wallpaper-favorite` | The live library and favourites |
 | `clipboard-pin`, `clipboard-image`, `clipboard-entry-text`, `clipboard-paste` | The clipboard panel |
+| `settings-schema [section]` | The native settings registry: the sections, or one section's settings (kind, value, bounds or options, path, whether overridden) |
+| `settings-set {"path": [...], "value": …}`, `settings-reset {"path": [...]}` | Change one native setting as the native Settings window would (a validated ConfigService override in `settings.toml`); refused while locked |
 
 ## Zynith UI (`~/.local/src/noctalia-lockfade/zynith-ui/ui/zynith-ui …`)
 

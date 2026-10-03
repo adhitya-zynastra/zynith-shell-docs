@@ -19,6 +19,9 @@ Zynith 2.0's configuration root. Map of the directory: `~/.config/zynith/README.
 | `templates/palette.json` | hand-written | native theme engine (template `zynith_palette` in `rice.toml`) | Renders `~/.local/state/zynith/palette.json` for the UI |
 | `scripts/` | hand-written | me, Claude | helpers, benchmarks, manual tests |
 
+Where each **native** setting is edited now — Zynith's Shell settings page, a native editor, or superseded by a
+Zynith surface — is the generated [native settings coverage map](native-settings-coverage.md).
+
 ## `shell.json` keys that change something outside the UI
 
 - **`window.behaviour`**: `config` (default) · `scrolling` · `tiling-like`. The main UI instance writes

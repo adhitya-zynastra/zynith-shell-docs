@@ -347,8 +347,8 @@ Captures (no personal data): `07_Assets/screenshots/settings-shell-settings.png`
   `zynith.toml [surfaces] osd` is `zynith`, and that toggle was a prototype flag. It is now the owner switch.
 - The first coverage map printed a phone's name and Bluetooth address, from the title of a per-device battery
   setting. Device paths and titles are now redacted by the generator; that version was never committed.
-- I locked the screen while this was being built. The install and restart waited for the unlock (a config reload
-  under the lock crashed the shell once before).
+- The session locked while this was being built (by me or by idle: **UNKNOWN**). The install and restart waited
+  for the unlock (a config reload under the lock crashed the shell once before).
 
 #### Not verified
 

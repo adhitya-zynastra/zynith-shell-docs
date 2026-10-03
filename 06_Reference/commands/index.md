@@ -17,6 +17,31 @@ Verbs used throughout this project. `noctalia msg --help` lists the full set.
 | `desktop-widgets-{show,hide,toggle}`, `dock-{show,hide,toggle}` | Surfaces |
 | `color-scheme-get`, `color-scheme-set <source> …` | Palette source |
 
+### Verbs Zynith added for the Zynith UI
+
+Each prints JSON (or `ok`) for the UI to read; none is polled.
+
+| Verb | Purpose |
+|---|---|
+| `weather-status` | What the shell already fetched: now (temperature, feels like, humidity, wind and direction, UV), the days (with sunrise and sunset) and every forecast hour |
+| `screen-time [days]` | Total, per app, per hour (today) or per day |
+| `charge-limit [on\|off]` | The battery's charge limit (UPower's preset), health and capacity; or turns the preset on or off |
+| `brightness-status`, `brightness-rescan` | Every display's brightness (backlight or DDC/CI); look for DDC monitors again |
+| `calendar-events [days]` | The synced calendars' coming events |
+| `effects-status` | EasyEffects' output and input profiles and the active ones (`effects-profile-set` applies one) |
+| `wallpaper-live-library`, `wallpaper-favorites`, `wallpaper-favorite` | The live library and favourites |
+| `clipboard-pin`, `clipboard-image`, `clipboard-entry-text`, `clipboard-paste` | The clipboard panel |
+
+## Zynith UI (`~/.local/src/noctalia-lockfade/zynith-ui/ui/zynith-ui …`)
+
+| Command | Purpose |
+|---|---|
+| `start`, `restart`, `status`, `log` | Run it; a failed load starts the last commit from a snapshot instead |
+| `cmd control`, `cmd launcher [prefix]`, `cmd wallpaper`, `cmd close` | Keybinding socket: panels |
+| `cmd action <action>` | Any action a bar gesture can name, e.g. `panel-toggle control-center audio` |
+| `ipc panelRect` | Where the open panel sits (for captures cropped to it) |
+| `settings [route]` | The Settings window |
+
 ## Compositor (`niri msg …`)
 
 | Command | Purpose |

@@ -263,6 +263,58 @@ moves *jumped*. Lighter profiles now shorten motion instead of removing it.
 - Plugin launcher providers (Luau): none of my enabled plugins has one, and the bridge is deferred.
 - The lock screen in QML, and the live lock wallpaper, are next.
 
+### The Control Panel takes in the native Control Center (2026‑10‑03)
+
+The native Control Center has twelve tabs and a configurable shortcut grid; the Zynith Control Panel had nine
+fixed modules. Claude listed each tab's capabilities from its source (`shell/control_center/tabs/*.cpp`,
+`shortcut_registry.cpp`) and rebuilt them as modules, each with a page of its own one click in (a native
+`panel-toggle control-center <tab>` now opens that page, with back leading to the Control Panel). Commits:
+`feature/zynith-core` `03f2418`, `e9d4fa2`, `b308af0` and the rescan verb; `feature/zynith-ui` `e7114ed`.
+
+| Native tab or setting | Zynith |
+|---|---|
+| Shortcuts (18 kinds, `[control_center] shortcuts`) | The same ids, so the list carries over; plus launcher, screenshot, lock, edit desktop, settings and `custom:<name>` tiles that run any action. Round, two-line or row tiles; per-row count; labels; a tile can span its row. Right click opens what a tile summarises, as natively |
+| Audio | Output and input pickers, each app's level, what is recording, EasyEffects profiles (`effects-status`) |
+| Monitor | Every display's brightness through the native service (`brightness-status`, DDC rescan), night light, light/dark |
+| Power | Profiles and why performance is held back, the battery (time left, health, capacity, rate), the charge limit (`charge-limit`), peripherals' batteries, the Experience profile |
+| Calendar | Month grid (wheel or arrows), week numbers, first weekday, events from the native sync (`calendar-events`) |
+| Weather | Now, the details (feels like, humidity, wind, UV, sunrise, sunset) and a days/hours forecast (`weather-status` extended) |
+| Screen time | Total, apps, by hour or by day over 1, 3 or 14 days (`screen-time`) |
+| `hover_open`, `hover_open_delay_ms` | A `hover` gesture any bar widget can carry (`hover_delay`); resting anywhere on a capsule group counts; a click after it confirms rather than closes. Set on my four clock widgets |
+| `anchor_bar = "Time"` | `[control_panel] anchor_bar = "time"`: a Control Panel opened by a key sits by that bar |
+| `show_session_button` | `session_button` |
+| `sidebar*`, `top_nav`, `density`, `style` | Superseded: there are no tabs to lay out. Width, spacing and a card style replace them |
+| Plugin shortcuts (Luau `[[shortcut]]`) | **Not carried over** — deferred with the plugin launcher bridge |
+
+Settings → Control Panel edits all of it (modules, the tile picker with order and sizes, look, what each module
+shows, custom tiles). A capture of the page, which holds no personal data, is
+`07_Assets/screenshots/settings-control-panel.png`. The panel and page captures themselves showed my network,
+my devices, my location and app names; they were reviewed and not kept.
+
+Panels now stop at the screen's height and scroll inside the card (with all modules on, the Control Panel was
+1246 px on a 1200 px screen and its header was off the top).
+
+#### What went wrong
+
+- **The UI failed to load for about two minutes.** A property named `top` in the screen-time module clashes with
+  `Item.top` (FINAL). The automatic fallback to the last commit did not save it: it started Quickshell on an
+  *empty* directory. `git archive HEAD:ui/` run from inside `ui/` keeps only `ui/` within that tree, which is
+  nothing. It had never worked; the earlier outages were short for other reasons. The snapshot is now taken from
+  the repository's top level, and the extraction was checked.
+- **The UI crashed** (SIGSEGV in Quickshell's `PwNodeBoundAudio::onInfo`) a few seconds after the Sound module
+  first showed. The audio service tracked every PipeWire node at once, and its stream lists read a bound property
+  (`application.name`), so binding changed the lists, which changed what was bound: a binding loop churning
+  bindings while PipeWire events arrived. Now only on-screen app streams are tracked, each by its own row (as
+  Caelestia does), and the lists read only unbound fields. Repeated with the module open: no crash.
+- **The modules collapsed to nothing** on the first run: each slot hid itself when its module was hidden, but a
+  module's `visible` follows its parent's, so both stayed hidden. Slots no longer hide themselves.
+
+#### Not verified
+
+- The hover gesture and right-click on tiles: no pointer injection here. The paths are the same `Actions.run`
+  the keyboard and IPC tests exercised.
+- EasyEffects profiles and calendar events: neither is set up on this machine; both replies were checked empty.
+
 ## Next
 
 1. **The stage gate:** whether the prototype starts replacing native surfaces on my desktop (architecture Stage 3:

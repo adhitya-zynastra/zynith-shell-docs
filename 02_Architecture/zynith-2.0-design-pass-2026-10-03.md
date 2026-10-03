@@ -36,6 +36,10 @@ the principles came from the earlier source study ([design-research-2026-09.md](
 The accent budget was the main correction while doing it: the first Control Panel pass lit four tiles and three
 sliders in the accent at once; on review, "on" became a mark at the edge and levels became ink.
 
+| Wallpaper browser | a boxed control card of chips over the carousel | the controls float unboxed on the scene; views as data-voice tabs with counts and a gliding mark; the focused card's caption as a readout | `optics-wallpaper-browser.png` |
+| Controls | toggles and segmented controls painted in the accent | an edge-lit track with an accent knob; the segmented selection as edge light on a plate | — |
+| Overview | niri's overview alone | a companion readout while it is open — workspace "02 / 04", what has focus, the time (`[window] overview_companion`) | not captured: it sits over window thumbnails |
+
 ## Desktop widgets — visually verified
 
 The brief noted they had never been seen uncovered. Claude rendered the desktop layer's own pixels
@@ -44,6 +48,8 @@ geometry; the overlapping hour/minute clocks and the weather under them are my o
 
 ## Not done yet
 
-Wallpaper browser, overview and lock screen in the new language; widget framework consistency pass; toggles and
-segmented controls still use the accent fill. **UNKNOWN** how the hover states read by pointer — no input
+The lock screen in the new language (task 79: the native host + QML plan, opt-in, never tested automatically); a
+consistency pass over the bar widgets and desktop widgets; the system-wide motion pass. One capture during this
+pass took the whole screen and showed my terminal; it was deleted, and panels are now captured from their own
+pixels (`zynith-ui ipc captureBar panel@<screen>`). **UNKNOWN** how the hover states read by pointer — no input
 injection here.
